@@ -1,5 +1,6 @@
 ﻿using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.ProductModels;
 using System;
@@ -37,7 +38,7 @@ namespace ShopWebsite.BLL.Implementations
             throw new NotImplementedException();
         }
 
-        public async Task<Result<List<Product>>> GetRecentProductBy(string type, int num)
+        public async Task<Result<List<Product>>> GetRecentProductBy(ProductType type, int num)
         {
             throw new NotImplementedException();
         }

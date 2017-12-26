@@ -1,4 +1,5 @@
-﻿using ShopWebsite.DAL.Models.ProductModels;
+﻿using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.DAL.Models.ProductModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ShopWebsite.DAL.Contracts
         Task<bool> Edit(Product newProduct);
         Task<bool> Remove(string productId);
         Task<Product> GetBy(string productId);
-        Task<List<Product>> GetProductBy(string type, int num);
+        Task<List<Product>> GetProductBy(ProductType type, int num);
         //Task<List<Product>> FilterProductBy(string specificTypeId, int num);
         Task<List<Product>> GetAll();
     }
