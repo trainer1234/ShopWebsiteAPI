@@ -55,14 +55,12 @@ namespace ShopWebsiteServerSide.Controllers
             return BadRequest(serviceResult);
         }
 
-        [AllowAnonymous]
         [Route("register")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync([FromHeader] string Authorization, [FromBody] SignUpModel signUpModel)
+        public async Task<IActionResult> RegisterAsync([FromBody] SignUpModel signUpModel)
         {
             if (ModelState.IsValid)
             {
-                var accessToken = SplitAuthorizationHeader(Authorization);
                 var accountService = GetService<IAccountService>();
                 var serviceResult = await accountService.AddAccount(signUpModel);
                 if (serviceResult.Succeed)
