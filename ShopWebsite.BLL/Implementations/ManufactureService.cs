@@ -12,50 +12,143 @@ namespace ShopWebsite.BLL.Implementations
     public class ManufactureService : IManufactureService
     {
         private IManufactureRepository _manufactureRepository;
+        private IProductRepository _productRepository;
         private IErrorLogRepository _errorLogRepository;
 
-        public ManufactureService(IManufactureRepository manufactureRepository, IErrorLogRepository errorLogRepository)
+        public ManufactureService(IManufactureRepository manufactureRepository, IErrorLogRepository errorLogRepository,
+            IProductRepository productRepository)
         {
             _manufactureRepository = manufactureRepository;
+            _errorLogRepository = errorLogRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<Result<bool>> AddManufacture(Manufacture newManufacture)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var addResult = await _manufactureRepository.Add(newManufacture);
+                if (addResult)
+                {
+                    result.Succeed = result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(13, "Manufacture Existed");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<bool>> EditManufacture(Manufacture newManufacture)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var editResult = await _manufactureRepository.Edit(newManufacture);
+                if (editResult)
+                {
+                    result.Succeed = result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(12, "Manufacture not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<List<Manufacture>>> GetAllManufacture()
         {
             var result = new Result<List<Manufacture>>();
-            var manufactures = await _manufactureRepository.GetAll();
-            if(manufactures != null && manufactures.Count > 0)
+            try
             {
-                result.Content = manufactures;
-                result.Succeed = true;
+                var manufactures = await _manufactureRepository.GetAll();
+                if (manufactures != null && manufactures.Count > 0)
+                {
+                    result.Content = manufactures;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(11, "No manufactures");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                result.Succeed = false;
-                result.Errors = new Dictionary<int, string>();
-                result.Errors.Add(11, "No manufactures");
+                _errorLogRepository.Add(ex);
+                throw;
             }
-
             return result;
         }
 
-        public async Task<Result<List<Manufacture>>> GetAllManufactureBy(string manufactureId)
+        public async Task<Result<Manufacture>> GetManufactureBy(string manufactureId)
         {
-            throw new NotImplementedException();
+            var result = new Result<Manufacture>();
+            try
+            {
+                var manufacture = await _manufactureRepository.GetBy(manufactureId);
+                if (manufacture != null)
+                {
+                    result.Content = manufacture;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(12, "Manufacture not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<bool>> RemoveManufacture(string manufactureId)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var removeProductByManufactureResult = await _productRepository.RemoveProductBy(manufactureId);
+                var removeResult = await _manufactureRepository.Remove(manufactureId);
+                if (removeResult)
+                {
+                    result.Succeed = result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(12, "Manufacture not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
     }
 }

@@ -13,6 +13,6 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<bool>> EditManufacture(Manufacture newManufacture);
         Task<Result<bool>> RemoveManufacture(string manufactureId);
         Task<Result<List<Manufacture>>> GetAllManufacture();
-        Task<Result<List<Manufacture>>> GetAllManufactureBy(string manufactureId);
+        Task<Result<Manufacture>> GetManufactureBy(string manufactureId);
     }
 }

@@ -15,6 +15,7 @@ namespace ShopWebsiteServerSide.Controllers
     [Route("api/manufacture")]
     public class ManufactureController : BaseController
     {
+        [AllowAnonymous]
         [HttpGet]
         [Route("get")]
         public async Task<IActionResult> GetAll()
@@ -43,32 +44,80 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("get/{id}")]
         public async Task<IActionResult> GetBy(string id)
         {
-            throw new NotImplementedException();
+            var manufactureService = GetService<IManufactureService>();
+            var serviceResult = await manufactureService.GetManufactureBy(id);
+            if (serviceResult.Succeed)
+            {
+                var parser = new ModelParser();
+                var result = new Result<ManufactureViewModel>();
+                var manufactureView = parser.ParserManufactureViewFrom(serviceResult.Content);
+
+                result.Content = manufactureView;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(serviceResult);
+            }
         }
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddNewManufacture(ManufactureViewModel manufactureView)
+        public async Task<IActionResult> AddNewManufacture([FromBody] ManufactureViewModel manufactureView)
         {
-            throw new NotImplementedException();
+            var parser = new ModelParser();
+            var manufactureService = GetService<IManufactureService>();
+            var manufacture = parser.ParseManufactureFrom(manufactureView);
+            var serviceResult = await manufactureService.AddManufacture(manufacture);
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
         }
 
         [HttpPut]
         [Route("edit")]
-        public async Task<IActionResult> EditManufacture(ManufactureViewModel manufactureView)
+        public async Task<IActionResult> EditManufacture([FromBody] ManufactureViewModel manufactureView)
         {
-            throw new NotImplementedException();
+            var parser = new ModelParser();
+            var manufactureService = GetService<IManufactureService>();
+            var manufacture = parser.ParseManufactureFrom(manufactureView);
+            var serviceResult = await manufactureService.EditManufacture(manufacture);
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
         }
 
         [HttpPost]
         [Route("remove")]
         public async Task<IActionResult> RemoveManufacture(string manufactureId)
         {
-            throw new NotImplementedException();
+            var manufactureService = GetService<IManufactureService>();
+            var serviceResult = await manufactureService.RemoveManufacture(manufactureId);
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
         }
     }
 }

@@ -31,8 +31,23 @@ namespace ShopWebsiteServerSide.Utils
                 Name = productView.Name,
                 Price = productView.Price,
                 Type = productView.Type,
-                ProductSpecificType = productView.SpecificType
+                ProductSpecificType = productView.SpecificType,
+                PromotionAvailable = productView.PromotionAvailable,
+                PromotionRate = productView.PromotionRate,
+                Manufacture = new Manufacture(),
+                ManufactureId = productView.Manufacture.Id
             };
+            product.Manufacture.Id = productView.Manufacture.Id;
+            product.Manufacture.Name = productView.Manufacture.Name;
+
+            if(productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
+            {
+                product.ProductImages = new List<ProductImage>();
+                foreach (var image in productView.ProductImageUrls)
+                {
+
+                }
+            }
             return product;
         }
 
@@ -40,6 +55,9 @@ namespace ShopWebsiteServerSide.Utils
         {
             var productView = new ProductViewModel
             {
+                PromotionAvailable = product.PromotionAvailable,
+                PromotionRate = product.PromotionRate,
+                Manufacture = new ManufactureViewModel(),
                 ManufactureYear = product.ManufactureYear,
                 Name = product.Name,
                 Price = product.Price,
@@ -47,6 +65,17 @@ namespace ShopWebsiteServerSide.Utils
                 SpecificType = product.ProductSpecificType,
                 Type = product.Type
             };
+            productView.Manufacture.Id = product.ManufactureId;
+            productView.Manufacture.Name = product.Manufacture.Name;
+
+            if(product.ProductImages != null && product.ProductImages.Count > 0)
+            {
+                productView.ProductImageUrls = new List<string>();
+                foreach (var image in product.ProductImages)
+                {
+
+                }
+            }
             return productView;
         }
 

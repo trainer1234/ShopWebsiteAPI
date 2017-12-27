@@ -21,12 +21,27 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<bool> Add(Manufacture newManufacture)
         {
-            throw new NotImplementedException();
+            _context.Add(newManufacture);
+            _context.SaveChanges();
+
+            return true;
         }
 
         public async Task<bool> Edit(Manufacture newManufacture)
         {
-            throw new NotImplementedException();
+            var manufactureExist = await _context.Manufactures.Where(manufacture => manufacture.Id == newManufacture.Id).Take(1).ToListAsync();
+
+            if (manufactureExist != null && manufactureExist.Count > 0)
+            {
+                var searchManufacture = manufactureExist[0];
+                searchManufacture.Name = newManufacture.Name;
+
+                _context.Update(searchManufacture);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
 
         public async Task<List<Manufacture>> GetAll()
@@ -38,12 +53,27 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<Manufacture> GetBy(string manufactureId)
         {
-            throw new NotImplementedException();
+            var searchManufacture = await _context.Manufactures.Where(manufacture => manufacture.Id == manufactureId).Take(1).ToListAsync();
+            if (searchManufacture != null)
+            {
+                return searchManufacture[0];
+            }
+            return null;
         }
 
         public async Task<bool> Remove(string manufactureId)
         {
-            throw new NotImplementedException();
+            var manufactureExist = await _context.Manufactures.Where(manufacture => manufacture.Id == manufactureId).ToListAsync();
+            if(manufactureExist != null && manufactureExist.Count > 0)
+            {
+                var searchManufacture = manufactureExist[0];
+
+                _context.Remove(searchManufacture);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
     }
 }
