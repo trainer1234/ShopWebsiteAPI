@@ -29,7 +29,6 @@ namespace ShopWebsiteServerSide.Utils
         {
             var product = new Product
             {
-                Id = productView.Id,
                 ManufactureYear = productView.ManufactureYear,
                 Name = productView.Name,
                 Price = productView.Price,
@@ -37,13 +36,14 @@ namespace ShopWebsiteServerSide.Utils
                 ProductSpecificType = productView.SpecificType,
                 PromotionAvailable = productView.PromotionAvailable,
                 PromotionRate = productView.PromotionRate,
-                Manufacture = new Manufacture(),
                 ManufactureId = productView.Manufacture.Id
             };
-            product.Manufacture.Id = productView.Manufacture.Id;
-            product.Manufacture.Name = productView.Manufacture.Name;
+            if(productView.Id != null)
+            {
+                product.Id = productView.Id;
+            }
 
-            if(productView.Id != null && productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
+            if(productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
             {
                 product.ProductImages = new List<ProductImage>();
                 var handler = new ImageHandler();
@@ -52,7 +52,7 @@ namespace ShopWebsiteServerSide.Utils
                     var productImage = new ProductImage
                     {
                         ImageModelId = handler.GetImageId(ImageUrlOption.Original, image),
-                        ProductId = productView.Id
+                        ProductId = product.Id
                     };
                     product.ProductImages.Add(productImage);
                 }

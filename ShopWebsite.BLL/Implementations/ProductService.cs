@@ -28,9 +28,19 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                var productImageTmps = newProduct.ProductImages;
+                newProduct.ProductImages = null;
                 var addResult = await _productRepository.Add(newProduct);
                 if (addResult)
                 {
+                    if (productImageTmps != null && productImageTmps.Count > 0)
+                    {
+                        newProduct.ProductImages = productImageTmps;
+                        foreach (var productImage in newProduct.ProductImages)
+                        {
+                            await _productImageRepository.Add(productImage);
+                        }
+                    }
                     result.Succeed = true;
                     result.Content = true;
                 }
@@ -55,6 +65,14 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                if (newProduct.ProductImages != null && newProduct.ProductImages.Count > 0)
+                {
+                    foreach (var productImage in newProduct.ProductImages)
+                    {
+                        await _productImageRepository.Remove(productImage.ProductId, productImage.ImageModelId);
+                        await _productImageRepository.Add(productImage);
+                    }
+                }
                 var editResult = await _productRepository.Edit(newProduct);
                 if (editResult)
                 {
