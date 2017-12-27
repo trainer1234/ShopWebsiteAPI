@@ -28,17 +28,14 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<bool> Edit(Product newProduct)
         {
-            var productExist = await _context.Products.Where(product => product.Id == newProduct.Id)
-                                        .Include(product => product.ProductSpecificType).Take(1).ToListAsync();
+            var productExist = await _context.Products.Where(product => product.Id == newProduct.Id).Take(1).ToListAsync();
             if(productExist != null && productExist.Count > 0)
             {
                 var searchProduct = productExist[0];
-                searchProduct.ManufactureName = newProduct.ManufactureName;
                 searchProduct.ManufactureYear = newProduct.ManufactureYear;
                 searchProduct.Name = newProduct.Name;
                 searchProduct.Price = newProduct.Price;
-                searchProduct.ProductImageUrl = newProduct.ProductImageUrl;
-                searchProduct.ProductSpecificTypeId = newProduct.ProductSpecificTypeId;
+                searchProduct.ProductSpecificType = newProduct.ProductSpecificType;
                 searchProduct.Type = newProduct.Type;
 
                 _context.Update(searchProduct);
@@ -54,15 +51,21 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<List<Product>> GetAll()
         {
-            var products = await _context.Products.Include(product => product.ProductSpecificType).ToListAsync();
+            var products = await _context.Products.ToListAsync();
+
+            return products;
+        }
+
+        public async Task<List<Product>> GetAllBy(ProductType type)
+        {
+            var products = await _context.Products.Where(product => product.Type == type).ToListAsync();
 
             return products;
         }
 
         public async Task<Product> GetBy(string productId)
         {
-            var products = await _context.Products.Where(product => product.Id == productId)
-                                    .Include(product => product.ProductSpecificType).ToListAsync();
+            var products = await _context.Products.Where(product => product.Id == productId).ToListAsync();
             if(products != null && products.Count > 0)
             {
                 return products[0];
@@ -72,16 +75,14 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<List<Product>> GetProductBy(ProductType type, int num)
         {
-            var products = await _context.Products.Where(product => product.Type == type)
-                                    .Include(product => product.ProductSpecificType).Take(num).ToListAsync();
+            var products = await _context.Products.Where(product => product.Type == type).Take(num).ToListAsync();
 
             return products;
         }
 
         public async Task<bool> Remove(string productId)
         {
-            var products = await _context.Products.Where(product => product.Id == productId)
-                                    .Include(product => product.ProductSpecificType).ToListAsync();
+            var products = await _context.Products.Where(product => product.Id == productId).ToListAsync();
 
             if(products != null && products.Count > 0)
             {
@@ -96,22 +97,6 @@ namespace ShopWebsite.DAL.Implementations
             {
                 return false;
             }
-        }
-
-        public async Task<bool> RemoveAllProductBy(string productSpecificTypeId)
-        {
-            var products = await _context.Products.Where(product => product.ProductSpecificTypeId == productSpecificTypeId).ToListAsync();
-            if(products != null && products.Count > 0)
-            {
-                foreach (var product in products)
-                {
-                    _context.Remove(product);
-                    _context.SaveChanges();
-                }
-
-                return true;
-            }
-            return false;
         }
     }
 }

@@ -1,15 +1,15 @@
-﻿using ShopWebsite.Common.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ShopWebsite.DAL.Models.ProductModels
 {
-    public class ProductSpecificType
+    public class ProductImage
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
-        public ProductType Type { get; set; }
+        public string ImageUrl { get; set; }
+        public string ProductId { get; set; }
+        public Product Product { get; set; }
         public bool IsDisabled { get; set; } = false;
     }
 }

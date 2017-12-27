@@ -100,6 +100,32 @@ namespace ShopWebsite.BLL.Implementations
             return result;
         }
 
+        public async Task<Result<List<Product>>> GetAllProductBy(ProductType type)
+        {
+            var result = new Result<List<Product>>();
+            try
+            {
+                var products = await _productRepository.GetAllBy(type);
+                if (products != null && products.Count > 0)
+                {
+                    result.Succeed = true;
+                    result.Content = products;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(6, "No Products");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
+        }
+
         public async Task<Result<Product>> GetProductBy(string productId)
         {
             var result = new Result<Product>();

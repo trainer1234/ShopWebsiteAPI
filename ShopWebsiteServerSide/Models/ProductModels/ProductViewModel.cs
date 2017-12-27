@@ -15,6 +15,6 @@ namespace ShopWebsiteServerSide.Models.ProductModels
         public string ProductImageUrl { get; set; }
         public double Price { get; set; }
         public ProductType Type { get; set; }
-        public ProductSpecificTypeViewModel ProductSpecificType { get; set; }
+        public ProductSpecificType SpecificType { get; set; }
     }
 }

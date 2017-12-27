@@ -12,7 +12,7 @@ using System;
 namespace ShopWebsite.DAL.Migrations
 {
     [DbContext(typeof(ShopWebsiteSqlContext))]
-    [Migration("20171226161919_AddProductTable")]
+    [Migration("20171227094528_AddProductTable")]
     partial class AddProductTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,6 +203,20 @@ namespace ShopWebsite.DAL.Migrations
                     b.ToTable("ErrorLog");
                 });
 
+            modelBuilder.Entity("ShopWebsite.DAL.Models.ManufactureModels.Manufacture", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsDisabled");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Manufacture");
+                });
+
             modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -210,7 +224,7 @@ namespace ShopWebsite.DAL.Migrations
 
                     b.Property<bool>("IsDisabled");
 
-                    b.Property<string>("ManufactureName");
+                    b.Property<string>("ManufactureId");
 
                     b.Property<string>("ManufactureYear");
 
@@ -218,33 +232,37 @@ namespace ShopWebsite.DAL.Migrations
 
                     b.Property<double>("Price");
 
-                    b.Property<string>("ProductImageUrl");
+                    b.Property<int>("ProductSpecificType");
 
-                    b.Property<string>("ProductSpecificTypeId");
+                    b.Property<bool>("PromotionAvailable");
+
+                    b.Property<double>("PromotionRate");
 
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductSpecificTypeId");
+                    b.HasIndex("ManufactureId");
 
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.ProductSpecificType", b =>
+            modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.ProductImage", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ImageUrl");
+
                     b.Property<bool>("IsDisabled");
 
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Type");
+                    b.Property<string>("ProductId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductSpecificType");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -294,9 +312,16 @@ namespace ShopWebsite.DAL.Migrations
 
             modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.Product", b =>
                 {
-                    b.HasOne("ShopWebsite.DAL.Models.ProductModels.ProductSpecificType", "ProductSpecificType")
+                    b.HasOne("ShopWebsite.DAL.Models.ManufactureModels.Manufacture", "Manufacture")
                         .WithMany()
-                        .HasForeignKey("ProductSpecificTypeId");
+                        .HasForeignKey("ManufactureId");
+                });
+
+            modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.ProductImage", b =>
+                {
+                    b.HasOne("ShopWebsite.DAL.Models.ProductModels.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId");
                 });
 #pragma warning restore 612, 618
         }

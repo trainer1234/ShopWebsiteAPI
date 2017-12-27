@@ -15,6 +15,7 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<bool>> RemoveProduct(string productId);
         Task<Result<List<Product>>> GetAllProduct();
         Task<Result<List<Product>>> GetRecentProductBy(ProductType type, int num);
+        Task<Result<List<Product>>> GetAllProductBy(ProductType type);
         Task<Result<Product>> GetProductBy(string productId);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using ShopWebsite.DAL.Models.LogModels;
+using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsiteServerSide.Models.LogModels;
+using ShopWebsiteServerSide.Models.ManufactureModels;
 using ShopWebsiteServerSide.Models.ProductModels;
 using System;
 using System.Collections.Generic;
@@ -25,13 +27,11 @@ namespace ShopWebsiteServerSide.Utils
         {
             var product = new Product
             {
-                ManufactureName = productView.ManufactureName,
                 ManufactureYear = productView.ManufactureYear,
                 Name = productView.Name,
                 Price = productView.Price,
-                ProductImageUrl = productView.ProductImageUrl,
                 Type = productView.Type,
-                ProductSpecificTypeId = productView.ProductSpecificType.Id,
+                ProductSpecificType = productView.SpecificType
             };
             return product;
         }
@@ -40,44 +40,34 @@ namespace ShopWebsiteServerSide.Utils
         {
             var productView = new ProductViewModel
             {
-                ManufactureName = product.ManufactureName,
                 ManufactureYear = product.ManufactureYear,
                 Name = product.Name,
                 Price = product.Price,
-                ProductImageUrl = product.ProductImageUrl,
                 Id = product.Id,
-                ProductSpecificType = new ProductSpecificTypeViewModel(),
+                SpecificType = product.ProductSpecificType,
                 Type = product.Type
             };
-            if(product.ProductSpecificType != null)
-            {
-                productView.ProductSpecificType.Id = product.ProductSpecificType.Id;
-                productView.ProductSpecificType.Name = product.ProductSpecificType.Name;
-                productView.ProductSpecificType.Type = product.ProductSpecificType.Type;
-            }
             return productView;
         }
 
-        public ProductSpecificType ParseProductSpecificTypeFrom(ProductSpecificTypeViewModel productSpecificTypeView)
+        public ManufactureViewModel ParserManufactureViewFrom(Manufacture manufacture)
         {
-            var productSpecificType = new ProductSpecificType
+            var manufactureView = new ManufactureViewModel
             {
-                Id = productSpecificTypeView.Id,
-                Name = productSpecificTypeView.Name,
-                Type = productSpecificTypeView.Type
+                Id = manufacture.Id,
+                Name = manufacture.Name
             };
-            return productSpecificType;
+            return manufactureView;
         }
 
-        public ProductSpecificTypeViewModel ParseProductSpecificTypeViewFrom(ProductSpecificType productSpecificType)
+        public Manufacture ParseManufactureFrom(ManufactureViewModel manufactureView)
         {
-            var productSpecificTypeView = new ProductSpecificTypeViewModel
+            var manufacture = new Manufacture
             {
-                Id = productSpecificType.Id,
-                Name = productSpecificType.Name,
-                Type = productSpecificType.Type
+                Id = manufactureView.Id,
+                Name = manufactureView.Name
             };
-            return productSpecificTypeView;
+            return manufacture;
         }
     }
 }

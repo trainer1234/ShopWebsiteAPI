@@ -12,10 +12,9 @@ namespace ShopWebsite.DAL.Contracts
         Task<bool> Add(Product newProduct);
         Task<bool> Edit(Product newProduct);
         Task<bool> Remove(string productId);
-        Task<bool> RemoveAllProductBy(string productSpecificTypeId);
         Task<Product> GetBy(string productId);
         Task<List<Product>> GetProductBy(ProductType type, int num);
-        //Task<List<Product>> FilterProductBy(string specificTypeId, int num);
+        Task<List<Product>> GetAllBy(ProductType type);
         Task<List<Product>> GetAll();
     }
 }
