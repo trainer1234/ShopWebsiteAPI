@@ -55,6 +55,7 @@ namespace ShopWebsiteServerSide.Controllers
             return BadRequest(serviceResult);
         }
 
+        [AllowAnonymous]
         [Route("register")]
         [HttpPost]
         public async Task<IActionResult> RegisterAsync([FromBody] SignUpModel signUpModel)

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.DAL.Models.AccountModels;
+using ShopWebsite.DAL.Models.ImageModels;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
@@ -31,6 +32,7 @@ namespace ShopWebsite.DAL.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Manufacture> Manufactures { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ImageModel> ImageModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -56,6 +58,8 @@ namespace ShopWebsite.DAL.Context
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductImage");
             builder.Entity<Manufacture>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Manufacture");
+            builder.Entity<ImageModel>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ImageModels");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

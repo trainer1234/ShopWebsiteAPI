@@ -1,4 +1,6 @@
-﻿using ShopWebsite.DAL.Models.LogModels;
+﻿using ShopWebsite.Common.Models.ServerOptions;
+using ShopWebsite.Common.Utils;
+using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsiteServerSide.Models.LogModels;
@@ -27,6 +29,7 @@ namespace ShopWebsiteServerSide.Utils
         {
             var product = new Product
             {
+                Id = productView.Id,
                 ManufactureYear = productView.ManufactureYear,
                 Name = productView.Name,
                 Price = productView.Price,
@@ -40,12 +43,18 @@ namespace ShopWebsiteServerSide.Utils
             product.Manufacture.Id = productView.Manufacture.Id;
             product.Manufacture.Name = productView.Manufacture.Name;
 
-            if(productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
+            if(productView.Id != null && productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
             {
                 product.ProductImages = new List<ProductImage>();
+                var handler = new ImageHandler();
                 foreach (var image in productView.ProductImageUrls)
                 {
-
+                    var productImage = new ProductImage
+                    {
+                        ImageModelId = handler.GetImageId(ImageUrlOption.Original, image),
+                        ProductId = productView.Id
+                    };
+                    product.ProductImages.Add(productImage);
                 }
             }
             return product;
@@ -70,10 +79,12 @@ namespace ShopWebsiteServerSide.Utils
 
             if(product.ProductImages != null && product.ProductImages.Count > 0)
             {
+                var handler = new ImageHandler();
                 productView.ProductImageUrls = new List<string>();
                 foreach (var image in product.ProductImages)
                 {
-
+                    var url = handler.GetImage(ImageDirectoryOption.Original, ImageUrlOption.Original, image.ImageModelId);
+                    productView.ProductImageUrls.Add(url);
                 }
             }
             return productView;
