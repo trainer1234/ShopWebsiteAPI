@@ -46,6 +46,8 @@ namespace ShopWebsiteServerSide
         {
             services.AddOptions();
             ConnectionStringOption.ConnectionString = _config.GetConnectionString("DefaultConnection");
+            ImageDirectoryOption.Original = _config.GetSection("ImageDirectory").GetValue(typeof(string), "Original").ToString();
+            ImageUrlOption.Original = _config.GetSection("ImageUrl").GetValue(typeof(string), "Original").ToString();
 
             services.AddSingleton(_config);
 
@@ -53,11 +55,13 @@ namespace ShopWebsiteServerSide
             services.AddTransient<ILogService, LogService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IManufactureService, ManufactureService>();
+            services.AddTransient<IImageService, ImageService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IManufactureRepository, ManufactureRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
 
             services.AddEntityFrameworkSqlServer().AddDbContext<ShopWebsiteSqlContext>(options =>
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));

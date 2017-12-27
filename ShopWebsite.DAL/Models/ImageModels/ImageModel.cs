@@ -8,7 +8,6 @@ namespace ShopWebsite.DAL.Models.ImageModels
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
-        public string Url { get; set; }
         public string Extension { get; set; }
         public DateTime CreatedTime { get; set; }
         public int Width { get; set; }
