@@ -70,6 +70,35 @@ namespace ShopWebsiteServerSide.Controllers
 
         [AllowAnonymous]
         [HttpGet]
+        [Route("filter/{type}")]
+        public async Task<IActionResult> FilterProductBy(ProductType type)
+        {
+            var productService = GetService<IProductService>();
+            var serviceResult = await productService.GetAllProductBy(type);
+
+            if (serviceResult.Succeed)
+            {
+                var parser = new ModelParser();
+                var result = new Result<List<ProductViewModel>>();
+                var productViews = new List<ProductViewModel>();
+                foreach (var product in serviceResult.Content)
+                {
+                    var productView = parser.ParseProductViewFrom(product);
+                    productViews.Add(productView);
+                }
+                result.Content = productViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
         [Route("get-recent")]
         public async Task<IActionResult> GetRecentProductBy(ProductType type, int num = 10)
         {
