@@ -51,8 +51,12 @@ namespace ShopWebsiteServerSide
 
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ILogService, LogService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductSpecificTypeService, ProductSpecificTypeService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
+            services.AddScoped<IProductSpecificTypeRepository, ProductSpecificTypeRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddEntityFrameworkSqlServer().AddDbContext<ShopWebsiteSqlContext>(options =>
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));

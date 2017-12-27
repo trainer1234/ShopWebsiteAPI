@@ -12,40 +12,171 @@ namespace ShopWebsite.BLL.Implementations
     public class ProductService : IProductService
     {
         private IProductRepository _productRepository;
+        private IErrorLogRepository _errorLogRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IErrorLogRepository errorLogRepository)
         {
             _productRepository = productRepository;
+            _errorLogRepository = errorLogRepository;
         }
 
         public async Task<Result<bool>> AddProduct(Product newProduct)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var addResult = await _productRepository.Add(newProduct);
+                if (addResult)
+                {
+                    result.Succeed = true;
+                    result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(4, "Product Exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<bool>> EditProduct(Product newProduct)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var editResult = await _productRepository.Edit(newProduct);
+                if (editResult)
+                {
+                    result.Succeed = true;
+                    result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(5, "Product Not Exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<List<Product>>> GetAllProduct()
         {
-            throw new NotImplementedException();
+            var result = new Result<List<Product>>();
+            try
+            {
+                var products = await _productRepository.GetAll();
+                if (products != null && products.Count > 0)
+                {
+                    result.Succeed = true;
+                    result.Content = products;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(6, "No Products");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<Product>> GetProductBy(string productId)
         {
-            throw new NotImplementedException();
+            var result = new Result<Product>();
+            try
+            {
+                var product = await _productRepository.GetBy(productId);
+                if (product != null)
+                {
+                    result.Succeed = true;
+                    result.Content = product;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(7, "No Product");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<List<Product>>> GetRecentProductBy(ProductType type, int num)
         {
-            throw new NotImplementedException();
+            var result = new Result<List<Product>>();
+            try
+            {
+                var products = await _productRepository.GetProductBy(type, num);
+                if (products != null && products.Count > 0)
+                {
+                    result.Succeed = true;
+                    result.Content = products;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(6, "No Products");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
         public async Task<Result<bool>> RemoveProduct(string productId)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var removeResult = await _productRepository.Remove(productId);
+                if (removeResult)
+                {
+                    result.Succeed = true;
+                    result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(5, "Product Not Exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
     }
 }

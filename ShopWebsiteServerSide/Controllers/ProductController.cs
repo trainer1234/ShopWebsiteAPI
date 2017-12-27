@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsiteServerSide.Models.ProductModels;
 using ShopWebsiteServerSide.Utils;
 using System;
@@ -67,9 +68,10 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("get-recent")]
-        public async Task<IActionResult> GetRecentProductBy(string type, int num = 10)
+        public async Task<IActionResult> GetRecentProductBy(ProductType type, int num = 10)
         {
             var productService = GetService<IProductService>();
             var serviceResult = await productService.GetRecentProductBy(type, num);
@@ -121,6 +123,7 @@ namespace ShopWebsiteServerSide.Controllers
         {
             var parser = new ModelParser();
             var product = parser.ParseProductFrom(productView);
+            product.Id = productView.Id;
 
             var productService = GetService<IProductService>();
             var serviceResult = await productService.EditProduct(product);
