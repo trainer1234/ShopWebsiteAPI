@@ -45,6 +45,21 @@ namespace ShopWebsiteServerSide.Utils
                 product.Id = productView.Id;
             }
 
+            if(productView.ProductPropertyViews != null && productView.ProductPropertyViews.Count > 0)
+            {
+                product.ProductProperties = new List<ProductProperty>();
+                foreach (var productPropView in productView.ProductPropertyViews)
+                {
+                    var productProp = new ProductProperty
+                    {
+                        ProductId = product.Id,
+                        PropertyId = productPropView.PropertyId,
+                        PropertyDetail = productPropView.PropertyDetail
+                    };
+                    product.ProductProperties.Add(productProp);
+                }
+            }
+
             if(productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
             {
                 product.ProductImages = new List<ProductImage>();
@@ -78,6 +93,20 @@ namespace ShopWebsiteServerSide.Utils
             };
             productView.Manufacture.Id = product.ManufactureId;
             productView.Manufacture.Name = product.Manufacture.Name;
+
+            if(product.ProductProperties != null && product.ProductProperties.Count > 0)
+            {
+                productView.ProductPropertyViews = new List<ProductPropertyViewModel>();
+                foreach (var productProp in product.ProductProperties)
+                {
+                    var productPropView = new ProductPropertyViewModel
+                    {
+                        PropertyId = productProp.PropertyId,
+                        PropertyDetail = productProp.PropertyDetail
+                    };
+                    productView.ProductPropertyViews.Add(productPropView);
+                }
+            }
 
             if(product.ProductImages != null && product.ProductImages.Count > 0)
             {
@@ -114,12 +143,20 @@ namespace ShopWebsiteServerSide.Utils
 
         public Property ParsePropertyFrom(PropertyViewModel propertyView)
         {
-            throw new NotImplementedException();
+            var property = new Property
+            {
+                Name = propertyView.Name
+            };
+            return property;
         }
 
         public PropertyViewModel ParsePropertyViewFrom(Property property)
         {
-            throw new NotImplementedException();
+            var propertyView = new PropertyViewModel
+            {
+                Name = property.Name
+            };
+            return propertyView;
         }
     }
 }

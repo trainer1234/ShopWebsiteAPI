@@ -20,29 +20,137 @@ namespace ShopWebsite.BLL.Implementations
             _errorLogRepository = errorLogRepository;
         }
 
-        public Task<Result<bool>> AddProperty(Property newProperty)
+        public async Task<Result<bool>> AddProperty(Property newProperty)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var addResult = await _propertyRepository.Add(newProperty);
+                if (addResult)
+                {
+                    result.Content = true;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Content = false;
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(22, "Property existed");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
-        public Task<Result<bool>> EditProperty(Property newProperty)
+        public async Task<Result<bool>> EditProperty(Property newProperty)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var editResult = await _propertyRepository.Edit(newProperty);
+                if (editResult)
+                {
+                    result.Content = true;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Content = false;
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(21, "Property not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
-        public Task<Result<List<Property>>> GetAllProperty()
+        public async Task<Result<List<Property>>> GetAllProperty()
         {
-            throw new NotImplementedException();
+            var result = new Result<List<Property>>();
+            try
+            {
+                var properties = await _propertyRepository.GetAll();
+                if (properties != null && properties.Count > 0)
+                {
+                    result.Content = properties;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(20, "No Properties");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
-        public Task<Result<Property>> GetPropertyBy(string propertyId)
+        public async Task<Result<Property>> GetPropertyBy(string propertyId)
         {
-            throw new NotImplementedException();
+            var result = new Result<Property>();
+            try
+            {
+                var property = await _propertyRepository.GetBy(propertyId);
+                if (property != null)
+                {
+                    result.Content = property;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(21, "Property not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
 
-        public Task<Result<bool>> RemoveProperty(string propertyId)
+        public async Task<Result<bool>> RemoveProperty(string propertyId)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            try
+            {
+                var removeResult = await _propertyRepository.Remove(propertyId);
+                if (removeResult)
+                {
+                    result.Content = true;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Content = false;
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(21, "Property not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
         }
     }
 }

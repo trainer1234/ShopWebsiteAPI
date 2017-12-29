@@ -30,7 +30,8 @@ namespace ShopWebsite.DAL.Implementations
         {
             var productExist = await _context.Products.Where(product => product.Id == newProduct.Id)
                                         .Include(product => product.ProductImages)
-                                        .Include(product => product.Manufacture).Take(1).ToListAsync();
+                                        .Include(product => product.Manufacture)
+                                        .Include(product => product.ProductProperties).Take(1).ToListAsync();
             if (productExist != null && productExist.Count > 0)
             {
                 var searchProduct = productExist[0];
@@ -57,7 +58,8 @@ namespace ShopWebsite.DAL.Implementations
         public async Task<List<Product>> GetAll()
         {
             var products = await _context.Products.Include(product => product.ProductImages)
-                                        .Include(product => product.Manufacture).ToListAsync();
+                                        .Include(product => product.Manufacture)
+                                        .Include(product => product.ProductProperties).ToListAsync();
 
             return products;
         }
@@ -66,7 +68,8 @@ namespace ShopWebsite.DAL.Implementations
         {
             var products = await _context.Products.Where(product => product.Type == type)
                                     .Include(product => product.ProductImages)
-                                    .Include(product => product.Manufacture).ToListAsync();
+                                    .Include(product => product.Manufacture)
+                                    .Include(product => product.ProductProperties).ToListAsync();
 
             return products;
         }
@@ -75,7 +78,8 @@ namespace ShopWebsite.DAL.Implementations
         {
             var products = await _context.Products.Where(product => product.Id == productId)
                                     .Include(product => product.ProductImages)
-                                    .Include(product => product.Manufacture).ToListAsync();
+                                    .Include(product => product.Manufacture)
+                                    .Include(product => product.ProductProperties).ToListAsync();
             if (products != null && products.Count > 0)
             {
                 return products[0];
@@ -87,7 +91,8 @@ namespace ShopWebsite.DAL.Implementations
         {
             var products = await _context.Products.Where(product => product.Type == type)
                                     .Include(product => product.ProductImages)
-                                    .Include(product => product.Manufacture).Take(num).ToListAsync();
+                                    .Include(product => product.Manufacture)
+                                    .Include(product => product.ProductProperties).Take(num).ToListAsync();
 
             return products;
         }
@@ -96,7 +101,8 @@ namespace ShopWebsite.DAL.Implementations
         {
             var products = await _context.Products.Where(product => product.Id == productId)
                                     .Include(product => product.ProductImages)
-                                    .Include(product => product.Manufacture).ToListAsync();
+                                    .Include(product => product.Manufacture)
+                                    .Include(product => product.ProductProperties).ToListAsync();
 
             if (products != null && products.Count > 0)
             {
@@ -117,7 +123,8 @@ namespace ShopWebsite.DAL.Implementations
         {
             var products = await _context.Products.Where(product => product.ManufactureId == manufactureId)
                                     .Include(product => product.ProductImages)
-                                    .Include(product => product.Manufacture).ToListAsync();
+                                    .Include(product => product.Manufacture)
+                                    .Include(product => product.ProductProperties).ToListAsync();
 
             if (products != null && products.Count > 0)
             {

@@ -30,8 +30,10 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                var productPropTmps = newProduct.ProductProperties;
                 var productImageTmps = newProduct.ProductImages;
                 newProduct.ProductImages = null;
+                newProduct.ProductProperties = null;
                 var addResult = await _productRepository.Add(newProduct);
                 if (addResult)
                 {
@@ -41,6 +43,14 @@ namespace ShopWebsite.BLL.Implementations
                         foreach (var productImage in newProduct.ProductImages)
                         {
                             await _productImageRepository.Add(productImage);
+                        }
+                    }
+                    if(productPropTmps != null && productPropTmps.Count > 0)
+                    {
+                        newProduct.ProductProperties = productPropTmps;
+                        foreach (var productProp in newProduct.ProductProperties)
+                        {
+                            await _productPropertyRepository.Add(productProp);
                         }
                     }
                     result.Succeed = true;
@@ -73,6 +83,14 @@ namespace ShopWebsite.BLL.Implementations
                     {
                         await _productImageRepository.Remove(productImage.ProductId, productImage.ImageModelId);
                         await _productImageRepository.Add(productImage);
+                    }
+                }
+                if(newProduct.ProductProperties != null && newProduct.ProductProperties.Count > 0)
+                {
+                    foreach (var productProp in newProduct.ProductProperties)
+                    {
+                        await _productPropertyRepository.Remove(productProp.ProductId, productProp.PropertyId);
+                        await _productPropertyRepository.Add(productProp);
                     }
                 }
                 var editResult = await _productRepository.Edit(newProduct);

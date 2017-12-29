@@ -20,6 +20,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
         public ProductSpecificType SpecificType { get; set; }
         [Required]
         public ManufactureViewModel Manufacture { get; set; }
+        public List<ProductPropertyViewModel> ProductPropertyViews { get; set; }
         public List<string> ProductImageUrls { get; set; }
     }
 }
