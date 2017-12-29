@@ -1,4 +1,5 @@
-﻿using ShopWebsite.Common.Models.ServerOptions;
+﻿using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
@@ -126,8 +127,16 @@ namespace ShopWebsiteServerSide.Utils
             var manufactureView = new ManufactureViewModel
             {
                 Id = manufacture.Id,
-                Name = manufacture.Name
+                Name = manufacture.Name,
             };
+            if(manufacture.ManufactureTypes != null && manufacture.ManufactureTypes.Count > 0)
+            {
+                manufactureView.Types = new List<ProductType>();
+                foreach (var type in manufacture.ManufactureTypes)
+                {
+                    manufactureView.Types.Add(type.Type);
+                }
+            }
             return manufactureView;
         }
 
@@ -135,9 +144,25 @@ namespace ShopWebsiteServerSide.Utils
         {
             var manufacture = new Manufacture
             {
-                Id = manufactureView.Id,
                 Name = manufactureView.Name
             };
+            if(manufactureView.Id != null)
+            {
+                manufacture.Id = manufactureView.Id;
+            }
+            if(manufactureView.Types != null && manufactureView.Types.Count > 0)
+            {
+                manufacture.ManufactureTypes = new List<ManufactureType>();
+                foreach (var typeView in manufactureView.Types)
+                {
+                    var type = new ManufactureType
+                    {
+                        ManufactureId = manufacture.Id,
+                        Type = typeView
+                    };
+                    manufacture.ManufactureTypes.Add(type);
+                }
+            }
             return manufacture;
         }
 
@@ -147,6 +172,10 @@ namespace ShopWebsiteServerSide.Utils
             {
                 Name = propertyView.Name
             };
+            if(propertyView.Id != null)
+            {
+                property.Id = propertyView.Id;
+            }
             return property;
         }
 
@@ -154,6 +183,7 @@ namespace ShopWebsiteServerSide.Utils
         {
             var propertyView = new PropertyViewModel
             {
+                Id = property.Id,
                 Name = property.Name
             };
             return propertyView;

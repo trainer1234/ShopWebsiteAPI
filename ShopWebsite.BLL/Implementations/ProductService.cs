@@ -79,17 +79,17 @@ namespace ShopWebsite.BLL.Implementations
             {
                 if (newProduct.ProductImages != null && newProduct.ProductImages.Count > 0)
                 {
+                    await _productImageRepository.RemoveByProductId(newProduct.Id);
                     foreach (var productImage in newProduct.ProductImages)
                     {
-                        await _productImageRepository.Remove(productImage.ProductId, productImage.ImageModelId);
                         await _productImageRepository.Add(productImage);
                     }
                 }
                 if(newProduct.ProductProperties != null && newProduct.ProductProperties.Count > 0)
                 {
+                    await _productPropertyRepository.RemoveByProductId(newProduct.Id);
                     foreach (var productProp in newProduct.ProductProperties)
                     {
-                        await _productPropertyRepository.Remove(productProp.ProductId, productProp.PropertyId);
                         await _productPropertyRepository.Add(productProp);
                     }
                 }

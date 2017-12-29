@@ -30,9 +30,19 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                var typeTmps = newManufacture.ManufactureTypes;
+                newManufacture.ManufactureTypes = null;
                 var addResult = await _manufactureRepository.Add(newManufacture);
                 if (addResult)
                 {
+                    if(typeTmps != null && typeTmps.Count > 0)
+                    {
+                        newManufacture.ManufactureTypes = typeTmps;
+                        foreach (var type in newManufacture.ManufactureTypes)
+                        {
+                            await _manufactureTypeRepository.Add(type);
+                        }
+                    }
                     result.Succeed = result.Content = true;
                 }
                 else
@@ -55,6 +65,14 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                if(newManufacture.ManufactureTypes != null && newManufacture.ManufactureTypes.Count > 0)
+                {
+                    await _manufactureTypeRepository.Remove(newManufacture.Id);
+                    foreach (var type in newManufacture.ManufactureTypes)
+                    {
+                        await _manufactureTypeRepository.Add(type);
+                    }
+                }
                 var editResult = await _manufactureRepository.Edit(newManufacture);
                 if (editResult)
                 {

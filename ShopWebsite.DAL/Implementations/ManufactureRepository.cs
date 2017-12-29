@@ -29,7 +29,8 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<bool> Edit(Manufacture newManufacture)
         {
-            var manufactureExist = await _context.Manufactures.Where(manufacture => manufacture.Id == newManufacture.Id).Take(1).ToListAsync();
+            var manufactureExist = await _context.Manufactures.Where(manufacture => manufacture.Id == newManufacture.Id)
+                                            .Include(manufacture => manufacture.ManufactureTypes).Take(1).ToListAsync();
 
             if (manufactureExist != null && manufactureExist.Count > 0)
             {
@@ -46,14 +47,15 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<List<Manufacture>> GetAll()
         {
-            var manufactures = await _context.Manufactures.ToListAsync();
+            var manufactures = await _context.Manufactures.Include(manufacture => manufacture.ManufactureTypes).ToListAsync();
 
             return manufactures;
         }
 
         public async Task<Manufacture> GetBy(string manufactureId)
         {
-            var searchManufacture = await _context.Manufactures.Where(manufacture => manufacture.Id == manufactureId).Take(1).ToListAsync();
+            var searchManufacture = await _context.Manufactures.Where(manufacture => manufacture.Id == manufactureId)
+                                            .Include(manufacture => manufacture.ManufactureTypes).Take(1).ToListAsync();
             if (searchManufacture != null)
             {
                 return searchManufacture[0];
@@ -63,8 +65,9 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<bool> Remove(string manufactureId)
         {
-            var manufactureExist = await _context.Manufactures.Where(manufacture => manufacture.Id == manufactureId).ToListAsync();
-            if(manufactureExist != null && manufactureExist.Count > 0)
+            var manufactureExist = await _context.Manufactures.Where(manufacture => manufacture.Id == manufactureId)
+                                           .Include(manufacture => manufacture.ManufactureTypes).ToListAsync();
+            if (manufactureExist != null && manufactureExist.Count > 0)
             {
                 var searchManufacture = manufactureExist[0];
 
