@@ -7,6 +7,7 @@ using ShopWebsite.DAL.Models.ImageModels;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
+using ShopWebsite.DAL.Models.PropertyModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,9 @@ namespace ShopWebsite.DAL.Context
         public DbSet<Manufacture> Manufactures { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ImageModel> ImageModels { get; set; }
+        public DbSet<ManufactureType> ManufactureTypes { get; set; }
+        public DbSet<Property> Properties { get; set; }
+        public DbSet<ProductProperty> ProductProperties { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -60,6 +64,12 @@ namespace ShopWebsite.DAL.Context
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Manufacture");
             builder.Entity<ImageModel>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ImageModels");
+            builder.Entity<ManufactureType>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ManufactureType");
+            builder.Entity<Property>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Property");
+            builder.Entity<ProductProperty>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductProperty");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

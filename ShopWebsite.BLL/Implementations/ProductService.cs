@@ -14,13 +14,15 @@ namespace ShopWebsite.BLL.Implementations
         private IProductRepository _productRepository;
         private IErrorLogRepository _errorLogRepository;
         private IProductImageRepository _productImageRepository;
+        private IProductPropertyRepository _productPropertyRepository;
 
         public ProductService(IProductRepository productRepository, IErrorLogRepository errorLogRepository,
-            IProductImageRepository productImageRepository)
+            IProductImageRepository productImageRepository, IProductPropertyRepository productPropertyRepository)
         {
             _productRepository = productRepository;
             _errorLogRepository = errorLogRepository;
             _productImageRepository = productImageRepository;
+            _productPropertyRepository = productPropertyRepository;
         }
 
         public async Task<Result<bool>> AddProduct(Product newProduct)

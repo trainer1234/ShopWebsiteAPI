@@ -3,9 +3,11 @@ using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
+using ShopWebsite.DAL.Models.PropertyModels;
 using ShopWebsiteServerSide.Models.LogModels;
 using ShopWebsiteServerSide.Models.ManufactureModels;
 using ShopWebsiteServerSide.Models.ProductModels;
+using ShopWebsiteServerSide.Models.PropertyModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +110,16 @@ namespace ShopWebsiteServerSide.Utils
                 Name = manufactureView.Name
             };
             return manufacture;
+        }
+
+        public Property ParsePropertyFrom(PropertyViewModel propertyView)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PropertyViewModel ParsePropertyViewFrom(Property property)
+        {
+            throw new NotImplementedException();
         }
     }
 }

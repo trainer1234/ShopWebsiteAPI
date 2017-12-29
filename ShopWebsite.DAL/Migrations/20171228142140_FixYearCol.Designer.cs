@@ -12,9 +12,10 @@ using System;
 namespace ShopWebsite.DAL.Migrations
 {
     [DbContext(typeof(ShopWebsiteSqlContext))]
-    partial class ShopWebsiteSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20171228142140_FixYearCol")]
+    partial class FixYearCol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,24 +241,6 @@ namespace ShopWebsite.DAL.Migrations
                     b.ToTable("Manufacture");
                 });
 
-            modelBuilder.Entity("ShopWebsite.DAL.Models.ManufactureModels.ManufactureType", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsDisabled");
-
-                    b.Property<string>("ManufactureId");
-
-                    b.Property<int>("Type");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ManufactureId");
-
-                    b.ToTable("ManufactureType");
-                });
-
             modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -308,42 +291,6 @@ namespace ShopWebsite.DAL.Migrations
                     b.ToTable("ProductImage");
                 });
 
-            modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.ProductProperty", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsDisabled");
-
-                    b.Property<string>("ProductId");
-
-                    b.Property<string>("PropertyDetail");
-
-                    b.Property<string>("PropertyId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("ProductProperty");
-                });
-
-            modelBuilder.Entity("ShopWebsite.DAL.Models.PropertyModels.Property", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsDisabled");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Property");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -389,13 +336,6 @@ namespace ShopWebsite.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ShopWebsite.DAL.Models.ManufactureModels.ManufactureType", b =>
-                {
-                    b.HasOne("ShopWebsite.DAL.Models.ManufactureModels.Manufacture", "Manufacture")
-                        .WithMany("ManufactureTypes")
-                        .HasForeignKey("ManufactureId");
-                });
-
             modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.Product", b =>
                 {
                     b.HasOne("ShopWebsite.DAL.Models.ManufactureModels.Manufacture", "Manufacture")
@@ -412,17 +352,6 @@ namespace ShopWebsite.DAL.Migrations
                     b.HasOne("ShopWebsite.DAL.Models.ProductModels.Product", "Product")
                         .WithMany("ProductImages")
                         .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("ShopWebsite.DAL.Models.ProductModels.ProductProperty", b =>
-                {
-                    b.HasOne("ShopWebsite.DAL.Models.ProductModels.Product", "Product")
-                        .WithMany("ProductProperties")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("ShopWebsite.DAL.Models.PropertyModels.Property", "Property")
-                        .WithMany()
-                        .HasForeignKey("PropertyId");
                 });
 #pragma warning restore 612, 618
         }

@@ -56,12 +56,16 @@ namespace ShopWebsiteServerSide
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IManufactureService, ManufactureService>();
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IPropertyService, PropertyService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IManufactureRepository, ManufactureRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<IProductPropertyRepository, ProductPropertyRepository>();
+            services.AddScoped<IManufactureTypeRepository, ManufactureTypeRepository>();
 
             services.AddEntityFrameworkSqlServer().AddDbContext<ShopWebsiteSqlContext>(options =>
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));

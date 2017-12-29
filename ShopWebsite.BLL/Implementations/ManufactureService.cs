@@ -12,15 +12,17 @@ namespace ShopWebsite.BLL.Implementations
     public class ManufactureService : IManufactureService
     {
         private IManufactureRepository _manufactureRepository;
+        private IManufactureTypeRepository _manufactureTypeRepository;
         private IProductRepository _productRepository;
         private IErrorLogRepository _errorLogRepository;
 
         public ManufactureService(IManufactureRepository manufactureRepository, IErrorLogRepository errorLogRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository, IManufactureTypeRepository manufactureTypeRepository)
         {
             _manufactureRepository = manufactureRepository;
             _errorLogRepository = errorLogRepository;
             _productRepository = productRepository;
+            _manufactureTypeRepository = manufactureTypeRepository;
         }
 
         public async Task<Result<bool>> AddManufacture(Manufacture newManufacture)

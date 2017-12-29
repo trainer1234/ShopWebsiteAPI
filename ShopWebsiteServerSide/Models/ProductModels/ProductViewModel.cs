@@ -12,7 +12,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string ManufactureYear { get; set; }
+        public int ManufactureYear { get; set; }
         public double Price { get; set; }
         public bool PromotionAvailable { get; set; } = false;
         public double PromotionRate { get; set; }
