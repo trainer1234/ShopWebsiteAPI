@@ -101,6 +101,17 @@ namespace ShopWebsite.DAL.Implementations
             return products;
         }
 
+        public async Task<List<Product>> Search(string key)
+        {
+            var products = await _context.Products.Include(product => product.ProductImages)
+                                    .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                    .Include(product => product.ProductProperties).ToListAsync();
+            products = products.Where(product => (product.Name.Trim().ToLower().Contains(key.Trim().ToLower()) 
+                                        || product.Manufacture.Name.Trim().ToLower().Contains(key.Trim().ToLower()))).ToList();
+            return products;
+        }
+
         public async Task<bool> Remove(string productId)
         {
             var products = await _context.Products.Where(product => product.Id == productId)

@@ -126,6 +126,35 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("search/{key}")]
+        public async Task<IActionResult> SearchProduct(string key)
+        {
+            var productService = GetService<IProductService>();
+            var serviceResult = await productService.SearchProduct(key);
+
+            if (serviceResult.Succeed)
+            {
+                var parser = new ModelParser();
+                var result = new Result<List<ProductViewModel>>();
+                var productViews = new List<ProductViewModel>();
+                foreach (var product in serviceResult.Content)
+                {
+                    var productView = parser.ParseProductViewFrom(product);
+                    productViews.Add(productView);
+                }
+                result.Content = productViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
+
         [HttpPost]
         [Route("add")]
         public async Task<IActionResult> AddProduct([FromBody] ProductViewModel productView)

@@ -17,5 +17,6 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<List<Product>>> GetRecentProductBy(ProductType type, int num);
         Task<Result<List<Product>>> GetAllProductBy(ProductType type);
         Task<Result<Product>> GetProductBy(string productId);
+        Task<Result<List<Product>>> SearchProduct(string key);
     }
 }
