@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Context;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.ManufactureModels;
@@ -17,6 +18,23 @@ namespace ShopWebsite.DAL.Implementations
         public ManufactureTypeRepository(ShopWebsiteSqlContext context)
         {
             _context = context;
+        }
+
+        public async Task<HashSet<Manufacture>> FilterBy(ProductType productType)
+        {
+            var manufactureTypes = await _context.ManufactureTypes.Where(manufactureType => manufactureType.Type == productType)
+                                            .Include(type => type.Manufacture).ToListAsync();
+            if(manufactureTypes != null && manufactureTypes.Count > 0)
+            {
+                var manufactures = new HashSet<Manufacture>();
+                foreach (var type in manufactureTypes)
+                {
+                    manufactures.Add(type.Manufacture);
+                }
+
+                return manufactures;
+            }
+            return null;
         }
 
         public async Task<bool> Add(ManufactureType newManufactureType)

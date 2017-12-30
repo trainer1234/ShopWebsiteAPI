@@ -1,9 +1,11 @@
 ﻿using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -145,6 +147,32 @@ namespace ShopWebsite.BLL.Implementations
             return result;
         }
 
+        public async Task<Result<List<Manufacture>>> FilterManufactureBy(ProductType productType)
+        {
+            var result = new Result<List<Manufacture>>();
+            try
+            {
+                var manufactureSet = await _manufactureTypeRepository.FilterBy(productType);
+                var manufacture = manufactureSet.ToList();
+                if (manufacture != null)
+                {
+                    result.Content = manufacture;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(11, "No manufactures");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
+        }
         public async Task<Result<bool>> RemoveManufacture(string manufactureId)
         {
             var result = new Result<bool>();

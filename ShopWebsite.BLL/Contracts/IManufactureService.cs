@@ -1,4 +1,5 @@
 ﻿using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<bool>> RemoveManufacture(string manufactureId);
         Task<Result<List<Manufacture>>> GetAllManufacture();
         Task<Result<Manufacture>> GetManufactureBy(string manufactureId);
+        Task<Result<List<Manufacture>>> FilterManufactureBy(ProductType productType);
     }
 }

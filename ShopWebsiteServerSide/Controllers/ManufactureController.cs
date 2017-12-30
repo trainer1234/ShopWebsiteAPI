@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsiteServerSide.Models.ManufactureModels;
 using ShopWebsiteServerSide.Utils;
 using System;
@@ -58,6 +59,35 @@ namespace ShopWebsiteServerSide.Controllers
                 var manufactureView = parser.ParserManufactureViewFrom(serviceResult.Content);
 
                 result.Content = manufactureView;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(serviceResult);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("filter/{productType}")]
+        public async Task<IActionResult> Filter(ProductType productType)
+        {
+            var manufactureService = GetService<IManufactureService>();
+            var serviceResult = await manufactureService.FilterManufactureBy(productType);
+            if (serviceResult.Succeed)
+            {
+                var parser = new ModelParser();
+                var result = new Result<List<ManufactureViewModel>>();
+                var manufactureViews = new List<ManufactureViewModel>();
+                foreach (var manufacture in serviceResult.Content)
+                {
+                    var manufactureView = parser.ParserManufactureViewFrom(manufacture);
+                    manufactureViews.Add(manufactureView);
+                }
+
+                result.Content = manufactureViews;
                 result.Succeed = true;
 
                 return Ok(result);
