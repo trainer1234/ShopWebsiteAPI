@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.DAL.Models.AccountModels;
+using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.ImageModels;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
+using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
 using System;
 using System.Collections.Generic;
@@ -37,6 +39,10 @@ namespace ShopWebsite.DAL.Context
         public DbSet<ManufactureType> ManufactureTypes { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<ProductProperty> ProductProperties { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<ProductOrder> ProductOrders { get; set; }
+        public DbSet<ProductOrderDetail> ProductOrderDetails { get; set; }
+        public DbSet<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,6 +76,14 @@ namespace ShopWebsite.DAL.Context
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Property");
             builder.Entity<ProductProperty>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductProperty");
+            builder.Entity<Customer>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Customer");
+            builder.Entity<ProductOrder>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductOrder");
+            builder.Entity<ProductOrderDetail>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductOrderDetail");
+            builder.Entity<ProductMapOrderDetail>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductMapOrderDetail");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
