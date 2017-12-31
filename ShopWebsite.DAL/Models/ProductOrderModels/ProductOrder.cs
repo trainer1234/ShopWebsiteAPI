@@ -9,11 +9,12 @@ namespace ShopWebsite.DAL.Models.ProductOrderModels
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string OrderId { get; set; }
+        public string ProductOrderDetailId { get; set; }
         public int ProductAmount { get; set; }
         public double TotalCost { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public List<ProductOrderDetail> ProductOrderDetails { get; set; }
+        public ProductOrderDetail ProductOrderDetail { get; set; }
         public bool IsDisabled { get; set; } = false;
     }
 }
