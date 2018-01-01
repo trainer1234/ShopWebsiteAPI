@@ -28,11 +28,9 @@ namespace ShopWebsite.DAL.Implementations
         public async Task<bool> Edit(ProductOrder newProductOrder)
         {
             var orderExist = await _context.ProductOrders.Where(order => order.OrderId == newProductOrder.OrderId)
-                                        .Include(order => order.ProductOrderDetail)
-                                            .ThenInclude(orderDetail => orderDetail.Customer)
-                                        .Include(order => order.ProductOrderDetail)
-                                            .ThenInclude(orderDetail => orderDetail.ProductMapOrderDetails)
-                                                .ThenInclude(mapDetail => mapDetail.Product)
+                                        .Include(order => order.ProductMapOrderDetails)
+                                            .ThenInclude(orderDetail => orderDetail.Product)
+                                        .Include(order => order.Customer)
                                         .ToListAsync();
             if(orderExist != null && orderExist.Count > 0)
             {
@@ -56,11 +54,9 @@ namespace ShopWebsite.DAL.Implementations
         public async Task<ProductOrder> Get(string orderId)
         {
             var orders = await _context.ProductOrders.Where(order => order.OrderId == orderId)
-                                    .Include(order => order.ProductOrderDetail)
-                                        .ThenInclude(orderDetail => orderDetail.Customer)
-                                    .Include(order => order.ProductOrderDetail)
-                                        .ThenInclude(orderDetail => orderDetail.ProductMapOrderDetails)
-                                            .ThenInclude(mapDetail => mapDetail.Product).ToListAsync();
+                                    .Include(order => order.ProductMapOrderDetails)
+                                        .ThenInclude(orderDetail => orderDetail.Product)
+                                    .Include(order => order.Customer).ToListAsync();
             if(orders != null && orders.Count > 0)
             {
                 var order = orders[0];
@@ -72,11 +68,9 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<List<ProductOrder>> GetAll()
         {
-            var orders = await _context.ProductOrders.Include(order => order.ProductOrderDetail)
-                                                        .ThenInclude(orderDetail => orderDetail.Customer)
-                                                     .Include(order => order.ProductOrderDetail)
-                                                        .ThenInclude(orderDetail => orderDetail.ProductMapOrderDetails)
-                                                            .ThenInclude(mapDetail => mapDetail.Product).ToListAsync();
+            var orders = await _context.ProductOrders.Include(order => order.ProductMapOrderDetails)
+                                                        .ThenInclude(orderDetail => orderDetail.Product)
+                                                     .Include(order => order.Customer).ToListAsync();
 
             return orders;
         }
@@ -84,11 +78,9 @@ namespace ShopWebsite.DAL.Implementations
         public async Task<bool> Remove(string productOrderId)
         {
             var orders = await _context.ProductOrders.Where(order => order.OrderId == productOrderId)
-                                    .Include(order => order.ProductOrderDetail)
-                                        .ThenInclude(orderDetail => orderDetail.Customer)
-                                    .Include(order => order.ProductOrderDetail)
-                                        .ThenInclude(orderDetail => orderDetail.ProductMapOrderDetails)
-                                            .ThenInclude(mapDetail => mapDetail.Product).ToListAsync();
+                                    .Include(order => order.ProductMapOrderDetails)
+                                         .ThenInclude(orderDetail => orderDetail.Product)
+                                    .Include(order => order.Customer).ToListAsync();
             if (orders != null && orders.Count > 0)
             {
                 _context.Remove(orders);

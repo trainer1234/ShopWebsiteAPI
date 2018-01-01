@@ -41,7 +41,6 @@ namespace ShopWebsite.DAL.Context
         public DbSet<ProductProperty> ProductProperties { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ProductOrder> ProductOrders { get; set; }
-        public DbSet<ProductOrderDetail> ProductOrderDetails { get; set; }
         public DbSet<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -80,8 +79,6 @@ namespace ShopWebsite.DAL.Context
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Customer");
             builder.Entity<ProductOrder>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductOrder");
-            builder.Entity<ProductOrderDetail>()
-                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductOrderDetail");
             builder.Entity<ProductMapOrderDetail>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductMapOrderDetail");
         }

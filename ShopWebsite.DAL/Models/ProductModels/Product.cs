@@ -17,6 +17,7 @@ namespace ShopWebsite.DAL.Models.ProductModels
         public ProductSpecificType ProductSpecificType { get; set; }
         public bool PromotionAvailable { get; set; } = false;
         public double PromotionRate { get; set; }
+        public long Remain { get; set; }
         public bool IsDisabled { get; set; } = false;
         public Manufacture Manufacture { get; set; }
         public List<ProductProperty> ProductProperties { get; set; }

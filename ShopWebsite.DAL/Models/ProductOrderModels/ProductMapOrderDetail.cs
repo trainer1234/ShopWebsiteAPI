@@ -11,7 +11,7 @@ namespace ShopWebsite.DAL.Models.ProductOrderModels
         public string ProductId { get; set; }
         public string ProductOrderDetailId { get; set; }
         public Product Product { get; set; }
-        public ProductOrderDetail ProductOrderDetail { get; set; }
+        public ProductOrder ProductOrder { get; set; }
         public bool IsDisabled { get; set; } = false;
     }
 }
