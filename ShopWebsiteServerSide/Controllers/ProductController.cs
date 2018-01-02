@@ -212,5 +212,22 @@ namespace ShopWebsiteServerSide.Controllers
                 return BadRequest(serviceResult);
             }
         }
+        
+        [HttpPost]
+        [Route("increase")]
+        public async Task<IActionResult> IncreaseRemain(string productId, long amount = 0)
+        {
+            var productService = GetService<IProductService>();
+            var serviceResult = await productService.IncreaseRemain(productId, amount);
+
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
     }
 }

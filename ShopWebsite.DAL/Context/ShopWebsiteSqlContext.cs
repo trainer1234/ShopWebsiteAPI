@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.DAL.Models.AccountModels;
 using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.ImageModels;
@@ -10,9 +9,6 @@ using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -78,7 +74,8 @@ namespace ShopWebsite.DAL.Context
             builder.Entity<Customer>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Customer");
             builder.Entity<ProductOrder>()
-                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductOrder");
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductOrder")
+                .HasIndex(model => model.OrderId).IsUnique();
             builder.Entity<ProductMapOrderDetail>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductMapOrderDetail");
         }

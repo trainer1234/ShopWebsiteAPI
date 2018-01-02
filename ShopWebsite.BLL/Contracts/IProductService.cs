@@ -13,6 +13,7 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<bool>> AddProduct(Product newProduct);
         Task<Result<bool>> EditProduct(Product newProduct);
         Task<Result<bool>> RemoveProduct(string productId);
+        Task<Result<bool>> IncreaseRemain(string productId, long amount);
         Task<Result<List<Product>>> GetAllProduct();
         Task<Result<List<Product>>> GetRecentProductBy(ProductType type, int num);
         Task<Result<List<Product>>> GetAllProductBy(ProductType type);

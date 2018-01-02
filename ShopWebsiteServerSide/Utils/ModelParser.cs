@@ -1,12 +1,16 @@
 ﻿using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.Common.Utils;
+using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
+using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
+using ShopWebsiteServerSide.Models.CustomerModels;
 using ShopWebsiteServerSide.Models.LogModels;
 using ShopWebsiteServerSide.Models.ManufactureModels;
+using ShopWebsiteServerSide.Models.OrderModels;
 using ShopWebsiteServerSide.Models.ProductModels;
 using ShopWebsiteServerSide.Models.PropertyModels;
 using System;
@@ -39,7 +43,8 @@ namespace ShopWebsiteServerSide.Utils
                 ProductSpecificType = productView.SpecificType,
                 PromotionAvailable = productView.PromotionAvailable,
                 PromotionRate = productView.PromotionRate,
-                ManufactureId = productView.Manufacture.Id
+                ManufactureId = productView.Manufacture.Id,
+                Remain = productView.Remain
             };
             if(productView.Id != null)
             {
@@ -88,6 +93,7 @@ namespace ShopWebsiteServerSide.Utils
                 ManufactureYear = product.ManufactureYear,
                 Name = product.Name,
                 Price = product.Price,
+                Remain = product.Remain,
                 Id = product.Id,
                 SpecificType = product.ProductSpecificType,
                 Type = product.Type
@@ -187,6 +193,86 @@ namespace ShopWebsiteServerSide.Utils
                 Name = property.Name
             };
             return propertyView;
+        }
+
+        public Customer ParseCustomerFrom(CustomerViewModel customerView)
+        {
+            var customer = new Customer
+            {
+                FullName = customerView.FullName,
+                Address = customerView.Address,
+                Email = customerView.Email,
+                Phone = customerView.Phone,
+                Id = customerView.Id
+            };
+            return customer;
+        }
+
+        public CustomerViewModel ParseCustomerViewFrom(Customer customer)
+        {
+            var customerView = new CustomerViewModel
+            {
+                Id = customer.Id,
+                FullName = customer.FullName,
+                Address = customer.Address,
+                Email = customer.Email,
+                Phone = customer.Phone
+            };
+            return customerView;
+        }
+
+        public ProductOrder ParseProductOrderFrom(ProductOrderPostViewModel productOrderView)
+        {
+            var customer = ParseCustomerFrom(productOrderView.Customer);
+            var productOrder = new ProductOrder
+            {
+                OrderStatus = productOrderView.OrderStatus,
+                Customer = customer
+            };
+            if(productOrderView.OrderId != null)
+            {
+                productOrder.OrderId = productOrderView.OrderId;
+            }
+            if(productOrderView.Products != null && productOrderView.Products.Count > 0)
+            {
+                productOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
+                foreach (var product in productOrderView.Products)
+                {
+                    var productMapOrderDetail = new ProductMapOrderDetail
+                    {
+                        ProductId = product.Id,
+                        ProductAmount = product.Amount,
+                        ProductOrderId = productOrder.Id
+                    };
+                    productOrder.ProductMapOrderDetails.Add(productMapOrderDetail);
+                }
+            }
+            return productOrder;
+        }
+
+        public ProductOrderViewModel ParseProductOrderViewFrom(ProductOrder productOrder)
+        {
+            var customerView = ParseCustomerViewFrom(productOrder.Customer);
+            var productOrderView = new ProductOrderViewModel
+            {
+                Id = productOrder.Id,
+                Customer = customerView,
+                OrderDate = productOrder.OrderDate,
+                OrderId = productOrder.OrderId,
+                OrderStatus = productOrder.OrderStatus,
+                ProductAmount = productOrder.ProductTotalAmount,
+                TotalCost = productOrder.TotalCost
+            };
+            if(productOrder.ProductMapOrderDetails != null && productOrder.ProductMapOrderDetails.Count > 0)
+            {
+                productOrderView.Products = new List<ProductViewModel>();
+                foreach (var productMapOrder in productOrder.ProductMapOrderDetails)
+                {
+                    var productView = ParseProductViewFrom(productMapOrder.Product);
+                    productOrderView.Products.Add(productView);
+                }
+            }
+            return productOrderView;
         }
     }
 }

@@ -15,14 +15,17 @@ namespace ShopWebsite.BLL.Implementations
         private IErrorLogRepository _errorLogRepository;
         private IProductImageRepository _productImageRepository;
         private IProductPropertyRepository _productPropertyRepository;
+        private IProductMapOrderDetailRepository _productMapOrderDetailRepository;
 
         public ProductService(IProductRepository productRepository, IErrorLogRepository errorLogRepository,
-            IProductImageRepository productImageRepository, IProductPropertyRepository productPropertyRepository)
+            IProductImageRepository productImageRepository, IProductPropertyRepository productPropertyRepository,
+            IProductMapOrderDetailRepository productMapOrderDetailRepository)
         {
             _productRepository = productRepository;
             _errorLogRepository = errorLogRepository;
             _productImageRepository = productImageRepository;
             _productPropertyRepository = productPropertyRepository;
+            _productMapOrderDetailRepository = productMapOrderDetailRepository;
         }
 
         public async Task<Result<bool>> AddProduct(Product newProduct)
@@ -251,8 +254,36 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                await _productMapOrderDetailRepository.RemoveByProductId(productId);
                 var removeResult = await _productRepository.Remove(productId);
                 if (removeResult)
+                {
+                    result.Succeed = true;
+                    result.Content = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Content = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(5, "Product Not Exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
+        }
+
+        public async Task<Result<bool>> IncreaseRemain(string productId, long amount)
+        {
+            var result = new Result<bool>();
+            try
+            {
+                var editResult = await _productRepository.IncreaseRemain(productId, amount);
+                if (editResult)
                 {
                     result.Succeed = true;
                     result.Content = true;

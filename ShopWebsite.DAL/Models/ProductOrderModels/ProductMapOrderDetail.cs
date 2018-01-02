@@ -9,7 +9,8 @@ namespace ShopWebsite.DAL.Models.ProductOrderModels
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string ProductId { get; set; }
-        public string ProductOrderDetailId { get; set; }
+        public string ProductOrderId { get; set; }
+        public long ProductAmount { get; set; }
         public Product Product { get; set; }
         public ProductOrder ProductOrder { get; set; }
         public bool IsDisabled { get; set; } = false;

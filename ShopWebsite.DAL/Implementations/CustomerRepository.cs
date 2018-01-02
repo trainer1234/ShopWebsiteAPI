@@ -19,19 +19,19 @@ namespace ShopWebsite.DAL.Implementations
             _context = context;
         }
 
-        public async Task<bool> Add(Customer newCustomer)
+        public async Task<string> Add(Customer newCustomer)
         {
             var customerExist = await _context.Customers.Where(cust => cust.Email == newCustomer.Email).Take(1).ToListAsync();
             if(customerExist != null && customerExist.Count > 0)
             {
-                return false;
+                return customerExist[0].Id;
             }
             else
             {
                 _context.Add(newCustomer);
                 _context.SaveChanges();
 
-                return true;
+                return newCustomer.Id;
             }
         }
 

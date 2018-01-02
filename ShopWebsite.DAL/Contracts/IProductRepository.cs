@@ -12,6 +12,7 @@ namespace ShopWebsite.DAL.Contracts
         Task<bool> Add(Product newProduct);
         Task<bool> Edit(Product newProduct);
         Task<bool> Remove(string productId);
+        Task<bool> IncreaseRemain(string productId, long amount);
         Task<bool> RemoveProductBy(string manufactureId);
         Task<Product> GetBy(string productId);
         Task<List<Product>> GetProductBy(ProductType type, int num);

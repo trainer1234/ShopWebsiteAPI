@@ -36,6 +36,7 @@ namespace ShopWebsite.DAL.Implementations
             if (productExist != null && productExist.Count > 0)
             {
                 var searchProduct = productExist[0];
+
                 searchProduct.ManufactureYear = newProduct.ManufactureYear;
                 searchProduct.ManufactureId = newProduct.ManufactureId;
                 searchProduct.PromotionAvailable = newProduct.PromotionAvailable;
@@ -44,6 +45,7 @@ namespace ShopWebsite.DAL.Implementations
                 searchProduct.Price = newProduct.Price;
                 searchProduct.ProductSpecificType = newProduct.ProductSpecificType;
                 searchProduct.Type = newProduct.Type;
+                searchProduct.Remain = newProduct.Remain;
 
                 _context.Update(searchProduct);
                 _context.SaveChanges();
@@ -88,6 +90,22 @@ namespace ShopWebsite.DAL.Implementations
                 return products[0];
             }
             return null;
+        }
+
+        public async Task<bool> IncreaseRemain(string productId, long amount)
+        {
+            var products = await _context.Products.Where(product => product.Id == productId).ToListAsync();
+            if (products != null && products.Count > 0)
+            {
+                var product = products[0];
+                product.Remain += amount;
+
+                _context.Update(product);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
 
         public async Task<List<Product>> GetProductBy(ProductType type, int num)

@@ -23,7 +23,7 @@ namespace ShopWebsite.DAL.Implementations
         {
             var productMapOrderDetailExist = await _context.ProductMapOrderDetails
                 .Where(productMap => productMap.ProductId == newProductMapOrderDetail.ProductId
-                                        && productMap.ProductOrderDetailId == newProductMapOrderDetail.ProductOrderDetailId).ToListAsync();
+                                        && productMap.ProductOrderId == newProductMapOrderDetail.ProductOrderId).ToListAsync();
             if(productMapOrderDetailExist != null && productMapOrderDetailExist.Count > 0)
             {
                 return false;
@@ -41,7 +41,7 @@ namespace ShopWebsite.DAL.Implementations
         {
             var productMapOrderDetailExist = await _context.ProductMapOrderDetails
                                                    .Where(productMap => productMap.ProductId == productId
-                                                        && productMap.ProductOrderDetailId == productOrderDetailId).ToListAsync();
+                                                        && productMap.ProductOrderId == productOrderDetailId).ToListAsync();
             if (productMapOrderDetailExist != null && productMapOrderDetailExist.Count > 0)
             {
                 var search = productMapOrderDetailExist[0];

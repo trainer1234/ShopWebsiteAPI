@@ -1,4 +1,5 @@
 ﻿using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Models.CustomerModels;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ namespace ShopWebsite.DAL.Models.ProductOrderModels
     public class ProductOrder
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string OrderId { get; set; }
+        public string OrderId { get; set; } = Generator.GenerateOrderId(6);
         public string CustomerId { get; set; }
-        public int ProductAmount { get; set; }
-        public double TotalCost { get; set; }
+        public long ProductTotalAmount { get; set; }
+        public long TotalCost { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public Customer Customer { get; set; }
