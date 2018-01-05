@@ -66,8 +66,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var productMap in productMapOrderDetailExist)
                 {
                     _context.Remove(productMap);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }
@@ -86,8 +86,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var productMap in productMapOrderDetailExist)
                 {
                     _context.Remove(productMap);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }

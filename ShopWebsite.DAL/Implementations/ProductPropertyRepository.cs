@@ -63,8 +63,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var productProp in productPropertyExist)
                 {
                     _context.Remove(productProp);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }
@@ -82,8 +82,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var productProp in productPropertyExist)
                 {
                     _context.Remove(productProp);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }

@@ -62,8 +62,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var manufactureType in manufactureTypes)
                 {
                     _context.Remove(manufactureType);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }

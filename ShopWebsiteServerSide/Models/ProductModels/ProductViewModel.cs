@@ -12,6 +12,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string Detail { get; set; }
         public int ManufactureYear { get; set; }
         public long Price { get; set; }
         public long Remain { get; set; }
@@ -21,7 +22,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
         public ProductSpecificType SpecificType { get; set; }
         [Required]
         public ManufactureViewModel Manufacture { get; set; }
-        public List<ProductPropertyViewModel> ProductPropertyViews { get; set; }
+        public List<ProductPropertyViewModel> Properties { get; set; }
         public List<string> ProductImageUrls { get; set; }
     }
 }

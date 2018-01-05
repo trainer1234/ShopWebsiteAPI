@@ -7,7 +7,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
 {
     public class ProductPropertyViewModel
     {
-        public string PropertyId { get; set; }
-        public string PropertyDetail { get; set; }
+        public string Id { get; set; }
+        public string Detail { get; set; }
     }
 }

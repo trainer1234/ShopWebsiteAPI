@@ -46,6 +46,7 @@ namespace ShopWebsite.DAL.Implementations
                 searchProduct.ProductSpecificType = newProduct.ProductSpecificType;
                 searchProduct.Type = newProduct.Type;
                 searchProduct.Remain = newProduct.Remain;
+                searchProduct.Detail = newProduct.Detail;
 
                 _context.Update(searchProduct);
                 _context.SaveChanges();
@@ -166,8 +167,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var product in products)
                 {
                     _context.Remove(product);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }

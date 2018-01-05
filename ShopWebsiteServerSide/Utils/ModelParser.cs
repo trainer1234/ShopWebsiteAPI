@@ -44,23 +44,24 @@ namespace ShopWebsiteServerSide.Utils
                 PromotionAvailable = productView.PromotionAvailable,
                 PromotionRate = productView.PromotionRate,
                 ManufactureId = productView.Manufacture.Id,
-                Remain = productView.Remain
+                Remain = productView.Remain,
+                Detail = productView.Detail
             };
             if(productView.Id != null)
             {
                 product.Id = productView.Id;
             }
 
-            if(productView.ProductPropertyViews != null && productView.ProductPropertyViews.Count > 0)
+            if(productView.Properties != null && productView.Properties.Count > 0)
             {
                 product.ProductProperties = new List<ProductProperty>();
-                foreach (var productPropView in productView.ProductPropertyViews)
+                foreach (var productPropView in productView.Properties)
                 {
                     var productProp = new ProductProperty
                     {
                         ProductId = product.Id,
-                        PropertyId = productPropView.PropertyId,
-                        PropertyDetail = productPropView.PropertyDetail
+                        PropertyId = productPropView.Id,
+                        PropertyDetail = productPropView.Detail
                     };
                     product.ProductProperties.Add(productProp);
                 }
@@ -96,22 +97,23 @@ namespace ShopWebsiteServerSide.Utils
                 Remain = product.Remain,
                 Id = product.Id,
                 SpecificType = product.ProductSpecificType,
-                Type = product.Type
+                Type = product.Type,
+                Detail = product.Detail
             };
             productView.Manufacture.Id = product.ManufactureId;
             productView.Manufacture.Name = product.Manufacture.Name;
 
             if(product.ProductProperties != null && product.ProductProperties.Count > 0)
             {
-                productView.ProductPropertyViews = new List<ProductPropertyViewModel>();
+                productView.Properties = new List<ProductPropertyViewModel>();
                 foreach (var productProp in product.ProductProperties)
                 {
                     var productPropView = new ProductPropertyViewModel
                     {
-                        PropertyId = productProp.PropertyId,
-                        PropertyDetail = productProp.PropertyDetail
+                        Id = productProp.PropertyId,
+                        Detail = productProp.PropertyDetail
                     };
-                    productView.ProductPropertyViews.Add(productPropView);
+                    productView.Properties.Add(productPropView);
                 }
             }
 

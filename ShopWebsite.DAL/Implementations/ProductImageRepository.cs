@@ -65,8 +65,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var productImage in productImages)
                 {
                     _context.Remove(productImage);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }
@@ -84,8 +84,8 @@ namespace ShopWebsite.DAL.Implementations
                 foreach (var productImage in productImages)
                 {
                     _context.Remove(productImage);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 return true;
             }
