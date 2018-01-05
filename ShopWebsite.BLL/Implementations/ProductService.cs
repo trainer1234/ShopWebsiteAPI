@@ -228,7 +228,9 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<List<Product>>();
             try
             {
-                var products = await _productRepository.GetProductBy(type, num);
+                var products = new List<Product>();
+                if (num == 0) products = await _productRepository.GetAll();
+                else products = await _productRepository.GetProductBy(type, num);
                 if (products != null && products.Count > 0)
                 {
                     result.Succeed = true;

@@ -100,7 +100,7 @@ namespace ShopWebsiteServerSide.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("get-recent")]
-        public async Task<IActionResult> GetRecentProductBy(ProductType type, int num = 10)
+        public async Task<IActionResult> GetRecentProductBy(ProductType type, int num = 0)
         {
             var productService = GetService<IProductService>();
             var serviceResult = await productService.GetRecentProductBy(type, num);
