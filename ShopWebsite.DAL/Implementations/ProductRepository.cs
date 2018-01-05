@@ -39,7 +39,6 @@ namespace ShopWebsite.DAL.Implementations
 
                 searchProduct.ManufactureYear = newProduct.ManufactureYear;
                 searchProduct.ManufactureId = newProduct.ManufactureId;
-                searchProduct.PromotionAvailable = newProduct.PromotionAvailable;
                 searchProduct.PromotionRate = newProduct.PromotionRate;
                 searchProduct.Name = newProduct.Name;
                 searchProduct.Price = newProduct.Price;
@@ -71,10 +70,23 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<List<Product>> GetAllBy(ProductType type)
         {
-            var products = await _context.Products.Where(product => product.Type == type)
+            var products = new List<Product>();
+            if(type == ProductType.Discount)
+            {
+                products = await _context.Products.Where(product => product.PromotionRate > 0)
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
                                     .Include(product => product.ProductProperties).ToListAsync();
+            }
+            else
+            {
+                products = await _context.Products.Where(product => product.Type == type)
+                                    .Include(product => product.ProductImages)
+                                    .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                    .Include(product => product.ProductProperties).ToListAsync();
+            }
 
             return products;
         }
@@ -111,11 +123,23 @@ namespace ShopWebsite.DAL.Implementations
 
         public async Task<List<Product>> GetProductBy(ProductType type, int num)
         {
-            var products = await _context.Products.Where(product => product.Type == type)
+            var products = new List<Product>();
+            if(type == ProductType.Discount)
+            {
+                products = await _context.Products.Where(product => product.PromotionRate > 0)
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
                                     .Include(product => product.ProductProperties).Take(num).ToListAsync();
+            }
+            else
+            {
+                products = await _context.Products.Where(product => product.Type == type)
+                                    .Include(product => product.ProductImages)
+                                    .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                    .Include(product => product.ProductProperties).Take(num).ToListAsync();
+            }
 
             return products;
         }

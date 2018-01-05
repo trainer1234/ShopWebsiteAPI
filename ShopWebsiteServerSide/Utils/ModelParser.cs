@@ -41,7 +41,6 @@ namespace ShopWebsiteServerSide.Utils
                 Price = productView.Price,
                 Type = productView.Type,
                 ProductSpecificType = productView.SpecificType,
-                PromotionAvailable = productView.PromotionAvailable,
                 PromotionRate = productView.PromotionRate,
                 ManufactureId = productView.Manufacture.Id,
                 Remain = productView.Remain,
@@ -88,7 +87,6 @@ namespace ShopWebsiteServerSide.Utils
         {
             var productView = new ProductViewModel
             {
-                PromotionAvailable = product.PromotionAvailable,
                 PromotionRate = product.PromotionRate,
                 Manufacture = new ManufactureViewModel(),
                 ManufactureYear = product.ManufactureYear,

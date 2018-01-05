@@ -9,6 +9,7 @@ namespace ShopWebsite.Common.Models.Enums
         Mobile = 0,
         Laptop = 1,
         Tablet = 2,
-        Accessories = 3
+        Accessories = 3,
+        Discount = 4
     }
 }

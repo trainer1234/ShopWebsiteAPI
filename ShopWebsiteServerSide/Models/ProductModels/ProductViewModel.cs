@@ -16,7 +16,6 @@ namespace ShopWebsiteServerSide.Models.ProductModels
         public int ManufactureYear { get; set; }
         public long Price { get; set; }
         public long Remain { get; set; }
-        public bool PromotionAvailable { get; set; } = false;
         public double PromotionRate { get; set; }
         public ProductType Type { get; set; }
         public ProductSpecificType SpecificType { get; set; }
