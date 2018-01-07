@@ -121,6 +121,36 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
         
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("filter/{orderStatus}")]
+        public async Task<IActionResult> FilterOrderBy(OrderStatus orderStatus)
+        {
+            var productOrderService = GetService<IProductOrderService>();
+
+            var serviceResult = await productOrderService.FilterBy(orderStatus);
+            if (serviceResult.Succeed)
+            {
+                var result = new Result<List<ProductOrderViewModel>>();
+
+                var parser = new ModelParser();
+                var productOrderViews = new List<ProductOrderViewModel>();
+                foreach (var order in serviceResult.Content)
+                {
+                    var productOrderView = parser.ParseProductOrderViewFrom(order);
+                    productOrderViews.Add(productOrderView);
+                }
+                result.Content = productOrderViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
+
         [HttpPost]
         [Route("remove")]
         public async Task<IActionResult> RemoveOrder(string id)

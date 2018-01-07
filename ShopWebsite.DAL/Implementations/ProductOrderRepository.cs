@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Context;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.ProductOrderModels;
@@ -78,6 +79,23 @@ namespace ShopWebsite.DAL.Implementations
         public async Task<List<ProductOrder>> GetAll()
         {
             var orders = await _context.ProductOrders.Include(order => order.ProductMapOrderDetails)
+                                                        .ThenInclude(orderDetail => orderDetail.Product)
+                                                            .ThenInclude(product => product.Manufacture)
+                                                     .Include(order => order.ProductMapOrderDetails)
+                                                        .ThenInclude(orderDetail => orderDetail.Product)
+                                                            .ThenInclude(product => product.ProductImages)
+                                                     .Include(order => order.ProductMapOrderDetails)
+                                                        .ThenInclude(orderDetail => orderDetail.Product)
+                                                            .ThenInclude(product => product.ProductProperties)
+                                                     .Include(order => order.Customer).ToListAsync();
+
+            return orders;
+        }
+
+        public async Task<List<ProductOrder>> FilterBy(OrderStatus orderStatus)
+        {
+            var orders = await _context.ProductOrders.Where(order => order.OrderStatus == orderStatus)
+                                                     .Include(order => order.ProductMapOrderDetails)
                                                         .ThenInclude(orderDetail => orderDetail.Product)
                                                             .ThenInclude(product => product.Manufacture)
                                                      .Include(order => order.ProductMapOrderDetails)

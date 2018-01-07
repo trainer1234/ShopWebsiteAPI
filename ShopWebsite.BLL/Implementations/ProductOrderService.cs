@@ -175,6 +175,34 @@ namespace ShopWebsite.BLL.Implementations
             return result;
         }
 
+        public async Task<Result<List<ProductOrder>>> FilterBy(OrderStatus orderStatus)
+        {
+            var result = new Result<List<ProductOrder>>();
+
+            try
+            {
+                var productOrders = await _productOrderRepository.FilterBy(orderStatus);
+                if (productOrders != null)
+                {
+                    result.Content = productOrders;
+                    result.Succeed = true;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(22, "No orders");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+
+            return result;
+        }
+
         public async Task<Result<bool>> RemoveProductOrder(string orderId)
         {
             var result = new Result<bool>();

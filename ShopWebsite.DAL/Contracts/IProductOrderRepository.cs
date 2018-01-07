@@ -1,4 +1,5 @@
-﻿using ShopWebsite.DAL.Models.ProductOrderModels;
+﻿using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.DAL.Models.ProductOrderModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,7 @@ namespace ShopWebsite.DAL.Contracts
         Task<bool> Edit(ProductOrder newProductOrder);
         Task<bool> Remove(string productOrderId);
         Task<ProductOrder> Get(string productOrderId);
+        Task<List<ProductOrder>> FilterBy(OrderStatus orderStatus);
         Task<List<ProductOrder>> GetAll();
     }
 }
