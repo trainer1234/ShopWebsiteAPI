@@ -12,9 +12,10 @@ using System;
 namespace ShopWebsite.DAL.Migrations
 {
     [DbContext(typeof(ShopWebsiteSqlContext))]
-    partial class ShopWebsiteSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20180108181748_AddUserRole")]
+    partial class AddUserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

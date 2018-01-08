@@ -1,12 +1,14 @@
 ﻿using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.Common.Utils;
+using ShopWebsite.DAL.Models.AccountModels;
 using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.LogModels;
 using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
+using ShopWebsiteServerSide.Models.AccountModels;
 using ShopWebsiteServerSide.Models.CustomerModels;
 using ShopWebsiteServerSide.Models.LogModels;
 using ShopWebsiteServerSide.Models.ManufactureModels;
@@ -22,6 +24,19 @@ namespace ShopWebsiteServerSide.Utils
 {
     public class ModelParser
     {
+        public UserViewModel ParseUserViewFrom(User user)
+        {
+            var userView = new UserViewModel
+            {
+                Id = user.Id,
+                AvatarUrl = user.AvatarUrl,
+                Role = user.Role,
+                UserName = user.UserName
+            };
+
+            return userView;
+        }
+
         public ErrorLogViewModel ParseErrorLogViewFrom(ErrorLog errorLog)
         {
             var errorLogView = new ErrorLogViewModel

@@ -5,8 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.AccountModels;
+using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Context;
 using ShopWebsite.DAL.Models.AccountModels;
+using ShopWebsiteServerSide.Models.AccountModels;
+using ShopWebsiteServerSide.Utils;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -32,6 +36,50 @@ namespace ShopWebsiteServerSide.Controllers
             _signInManager = signInManager;
             _context = context;
             _config = config;
+        }
+
+        [Route("get")]
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromHeader] string Authorization)
+        {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+
+            var result = new Result<List<UserViewModel>>();
+            if (searchUser.Role != UserRole.Admin)
+            {
+                result.Succeed = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(79, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+            if (users != null && users.Count > 0)
+            {
+                var parser = new ModelParser();
+                var userViews = new List<UserViewModel>();
+
+                foreach (var user in users)
+                {
+                    var userView = parser.ParseUserViewFrom(user);
+                    userViews.Add(userView);
+                }
+
+                result.Content = userViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                result.Succeed = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "No users");
+
+                return BadRequest(result);
+            }
         }
 
         [AllowAnonymous]
