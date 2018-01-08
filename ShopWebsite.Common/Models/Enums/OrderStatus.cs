@@ -9,6 +9,7 @@ namespace ShopWebsite.Common.Models.Enums
         NotConfirmed = 0,
         Pending = 1,
         Delivering = 2,
-        Delivered = 3
+        Delivered = 3,
+        Cancel = 4
     }
 }
