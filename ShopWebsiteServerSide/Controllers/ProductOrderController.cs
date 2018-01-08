@@ -16,6 +16,7 @@ namespace ShopWebsiteServerSide.Controllers
     [Route("api/order")]
     public class ProductOrderController : BaseController
     {
+        [AllowAnonymous]
         [HttpPost]
         [Route("add")]
         public async Task<IActionResult> AddOrder([FromBody] ProductOrderPostViewModel productOrderView)

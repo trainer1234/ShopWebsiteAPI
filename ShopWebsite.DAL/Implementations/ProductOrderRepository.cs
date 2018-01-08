@@ -20,10 +20,12 @@ namespace ShopWebsite.DAL.Implementations
             _context = context;
         }
 
-        public void Add(ProductOrder newProductOrder)
+        public string Add(ProductOrder newProductOrder)
         {
             _context.Add(newProductOrder);
             _context.SaveChanges();
+
+            return newProductOrder.OrderId;
         }
 
         public async Task<bool> Edit(ProductOrder newProductOrder)

@@ -109,7 +109,8 @@ namespace ShopWebsiteServerSide.Utils
                     var productPropView = new ProductPropertyViewModel
                     {
                         Id = productProp.PropertyId,
-                        Detail = productProp.PropertyDetail
+                        Detail = productProp.PropertyDetail,
+                        Name = productProp.Property.Name
                     };
                     productView.Properties.Add(productPropView);
                 }

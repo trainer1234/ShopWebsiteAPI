@@ -8,6 +8,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
     public class ProductPropertyViewModel
     {
         public string Id { get; set; }
+        public string Name { get; set; }
         public string Detail { get; set; }
     }
 }

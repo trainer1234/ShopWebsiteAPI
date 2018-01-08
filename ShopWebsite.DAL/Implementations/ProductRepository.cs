@@ -32,7 +32,8 @@ namespace ShopWebsite.DAL.Implementations
                                         .Include(product => product.ProductImages)
                                         .Include(product => product.Manufacture)
                                             .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                        .Include(product => product.ProductProperties).Take(1).ToListAsync();
+                                        .Include(product => product.ProductProperties)
+                                            .ThenInclude(property => property.Property).Take(1).ToListAsync();
             if (productExist != null && productExist.Count > 0)
             {
                 var searchProduct = productExist[0];
@@ -63,7 +64,8 @@ namespace ShopWebsite.DAL.Implementations
             var products = await _context.Products.Include(product => product.ProductImages)
                                         .Include(product => product.Manufacture)
                                             .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                        .Include(product => product.ProductProperties).ToListAsync();
+                                        .Include(product => product.ProductProperties)
+                                            .ThenInclude(property => property.Property).ToListAsync();
 
             return products;
         }
@@ -77,7 +79,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
             }
             else
             {
@@ -85,7 +88,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
             }
 
             return products;
@@ -97,7 +101,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
             if (products != null && products.Count > 0)
             {
                 return products[0];
@@ -130,7 +135,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).Take(num).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).Take(num).ToListAsync();
             }
             else
             {
@@ -138,7 +144,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).Take(num).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).Take(num).ToListAsync();
             }
 
             return products;
@@ -149,7 +156,8 @@ namespace ShopWebsite.DAL.Implementations
             var products = await _context.Products.Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
             products = products.Where(product => (product.Name.Trim().ToLower().Contains(key.Trim().ToLower()) 
                                         || product.Manufacture.Name.Trim().ToLower().Contains(key.Trim().ToLower()))).ToList();
             return products;
@@ -161,7 +169,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
 
             if (products != null && products.Count > 0)
             {
@@ -184,7 +193,8 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductImages)
                                     .Include(product => product.Manufacture)
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
-                                    .Include(product => product.ProductProperties).ToListAsync();
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
 
             if (products != null && products.Count > 0)
             {

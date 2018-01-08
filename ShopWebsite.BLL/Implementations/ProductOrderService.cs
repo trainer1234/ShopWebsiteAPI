@@ -29,9 +29,9 @@ namespace ShopWebsite.BLL.Implementations
             _productMapOrderDetailRepository = productMapOrderDetailRepository;
         }
 
-        public async Task<Result<bool>> AddProductOrder(ProductOrder newProductOrder)
+        public async Task<Result<string>> AddProductOrder(ProductOrder newProductOrder)
         {
-            var result = new Result<bool>();
+            var result = new Result<string>();
 
             try
             {
@@ -44,7 +44,7 @@ namespace ShopWebsite.BLL.Implementations
                 var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;
                 newProductOrder.ProductMapOrderDetails = null;
 
-                _productOrderRepository.Add(newProductOrder);
+                var orderId = _productOrderRepository.Add(newProductOrder);
 
                 if (productMapOrderDetailTmp != null && productMapOrderDetailTmp.Count > 0)
                 {
@@ -65,7 +65,8 @@ namespace ShopWebsite.BLL.Implementations
                     await _productOrderRepository.Edit(newProductOrder);
                 }
 
-                result.Content = result.Succeed = true;
+                result.Content = orderId;
+                result.Succeed = true;
             }
             catch(Exception ex)
             {

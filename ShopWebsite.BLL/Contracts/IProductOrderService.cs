@@ -10,7 +10,7 @@ namespace ShopWebsite.BLL.Contracts
 {
     public interface IProductOrderService
     {
-        Task<Result<bool>> AddProductOrder(ProductOrder newProductOrder);
+        Task<Result<string>> AddProductOrder(ProductOrder newProductOrder);
         Task<Result<bool>> EditProductOrder(ProductOrder newProductOrder);
         Task<Result<bool>> RemoveProductOrder(string orderId);
         Task<Result<ProductOrder>> Get(string orderId);

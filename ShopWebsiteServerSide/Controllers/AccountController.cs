@@ -117,7 +117,7 @@ namespace ShopWebsiteServerSide.Controllers
                     issuer: _config["Tokens:Issuer"],
                     audience: _config["Tokens:Audience"],
                     claims: claims,
-                    expires: DateTime.UtcNow.AddDays(1),
+                    expires: DateTime.UtcNow.AddMonths(1),
                     signingCredentials: creds
                 );
                 var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
