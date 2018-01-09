@@ -100,8 +100,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddNewManufacture([FromBody] ManufactureViewModel manufactureView)
+        public async Task<IActionResult> AddNewManufacture([FromHeader] string Authorization, [FromBody] ManufactureViewModel manufactureView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var parser = new ModelParser();
             var manufactureService = GetService<IManufactureService>();
             var manufacture = parser.ParseManufactureFrom(manufactureView);
@@ -118,8 +133,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPut]
         [Route("edit")]
-        public async Task<IActionResult> EditManufacture([FromBody] ManufactureViewModel manufactureView)
+        public async Task<IActionResult> EditManufacture([FromHeader] string Authorization, [FromBody] ManufactureViewModel manufactureView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var parser = new ModelParser();
             var manufactureService = GetService<IManufactureService>();
             var manufacture = parser.ParseManufactureFrom(manufactureView);
@@ -136,8 +166,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPost]
         [Route("remove")]
-        public async Task<IActionResult> RemoveManufacture(string manufactureId)
+        public async Task<IActionResult> RemoveManufacture([FromHeader] string Authorization, string manufactureId)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var manufactureService = GetService<IManufactureService>();
             var serviceResult = await manufactureService.RemoveManufacture(manufactureId);
             if (serviceResult.Succeed)

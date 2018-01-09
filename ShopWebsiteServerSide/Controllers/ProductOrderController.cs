@@ -50,8 +50,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPut]
         [Route("edit")]
-        public async Task<IActionResult> EditOrder([FromBody] ProductOrderPostViewModel productOrderView)
+        public async Task<IActionResult> EditOrder([FromHeader] string Authorization, [FromBody] ProductOrderPostViewModel productOrderView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager && searchUser.Role != UserRole.Staff)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var productOrderService = GetService<IProductOrderService>();
             var parser = new ModelParser();
             var productOrder = parser.ParseProductOrderFrom(productOrderView);

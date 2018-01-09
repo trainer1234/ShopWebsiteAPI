@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsiteServerSide.Models.PropertyModels;
 using ShopWebsiteServerSide.Utils;
 using System.Collections.Generic;
@@ -68,8 +69,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddNewProperty([FromBody] PropertyViewModel propertyView)
+        public async Task<IActionResult> AddNewProperty([FromHeader] string Authorization, [FromBody] PropertyViewModel propertyView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var parser = new ModelParser();
             var propertyService = GetService<IPropertyService>();
             var property = parser.ParsePropertyFrom(propertyView);
@@ -86,8 +102,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPut]
         [Route("edit")]
-        public async Task<IActionResult> EditProperty([FromBody] PropertyViewModel propertyView)
+        public async Task<IActionResult> EditProperty([FromHeader] string Authorization, [FromBody] PropertyViewModel propertyView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var parser = new ModelParser();
             var propertyService = GetService<IPropertyService>();
             var property = parser.ParsePropertyFrom(propertyView);
@@ -104,8 +135,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPost]
         [Route("remove")]
-        public async Task<IActionResult> RemoveProperty(string propertyId)
+        public async Task<IActionResult> RemoveProperty([FromHeader] string Authorization, string propertyId)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var propertyService = GetService<IPropertyService>();
             var serviceResult = await propertyService.RemoveProperty(propertyId);
             if (serviceResult.Succeed)

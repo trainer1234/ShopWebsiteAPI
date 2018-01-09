@@ -157,8 +157,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductViewModel productView)
+        public async Task<IActionResult> AddProduct([FromHeader] string Authorization, [FromBody] ProductViewModel productView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if(searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var parser = new ModelParser();
             var product = parser.ParseProductFrom(productView);
 
@@ -177,8 +192,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPut]
         [Route("edit")]
-        public async Task<IActionResult> EditProduct([FromBody] ProductViewModel productView)
+        public async Task<IActionResult> EditProduct([FromHeader] string Authorization, [FromBody] ProductViewModel productView)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var parser = new ModelParser();
             var product = parser.ParseProductFrom(productView);
             product.Id = productView.Id;
@@ -198,8 +228,23 @@ namespace ShopWebsiteServerSide.Controllers
 
         [HttpPost]
         [Route("remove")]
-        public async Task<IActionResult> RemoveProduct(string productId)
+        public async Task<IActionResult> RemoveProduct([FromHeader] string Authorization, string productId)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var productService = GetService<IProductService>();
             var serviceResult = await productService.RemoveProduct(productId);
 
@@ -215,8 +260,23 @@ namespace ShopWebsiteServerSide.Controllers
         
         [HttpPost]
         [Route("increase")]
-        public async Task<IActionResult> IncreaseRemain(string productId, long amount = 0)
+        public async Task<IActionResult> IncreaseRemain([FromHeader] string Authorization, string productId, long amount = 0)
         {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+            if (searchUser.Role != UserRole.Admin && searchUser.Role != UserRole.Manager)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = result.Content = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
             var productService = GetService<IProductService>();
             var serviceResult = await productService.IncreaseRemain(productId, amount);
 
