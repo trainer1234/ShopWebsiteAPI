@@ -149,7 +149,8 @@ namespace ShopWebsite.BLL.Implementations
                     Id = Guid.NewGuid().ToString(),
                     IsDisabled = false,
                     AvatarUrl = signUpModel.AvatartUrl,
-                    UserName = signUpModel.Username
+                    UserName = signUpModel.Username,
+                    Role = signUpModel.Role
                 };
                 var res = new IdentityResult();
 

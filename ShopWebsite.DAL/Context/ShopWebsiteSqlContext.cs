@@ -9,6 +9,7 @@ using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
+using ShopWebsite.DAL.Models.SlideModels;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,6 +39,7 @@ namespace ShopWebsite.DAL.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ProductOrder> ProductOrders { get; set; }
         public DbSet<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
+        public DbSet<Slide> Slides { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -78,6 +80,8 @@ namespace ShopWebsite.DAL.Context
                 .HasIndex(model => model.OrderId).IsUnique();
             builder.Entity<ProductMapOrderDetail>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductMapOrderDetail");
+            builder.Entity<Slide>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Slide");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

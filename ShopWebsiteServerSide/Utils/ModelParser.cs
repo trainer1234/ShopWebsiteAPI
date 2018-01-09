@@ -8,6 +8,7 @@ using ShopWebsite.DAL.Models.ManufactureModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
+using ShopWebsite.DAL.Models.SlideModels;
 using ShopWebsiteServerSide.Models.AccountModels;
 using ShopWebsiteServerSide.Models.CustomerModels;
 using ShopWebsiteServerSide.Models.LogModels;
@@ -15,6 +16,7 @@ using ShopWebsiteServerSide.Models.ManufactureModels;
 using ShopWebsiteServerSide.Models.OrderModels;
 using ShopWebsiteServerSide.Models.ProductModels;
 using ShopWebsiteServerSide.Models.PropertyModels;
+using ShopWebsiteServerSide.Models.SlideModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -290,5 +292,31 @@ namespace ShopWebsiteServerSide.Utils
             }
             return productOrderView;
         }
+
+        public SlideViewModel ParseSlideViewFrom(Slide slide)
+        {
+            var slideView = new SlideViewModel
+            {
+                Title = slide.Title,
+                Description = slide.Description,
+                Id = slide.Id,
+                SlideImageUrl = slide.SlideImageUrl
+            };
+
+            return slideView;
+        }
+
+        public Slide ParseSlideFrom(SlideViewModel slideView)
+        {
+            var slide = new Slide
+            {
+                Title = slideView.Title,
+                Description = slideView.Description,
+                SlideImageUrl = slideView.SlideImageUrl
+            };
+
+            return slide;
+        }
+
     }
 }

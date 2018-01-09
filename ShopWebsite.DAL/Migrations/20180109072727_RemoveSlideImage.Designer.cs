@@ -12,9 +12,10 @@ using System;
 namespace ShopWebsite.DAL.Migrations
 {
     [DbContext(typeof(ShopWebsiteSqlContext))]
-    partial class ShopWebsiteSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20180109072727_RemoveSlideImage")]
+    partial class RemoveSlideImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

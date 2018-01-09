@@ -12,9 +12,10 @@ using System;
 namespace ShopWebsite.DAL.Migrations
 {
     [DbContext(typeof(ShopWebsiteSqlContext))]
-    partial class ShopWebsiteSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20180109065641_AddSlide")]
+    partial class AddSlide
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -427,8 +428,6 @@ namespace ShopWebsite.DAL.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageModelId");
-
                     b.Property<bool>("IsDisabled");
 
                     b.Property<int>("OrderId");
@@ -439,9 +438,27 @@ namespace ShopWebsite.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("Slide");
+                });
+
+            modelBuilder.Entity("ShopWebsite.DAL.Models.SlideModels.SlideImage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ImageModelId");
+
+                    b.Property<bool>("IsDisabled");
+
+                    b.Property<string>("SlideId");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("ImageModelId");
 
-                    b.ToTable("Slide");
+                    b.HasIndex("SlideId");
+
+                    b.ToTable("SlideImage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -543,11 +560,15 @@ namespace ShopWebsite.DAL.Migrations
                         .HasForeignKey("CustomerId");
                 });
 
-            modelBuilder.Entity("ShopWebsite.DAL.Models.SlideModels.Slide", b =>
+            modelBuilder.Entity("ShopWebsite.DAL.Models.SlideModels.SlideImage", b =>
                 {
                     b.HasOne("ShopWebsite.DAL.Models.ImageModels.ImageModel", "ImageModel")
                         .WithMany()
                         .HasForeignKey("ImageModelId");
+
+                    b.HasOne("ShopWebsite.DAL.Models.SlideModels.Slide", "Slide")
+                        .WithMany()
+                        .HasForeignKey("SlideId");
                 });
 #pragma warning restore 612, 618
         }
