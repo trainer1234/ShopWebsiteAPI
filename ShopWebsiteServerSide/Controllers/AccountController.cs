@@ -114,6 +114,37 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [Route("remove")]
+        [HttpPost]
+        public async Task<IActionResult> RemoveUser([FromHeader] string Authorization, string userName)
+        {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+
+            if (searchUser.Role != UserRole.Admin)
+            {
+                var result = new Result<bool>();
+
+                result.Succeed = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(79, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
+            var serviceResult = await accountService.RemoveUser(userName);
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
+
         [AllowAnonymous]
         [Route("login")]
         [HttpPost]
