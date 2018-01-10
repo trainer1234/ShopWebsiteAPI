@@ -190,6 +190,7 @@ namespace ShopWebsiteServerSide.Controllers
                 {
                     accessToken = user.AuthToken,
                     expiration = token.ValidTo,
+                    role = user.Role
                 });
             }
             else return BadRequest(new
