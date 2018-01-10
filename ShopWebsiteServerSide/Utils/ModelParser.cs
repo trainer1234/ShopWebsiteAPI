@@ -162,6 +162,7 @@ namespace ShopWebsiteServerSide.Utils
             {
                 Id = manufacture.Id,
                 Name = manufacture.Name,
+                Types = new List<ProductType>()
             };
             if(manufacture.ManufactureTypes != null && manufacture.ManufactureTypes.Count > 0)
             {
