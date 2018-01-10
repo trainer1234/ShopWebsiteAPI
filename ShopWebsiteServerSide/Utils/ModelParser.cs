@@ -294,11 +294,16 @@ namespace ShopWebsiteServerSide.Utils
             };
             if(productOrder.ProductMapOrderDetails != null && productOrder.ProductMapOrderDetails.Count > 0)
             {
-                productOrderView.Products = new List<ProductViewModel>();
+                productOrderView.Products = new List<ProductOfProductOrderViewModel>();
                 foreach (var productMapOrder in productOrder.ProductMapOrderDetails)
                 {
                     var productView = ParseProductViewFrom(productMapOrder.Product);
-                    productOrderView.Products.Add(productView);
+                    var productOfProductOrderView = new ProductOfProductOrderViewModel
+                    {
+                        Amount = productMapOrder.ProductAmount,
+                        Product = productView
+                    };
+                    productOrderView.Products.Add(productOfProductOrderView);
                 }
             }
             return productOrderView;

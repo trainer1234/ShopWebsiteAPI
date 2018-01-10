@@ -19,6 +19,6 @@ namespace ShopWebsiteServerSide.Models.OrderModels
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public CustomerViewModel Customer { get; set; }
-        public List<ProductViewModel> Products { get; set; }
+        public List<ProductOfProductOrderViewModel> Products { get; set; }
     }
 }
