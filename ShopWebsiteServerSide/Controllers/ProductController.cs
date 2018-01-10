@@ -40,7 +40,7 @@ namespace ShopWebsiteServerSide.Controllers
             }
             else
             {
-                return BadRequest(serviceResult);
+                return Ok(serviceResult);
             }
         }
         
@@ -64,7 +64,7 @@ namespace ShopWebsiteServerSide.Controllers
             }
             else
             {
-                return BadRequest(serviceResult);
+                return Ok(serviceResult);
             }
         }
 
@@ -93,7 +93,7 @@ namespace ShopWebsiteServerSide.Controllers
             }
             else
             {
-                return BadRequest(serviceResult);
+                return Ok(serviceResult);
             }
         }
 
@@ -122,7 +122,7 @@ namespace ShopWebsiteServerSide.Controllers
             }
             else
             {
-                return BadRequest(serviceResult);
+                return Ok(serviceResult);
             }
         }
 
@@ -151,7 +151,7 @@ namespace ShopWebsiteServerSide.Controllers
             }
             else
             {
-                return BadRequest(serviceResult);
+                return Ok(serviceResult);
             }
         }
 
