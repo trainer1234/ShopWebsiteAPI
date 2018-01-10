@@ -82,6 +82,38 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [Route("edit")]
+        [HttpPut]
+        public async Task<IActionResult> EditUser([FromHeader] string Authorization, [FromBody] UserViewModel newUserView)
+        {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+
+            var result = new Result<bool>();
+            if (searchUser.Role != UserRole.Admin)
+            {
+                result.Succeed = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(79, "You don't have permission to access this feature");
+
+                return BadRequest(result);
+            }
+
+            var parser = new ModelParser();
+            var newUser = parser.ParseUserFrom(newUserView);
+            var serviceResult = await accountService.EditUser(newUser);
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
+
         [AllowAnonymous]
         [Route("login")]
         [HttpPost]

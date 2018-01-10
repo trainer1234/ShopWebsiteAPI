@@ -39,6 +39,16 @@ namespace ShopWebsiteServerSide.Utils
             return userView;
         }
 
+        public User ParseUserFrom(UserViewModel userView)
+        {
+            var user = new User
+            {
+                AvatarUrl = userView.AvatarUrl,
+                Role = userView.Role,
+                UserName = userView.UserName
+            };
+            return user;
+        }
         public ErrorLogViewModel ParseErrorLogViewFrom(ErrorLog errorLog)
         {
             var errorLogView = new ErrorLogViewModel

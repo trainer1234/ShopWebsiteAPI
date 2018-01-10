@@ -50,6 +50,36 @@ namespace ShopWebsite.BLL.Implementations
             return result.Succeeded;
         }
 
+        public async Task<Result<bool>> EditUser(User newUser)
+        {
+            var userExist = await _userManager.FindByNameAsync(newUser.UserName);
+            var result = new Result<bool>();
+            try
+            {
+                if (userExist != null)
+                {
+                    userExist.Role = newUser.Role;
+                    userExist.AvatarUrl = newUser.AvatarUrl;
+
+                    await _userManager.UpdateAsync(userExist);
+
+                    result.Succeed = result.Content = true;
+                }
+                else
+                {
+                    result.Content = result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(0, "No user");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
+        }
+
         public async Task<Result<bool>> SignIn(SignInModel signInModel)
         {
             var result = new Result<bool>();
