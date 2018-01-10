@@ -32,9 +32,22 @@ namespace ShopWebsiteServerSide.Utils
             {
                 Id = user.Id,
                 AvatarUrl = user.AvatarUrl,
-                Role = user.Role,
+                Role = new RoleViewModel(),
                 UserName = user.UserName
             };
+            userView.Role.Id = user.Role;
+            if(user.Role == UserRole.Admin)
+            {
+                userView.Role.Name = "Quản trị viên";
+            }
+            else if(user.Role == UserRole.Manager)
+            {
+                userView.Role.Name = "Quản lý";
+            }
+            else if (user.Role == UserRole.Staff)
+            {
+                userView.Role.Name = "Nhân viên";
+            }
 
             return userView;
         }
@@ -44,7 +57,7 @@ namespace ShopWebsiteServerSide.Utils
             var user = new User
             {
                 AvatarUrl = userView.AvatarUrl,
-                Role = userView.Role,
+                Role = userView.Role.Id,
                 UserName = userView.UserName
             };
             return user;

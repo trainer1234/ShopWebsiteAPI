@@ -58,7 +58,7 @@ namespace ShopWebsite.BLL.Implementations
             {
                 if (userExist != null)
                 {
-                    userExist.Role = newUserView.Role;
+                    userExist.Role = newUserView.Role.Id;
                     userExist.AvatarUrl = newUserView.AvatarUrl;
 
                     await _userManager.UpdateAsync(userExist);

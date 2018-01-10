@@ -11,6 +11,6 @@ namespace ShopWebsite.Common.Models.AccountModels
         public string UserName { get; set; }
         public string AvatarUrl { get; set; }
         public string Password { get; set; }
-        public UserRole Role { get; set; }
+        public RoleViewModel Role { get; set; }
     }
 }
