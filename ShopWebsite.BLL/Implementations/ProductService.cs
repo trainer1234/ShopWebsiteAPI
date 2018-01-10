@@ -229,7 +229,7 @@ namespace ShopWebsite.BLL.Implementations
             try
             {
                 var products = new List<Product>();
-                if (num == 0) products = await _productRepository.GetAll();
+                if (num == 0) products = await _productRepository.GetAllBy(type);
                 else products = await _productRepository.GetProductBy(type, num);
                 if (products != null && products.Count > 0)
                 {
