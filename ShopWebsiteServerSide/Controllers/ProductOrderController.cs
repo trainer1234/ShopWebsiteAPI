@@ -112,6 +112,7 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("get/{id}")]
         public async Task<IActionResult> GetOrderBy(string id)
