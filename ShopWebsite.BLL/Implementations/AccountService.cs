@@ -62,8 +62,12 @@ namespace ShopWebsite.BLL.Implementations
                     userExist.AvatarUrl = newUserView.AvatarUrl;
 
                     await _userManager.UpdateAsync(userExist);
-                    var resetToken = await _userManager.GeneratePasswordResetTokenAsync(userExist);
-                    await _userManager.ResetPasswordAsync(userExist, resetToken, newUserView.Password);
+
+                    if(newUserView.Password != null)
+                    {
+                        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(userExist);
+                        await _userManager.ResetPasswordAsync(userExist, resetToken, newUserView.Password);
+                    }
 
                     result.Succeed = result.Content = true;
                 }
