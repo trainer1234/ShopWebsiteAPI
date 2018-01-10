@@ -9,7 +9,6 @@ using ShopWebsite.Common.Models.BaseModels;
 using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.DAL.Context;
 using ShopWebsite.DAL.Models.AccountModels;
-using ShopWebsiteServerSide.Models.AccountModels;
 using ShopWebsiteServerSide.Utils;
 using System;
 using System.Collections.Generic;
@@ -101,9 +100,7 @@ namespace ShopWebsiteServerSide.Controllers
                 return BadRequest(result);
             }
 
-            var parser = new ModelParser();
-            var newUser = parser.ParseUserFrom(newUserView);
-            var serviceResult = await accountService.EditUser(newUser);
+            var serviceResult = await accountService.EditUser(newUserView);
             if (serviceResult.Succeed)
             {
                 return Ok(serviceResult);

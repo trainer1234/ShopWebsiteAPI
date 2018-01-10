@@ -1,4 +1,5 @@
-﻿using ShopWebsite.Common.Models.Enums;
+﻿using ShopWebsite.Common.Models.AccountModels;
+using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Models.AccountModels;
@@ -9,7 +10,6 @@ using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsite.DAL.Models.ProductOrderModels;
 using ShopWebsite.DAL.Models.PropertyModels;
 using ShopWebsite.DAL.Models.SlideModels;
-using ShopWebsiteServerSide.Models.AccountModels;
 using ShopWebsiteServerSide.Models.CustomerModels;
 using ShopWebsiteServerSide.Models.LogModels;
 using ShopWebsiteServerSide.Models.ManufactureModels;

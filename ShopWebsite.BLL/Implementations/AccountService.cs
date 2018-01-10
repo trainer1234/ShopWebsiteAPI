@@ -50,18 +50,20 @@ namespace ShopWebsite.BLL.Implementations
             return result.Succeeded;
         }
 
-        public async Task<Result<bool>> EditUser(User newUser)
+        public async Task<Result<bool>> EditUser(UserViewModel newUserView)
         {
-            var userExist = await _userManager.FindByNameAsync(newUser.UserName);
+            var userExist = await _userManager.FindByNameAsync(newUserView.UserName);
             var result = new Result<bool>();
             try
             {
                 if (userExist != null)
                 {
-                    userExist.Role = newUser.Role;
-                    userExist.AvatarUrl = newUser.AvatarUrl;
+                    userExist.Role = newUserView.Role;
+                    userExist.AvatarUrl = newUserView.AvatarUrl;
 
                     await _userManager.UpdateAsync(userExist);
+                    var resetToken = await _userManager.GeneratePasswordResetTokenAsync(userExist);
+                    await _userManager.ResetPasswordAsync(userExist, resetToken, newUserView.Password);
 
                     result.Succeed = result.Content = true;
                 }
