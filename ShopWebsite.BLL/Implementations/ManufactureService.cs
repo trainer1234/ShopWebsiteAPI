@@ -178,6 +178,7 @@ namespace ShopWebsite.BLL.Implementations
             var result = new Result<bool>();
             try
             {
+                var removeManufactureTypesResult = await _manufactureTypeRepository.Remove(manufactureId);
                 var removeProductByManufactureResult = await _productRepository.RemoveProductBy(manufactureId);
                 var removeResult = await _manufactureRepository.Remove(manufactureId);
                 if (removeResult)
