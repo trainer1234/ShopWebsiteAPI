@@ -280,7 +280,39 @@ namespace ShopWebsiteServerSide.Utils
                 productOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
                 foreach (var product in productOrderView.Products)
                 {
-                    if(product.Product.Id != null)
+                    if(product.Id != null)
+                    {
+                        var productMapOrderDetail = new ProductMapOrderDetail
+                        {
+                            ProductId = product.Id,
+                            ProductAmount = product.Amount,
+                            ProductOrderId = productOrder.Id
+                        };
+                        productOrder.ProductMapOrderDetails.Add(productMapOrderDetail);
+                    }
+                }
+            }
+            return productOrder;
+        }
+
+        public ProductOrder ParseProductOrderFrom(ProductOrderPutViewModel productOrderView)
+        {
+            var customer = ParseCustomerFrom(productOrderView.Customer);
+            var productOrder = new ProductOrder
+            {
+                OrderStatus = productOrderView.OrderStatus,
+                Customer = customer
+            };
+            if (productOrderView.OrderId != null)
+            {
+                productOrder.OrderId = productOrderView.OrderId;
+            }
+            if (productOrderView.Products != null && productOrderView.Products.Count > 0)
+            {
+                productOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
+                foreach (var product in productOrderView.Products)
+                {
+                    if (product.Product.Id != null)
                     {
                         var productMapOrderDetail = new ProductMapOrderDetail
                         {
