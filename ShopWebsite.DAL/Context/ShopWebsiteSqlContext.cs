@@ -44,11 +44,7 @@ namespace ShopWebsite.DAL.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //optionsBuilder.UseSqlServer(ConnectionStringOption.ConnectionString);
             optionsBuilder.UseSqlServer("Server=.;Database=ShopWebsite;Trusted_Connection=True;MultipleActiveResultSets=true");
-            //optionsBuilder.UseNpgsql("Server=163.22.17.198;Port=5432;Database=EED;Username=ncnuee;Password=cn4101");
-            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=EED;Trusted_Connection=True;MultipleActiveResultSets=true");
-            //optionsBuilder.UseSqlServer("Data Source=163.22.17.198;Initial Catalog=EED;Integrated Security=False;User ID=LoveTripDatabaseManager;Password=abc@123;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
