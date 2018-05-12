@@ -16,16 +16,16 @@ namespace ShopWebsite.BLL.Implementations
         private IProductMapOrderDetailRepository _productMapOrderDetailRepository;
         private IProductRepository _productRepository;
         private IErrorLogRepository _errorLogRepository;
-        private ICustomerRepository _customerRepository;
+        private IAccountService _accountService;
 
         public ProductOrderService(IProductOrderRepository productOrderRepository, IErrorLogRepository errorLogRepository,
             IProductMapOrderDetailRepository productMapOrderDetailRepository, IProductRepository productRepository,
-            ICustomerRepository customerRepository)
+            IAccountService accountService)
         {
             _productOrderRepository = productOrderRepository;
             _errorLogRepository = errorLogRepository;
             _productRepository = productRepository;
-            _customerRepository = customerRepository;
+            _accountService = accountService; ;
             _productMapOrderDetailRepository = productMapOrderDetailRepository;
         }
 
@@ -35,10 +35,10 @@ namespace ShopWebsite.BLL.Implementations
 
             try
             {
-                var customerId = await _customerRepository.Add(newProductOrder.Customer);
+                //var customerId = await _customerRepository.Add(newProductOrder.User);
 
-                newProductOrder.CustomerId = customerId;
-                newProductOrder.Customer = null;
+                newProductOrder.UserId = newProductOrder.UserId;
+                newProductOrder.User = null;
                 newProductOrder.OrderStatus = OrderStatus.NotConfirmed;
                 newProductOrder.OrderDate = DateTime.UtcNow;
                 var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;

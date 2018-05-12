@@ -62,8 +62,11 @@ namespace ShopWebsiteServerSide.Controllers
 
                 foreach (var user in users)
                 {
-                    var userView = parser.ParseUserViewFrom(user);
-                    userViews.Add(userView);
+                    if (user.Role != UserRole.Customer)
+                    {
+                        var userView = parser.ParseUserViewFrom(user);
+                        userViews.Add(userView);
+                    }
                 }
 
                 result.Content = userViews;

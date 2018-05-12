@@ -213,7 +213,11 @@ namespace ShopWebsite.BLL.Implementations
                     IsDisabled = false,
                     AvatarUrl = signUpModel.AvatartUrl,
                     UserName = signUpModel.Username,
-                    Role = signUpModel.Role
+                    Role = signUpModel.Role,
+                    FullName = signUpModel.FullName,
+                    Address = signUpModel.Address,
+                    Email = signUpModel.Email,
+                    Phone = signUpModel.Phone
                 };
                 var res = new IdentityResult();
 
