@@ -69,7 +69,7 @@ namespace ShopWebsite.DAL.Implementations
                                         .ThenInclude(orderDetail => orderDetail.Product)
                                             .ThenInclude(product => product.ProductProperties)
                                                 .ThenInclude(productProp => productProp.Property)
-                                    .Include(order => order.User).ToListAsync();
+                                    .Include(order => order.Customer).ToListAsync();
             if (orders != null && orders.Count > 0)
             {
                 var order = orders[0];
@@ -91,7 +91,7 @@ namespace ShopWebsite.DAL.Implementations
                                                         .ThenInclude(orderDetail => orderDetail.Product)
                                                             .ThenInclude(product => product.ProductProperties)
                                                                 .ThenInclude(productProp => productProp.Property)
-                                                     .Include(order => order.User).ToListAsync();
+                                                     .Include(order => order.Customer).ToListAsync();
 
             return orders;
         }
@@ -109,7 +109,7 @@ namespace ShopWebsite.DAL.Implementations
                                                         .ThenInclude(orderDetail => orderDetail.Product)
                                                             .ThenInclude(product => product.ProductProperties)
                                                                 .ThenInclude(productProp => productProp.Property)
-                                                     .Include(order => order.User).ToListAsync();
+                                                     .Include(order => order.Customer).ToListAsync();
 
             return orders;
         }

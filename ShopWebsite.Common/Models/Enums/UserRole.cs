@@ -9,7 +9,6 @@ namespace ShopWebsite.Common.Models.Enums
         None = 0,
         Admin = 1,
         Manager = 2,
-        Staff = 3,
-        Customer = 4
+        Staff = 3
     }
 }

@@ -237,9 +237,9 @@ namespace ShopWebsiteServerSide.Utils
             return propertyView;
         }
 
-        public User ParseCustomerFrom(CustomerViewModel customerView)
+        public Customer ParseCustomerFrom(CustomerViewModel customerView)
         {
-            var customer = new User
+            var customer = new Customer
             {
                 FullName = customerView.FullName,
                 Address = customerView.Address,
@@ -250,7 +250,7 @@ namespace ShopWebsiteServerSide.Utils
             return customer;
         }
 
-        public CustomerViewModel ParseCustomerViewFrom(User customer)
+        public CustomerViewModel ParseCustomerViewFrom(Customer customer)
         {
             var customerView = new CustomerViewModel
             {
@@ -269,7 +269,7 @@ namespace ShopWebsiteServerSide.Utils
             var productOrder = new ProductOrder
             {
                 OrderStatus = productOrderView.OrderStatus,
-                User = customer
+                Customer = customer
             };
             if(productOrderView.OrderId != null)
             {
@@ -301,7 +301,7 @@ namespace ShopWebsiteServerSide.Utils
             var productOrder = new ProductOrder
             {
                 OrderStatus = productOrderView.OrderStatus,
-                User = customer
+                Customer = customer
             };
             if (productOrderView.OrderId != null)
             {
@@ -329,7 +329,7 @@ namespace ShopWebsiteServerSide.Utils
 
         public ProductOrderViewModel ParseProductOrderViewFrom(ProductOrder productOrder)
         {
-            var customerView = ParseCustomerViewFrom(productOrder.User);
+            var customerView = ParseCustomerViewFrom(productOrder.Customer);
             var productOrderView = new ProductOrderViewModel
             {
                 Id = productOrder.Id,

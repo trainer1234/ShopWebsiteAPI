@@ -136,13 +136,9 @@ namespace ShopWebsite.DAL.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Address");
-
                     b.Property<string>("AuthToken");
 
                     b.Property<string>("AvatarUrl");
-
-                    b.Property<DateTime>("Birthday");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -151,8 +147,6 @@ namespace ShopWebsite.DAL.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("FullName");
 
                     b.Property<bool>("IsDisabled");
 
@@ -167,8 +161,6 @@ namespace ShopWebsite.DAL.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
-
-                    b.Property<string>("Phone");
 
                     b.Property<string>("PhoneNumber");
 
@@ -214,54 +206,6 @@ namespace ShopWebsite.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("ShopWebsite.DAL.Models.CustomerModels.CustomerProductFeedback", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Comment");
-
-                    b.Property<bool>("IsDisabled");
-
-                    b.Property<string>("ProductId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomerProductFeedback");
-                });
-
-            modelBuilder.Entity("ShopWebsite.DAL.Models.CustomerModels.CustomerProductRating", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsDisabled");
-
-                    b.Property<double>("PredictedRating");
-
-                    b.Property<string>("ProductId");
-
-                    b.Property<double>("Rating");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("View");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomerProductRating");
                 });
 
             modelBuilder.Entity("ShopWebsite.DAL.Models.ImageModels.ImageModel", b =>
@@ -437,6 +381,8 @@ namespace ShopWebsite.DAL.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CustomerId");
+
                     b.Property<bool>("IsDisabled");
 
                     b.Property<DateTime>("OrderDate");
@@ -449,15 +395,13 @@ namespace ShopWebsite.DAL.Migrations
 
                     b.Property<long>("TotalCost");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("OrderId")
                         .IsUnique()
                         .HasFilter("[OrderId] IS NOT NULL");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ProductOrder");
                 });
@@ -545,28 +489,6 @@ namespace ShopWebsite.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ShopWebsite.DAL.Models.CustomerModels.CustomerProductFeedback", b =>
-                {
-                    b.HasOne("ShopWebsite.DAL.Models.ProductModels.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("ShopWebsite.DAL.Models.AccountModels.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ShopWebsite.DAL.Models.CustomerModels.CustomerProductRating", b =>
-                {
-                    b.HasOne("ShopWebsite.DAL.Models.ProductModels.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("ShopWebsite.DAL.Models.AccountModels.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("ShopWebsite.DAL.Models.ManufactureModels.ManufactureType", b =>
                 {
                     b.HasOne("ShopWebsite.DAL.Models.ManufactureModels.Manufacture", "Manufacture")
@@ -616,9 +538,9 @@ namespace ShopWebsite.DAL.Migrations
 
             modelBuilder.Entity("ShopWebsite.DAL.Models.ProductOrderModels.ProductOrder", b =>
                 {
-                    b.HasOne("ShopWebsite.DAL.Models.AccountModels.User", "User")
+                    b.HasOne("ShopWebsite.DAL.Models.CustomerModels.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("ShopWebsite.DAL.Models.SlideModels.Slide", b =>
