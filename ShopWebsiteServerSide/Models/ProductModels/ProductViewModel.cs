@@ -1,5 +1,5 @@
 ﻿using ShopWebsite.Common.Models.Enums;
-using ShopWebsiteServerSide.Models.ManufactureModels;
+using ShopWebsite.Common.Models.ManufactureModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

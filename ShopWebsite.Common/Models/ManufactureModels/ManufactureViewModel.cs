@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopWebsiteServerSide.Models.ManufactureModels
+namespace ShopWebsite.Common.Models.ManufactureModels
 {
     public class ManufactureViewModel
     {

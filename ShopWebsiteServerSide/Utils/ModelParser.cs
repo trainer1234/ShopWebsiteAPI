@@ -1,5 +1,6 @@
 ﻿using ShopWebsite.Common.Models.AccountModels;
 using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.Common.Models.ManufactureModels;
 using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Models.AccountModels;
@@ -12,7 +13,6 @@ using ShopWebsite.DAL.Models.PropertyModels;
 using ShopWebsite.DAL.Models.SlideModels;
 using ShopWebsiteServerSide.Models.CustomerModels;
 using ShopWebsiteServerSide.Models.LogModels;
-using ShopWebsiteServerSide.Models.ManufactureModels;
 using ShopWebsiteServerSide.Models.OrderModels;
 using ShopWebsiteServerSide.Models.ProductModels;
 using ShopWebsiteServerSide.Models.PropertyModels;
@@ -36,11 +36,11 @@ namespace ShopWebsiteServerSide.Utils
                 UserName = user.UserName
             };
             userView.Role.Id = user.Role;
-            if(user.Role == UserRole.Admin)
+            if (user.Role == UserRole.Admin)
             {
                 userView.Role.Name = "Quản trị viên";
             }
-            else if(user.Role == UserRole.Manager)
+            else if (user.Role == UserRole.Manager)
             {
                 userView.Role.Name = "Quản lý";
             }
@@ -58,8 +58,27 @@ namespace ShopWebsiteServerSide.Utils
             {
                 AvatarUrl = userView.AvatarUrl,
                 Role = userView.Role.Id,
-                UserName = userView.UserName
+                UserName = userView.UserName,
+                FullName = userView.FullName,
+                Birthday = userView.Birthday,
+                Income = userView.Income
             };
+            if (userView.Id != null)
+            {
+                user.Id = userView.Id;
+            }
+            if (userView.Hobbies != null && userView.Hobbies.Count > 0)
+            {
+                user.UserHobbies = new List<UserHobby>();
+                foreach (var hobbyView in userView.Hobbies)
+                {
+                    user.UserHobbies.Add(new UserHobby
+                    {
+                        ManufactureId = hobbyView.Id,
+                        UserId = user.Id
+                    });
+                }
+            }
             return user;
         }
         public ErrorLogViewModel ParseErrorLogViewFrom(ErrorLog errorLog)
@@ -86,12 +105,12 @@ namespace ShopWebsiteServerSide.Utils
                 Remain = productView.Remain,
                 Detail = productView.Detail
             };
-            if(productView.Id != null)
+            if (productView.Id != null)
             {
                 product.Id = productView.Id;
             }
 
-            if(productView.Properties != null && productView.Properties.Count > 0)
+            if (productView.Properties != null && productView.Properties.Count > 0)
             {
                 product.ProductProperties = new List<ProductProperty>();
                 foreach (var productPropView in productView.Properties)
@@ -106,7 +125,7 @@ namespace ShopWebsiteServerSide.Utils
                 }
             }
 
-            if(productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
+            if (productView.ProductImageUrls != null && productView.ProductImageUrls.Count > 0)
             {
                 product.ProductImages = new List<ProductImage>();
                 var handler = new ImageHandler();
@@ -141,7 +160,7 @@ namespace ShopWebsiteServerSide.Utils
             productView.Manufacture.Id = product.ManufactureId;
             productView.Manufacture.Name = product.Manufacture.Name;
 
-            if(product.ProductProperties != null && product.ProductProperties.Count > 0)
+            if (product.ProductProperties != null && product.ProductProperties.Count > 0)
             {
                 productView.Properties = new List<ProductPropertyViewModel>();
                 foreach (var productProp in product.ProductProperties)
@@ -156,7 +175,7 @@ namespace ShopWebsiteServerSide.Utils
                 }
             }
 
-            if(product.ProductImages != null && product.ProductImages.Count > 0)
+            if (product.ProductImages != null && product.ProductImages.Count > 0)
             {
                 var handler = new ImageHandler();
                 productView.ProductImageUrls = new List<string>();
@@ -177,7 +196,7 @@ namespace ShopWebsiteServerSide.Utils
                 Name = manufacture.Name,
                 Types = new List<ProductType>()
             };
-            if(manufacture.ManufactureTypes != null && manufacture.ManufactureTypes.Count > 0)
+            if (manufacture.ManufactureTypes != null && manufacture.ManufactureTypes.Count > 0)
             {
                 manufactureView.Types = new List<ProductType>();
                 foreach (var type in manufacture.ManufactureTypes)
@@ -194,11 +213,11 @@ namespace ShopWebsiteServerSide.Utils
             {
                 Name = manufactureView.Name
             };
-            if(manufactureView.Id != null)
+            if (manufactureView.Id != null)
             {
                 manufacture.Id = manufactureView.Id;
             }
-            if(manufactureView.Types != null && manufactureView.Types.Count > 0)
+            if (manufactureView.Types != null && manufactureView.Types.Count > 0)
             {
                 manufacture.ManufactureTypes = new List<ManufactureType>();
                 foreach (var typeView in manufactureView.Types)
@@ -220,7 +239,7 @@ namespace ShopWebsiteServerSide.Utils
             {
                 Name = propertyView.Name
             };
-            if(propertyView.Id != null)
+            if (propertyView.Id != null)
             {
                 property.Id = propertyView.Id;
             }
@@ -271,16 +290,16 @@ namespace ShopWebsiteServerSide.Utils
                 OrderStatus = productOrderView.OrderStatus,
                 Customer = customer
             };
-            if(productOrderView.OrderId != null)
+            if (productOrderView.OrderId != null)
             {
                 productOrder.OrderId = productOrderView.OrderId;
             }
-            if(productOrderView.Products != null && productOrderView.Products.Count > 0)
+            if (productOrderView.Products != null && productOrderView.Products.Count > 0)
             {
                 productOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
                 foreach (var product in productOrderView.Products)
                 {
-                    if(product.Id != null)
+                    if (product.Id != null)
                     {
                         var productMapOrderDetail = new ProductMapOrderDetail
                         {
@@ -340,7 +359,7 @@ namespace ShopWebsiteServerSide.Utils
                 ProductAmount = productOrder.ProductTotalAmount,
                 TotalCost = productOrder.TotalCost
             };
-            if(productOrder.ProductMapOrderDetails != null && productOrder.ProductMapOrderDetails.Count > 0)
+            if (productOrder.ProductMapOrderDetails != null && productOrder.ProductMapOrderDetails.Count > 0)
             {
                 productOrderView.Products = new List<ProductOfProductOrderViewModel>();
                 foreach (var productMapOrder in productOrder.ProductMapOrderDetails)

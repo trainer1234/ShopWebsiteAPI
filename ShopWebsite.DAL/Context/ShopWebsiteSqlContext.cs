@@ -40,6 +40,9 @@ namespace ShopWebsite.DAL.Context
         public DbSet<ProductOrder> ProductOrders { get; set; }
         public DbSet<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
         public DbSet<Slide> Slides { get; set; }
+        public DbSet<CustomerRating> CustomerRatings { get; set; }
+        public DbSet<UserItemPredict> UserItemPredicts { get; set; }
+        public DbSet<UserHobby> UserHobbies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -78,6 +81,12 @@ namespace ShopWebsite.DAL.Context
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ProductMapOrderDetail");
             builder.Entity<Slide>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("Slide");
+            builder.Entity<CustomerRating>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("CustomerRating");
+            builder.Entity<UserItemPredict>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("UserItemPredict");
+            builder.Entity<UserHobby>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("UserHobby");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

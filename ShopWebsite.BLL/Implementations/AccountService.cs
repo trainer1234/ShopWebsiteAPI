@@ -6,8 +6,10 @@ using ShopWebsite.Common.Models.BaseModels;
 using ShopWebsite.DAL.Context;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.AccountModels;
+using ShopWebsite.DAL.Models.CustomerModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,6 +62,9 @@ namespace ShopWebsite.BLL.Implementations
                 {
                     userExist.Role = newUserView.Role.Id;
                     userExist.AvatarUrl = newUserView.AvatarUrl;
+                    userExist.Income = newUserView.Income;
+                    userExist.FullName = newUserView.FullName;
+                    userExist.Birthday = newUserView.Birthday;
 
                     await _userManager.UpdateAsync(userExist);
 
@@ -67,6 +72,22 @@ namespace ShopWebsite.BLL.Implementations
                     {
                         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(userExist);
                         await _userManager.ResetPasswordAsync(userExist, resetToken, newUserView.Password);
+                    }
+
+                    // TODO: EDIT USER HOBBIES
+                    if (newUserView.Hobbies != null && newUserView.Hobbies.Count > 0)
+                    {
+                        var oldHobbiesOfUser = _context.UserHobbies.Where(userHobby => userHobby.UserId == userExist.Id);
+                        foreach (var userHobby in oldHobbiesOfUser)
+                        {
+                            _context.Remove(userHobby);
+                        }
+                        foreach (var hobby in newUserView.Hobbies)
+                        {
+                            _context.Add(hobby);
+                        }
+
+                        _context.SaveChanges();
                     }
 
                     result.Succeed = result.Content = true;
@@ -213,8 +234,12 @@ namespace ShopWebsite.BLL.Implementations
                     IsDisabled = false,
                     AvatarUrl = signUpModel.AvatartUrl,
                     UserName = signUpModel.Username,
+                    Birthday = signUpModel.Birthday,
+                    FullName = signUpModel.FullName,
+                    Income = signUpModel.Income,
                     Role = signUpModel.Role
                 };
+                var userId = user.Id;
                 var res = new IdentityResult();
 
                 try
@@ -238,6 +263,21 @@ namespace ShopWebsite.BLL.Implementations
                         //        result.Errors.Add(17, "Cannot add user image but user was successfully created");
                         //    }
                         //}
+
+                        if (signUpModel.Hobbies != null && signUpModel.Hobbies.Count > 0)
+                        {
+                            foreach (var hobby in signUpModel.Hobbies)
+                            {
+                                var userHobby = new UserHobby
+                                {
+                                    ManufactureId = hobby.Id,
+                                    UserId = userId
+                                };
+                                _context.Add(userHobby);
+                            }
+
+                            _context.SaveChanges();
+                        }
 
                         result.Succeed = true;
                         result.Content = true;

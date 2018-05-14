@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
 using ShopWebsite.Common.Models.Enums;
-using ShopWebsiteServerSide.Models.ManufactureModels;
+using ShopWebsite.Common.Models.ManufactureModels;
 using ShopWebsiteServerSide.Utils;
 using System;
 using System.Collections.Generic;
