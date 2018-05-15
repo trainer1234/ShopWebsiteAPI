@@ -27,22 +27,24 @@ namespace ShopWebsite.DAL.Context
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<ErrorLog> ErrorLogs { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Manufacture> Manufactures { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<ImageModel> ImageModels { get; set; }
-        public DbSet<ManufactureType> ManufactureTypes { get; set; }
-        public DbSet<Property> Properties { get; set; }
-        public DbSet<ProductProperty> ProductProperties { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<ProductOrder> ProductOrders { get; set; }
-        public DbSet<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
-        public DbSet<Slide> Slides { get; set; }
-        public DbSet<CustomerRating> CustomerRatings { get; set; }
-        public DbSet<UserItemPredict> UserItemPredicts { get; set; }
-        public DbSet<UserHobby> UserHobbies { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Manufacture> Manufactures { get; set; }
+        public virtual DbSet<ProductImage> ProductImages { get; set; }
+        public virtual DbSet<ImageModel> ImageModels { get; set; }
+        public virtual DbSet<ManufactureType> ManufactureTypes { get; set; }
+        public virtual DbSet<Property> Properties { get; set; }
+        public virtual DbSet<ProductProperty> ProductProperties { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<ProductOrder> ProductOrders { get; set; }
+        public virtual DbSet<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
+        public virtual DbSet<Slide> Slides { get; set; }
+        public virtual DbSet<CustomerRating> CustomerRatings { get; set; }
+        public virtual DbSet<UserItemPredict> UserItemPredicts { get; set; }
+        public virtual DbSet<UserHobby> UserHobbies { get; set; }
+        public virtual DbSet<UserLatentFactorMatrix> UserLatentFactorMatrices { get; set; }
+        public virtual DbSet<ItemLatentFactorMatrix> ItemLatentFactorMatrices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -87,6 +89,10 @@ namespace ShopWebsite.DAL.Context
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("UserItemPredict");
             builder.Entity<UserHobby>()
                 .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("UserHobby");
+            builder.Entity<UserLatentFactorMatrix>()
+               .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("UserLatentFactorMatrix");
+            builder.Entity<ItemLatentFactorMatrix>()
+                .HasQueryFilter(model => EF.Property<bool>(model, "IsDisabled") == false).ToTable("ItemLatentFactorMatrix");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

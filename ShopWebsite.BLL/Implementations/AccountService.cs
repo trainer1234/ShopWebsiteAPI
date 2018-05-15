@@ -74,7 +74,6 @@ namespace ShopWebsite.BLL.Implementations
                         await _userManager.ResetPasswordAsync(userExist, resetToken, newUserView.Password);
                     }
 
-                    // TODO: EDIT USER HOBBIES
                     if (newUserView.Hobbies != null && newUserView.Hobbies.Count > 0)
                     {
                         var oldHobbiesOfUser = _context.UserHobbies.Where(userHobby => userHobby.UserId == userExist.Id);
