@@ -104,7 +104,7 @@ namespace ShopWebsite.DAL.Implementations
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
                                     .Include(product => product.ProductProperties)
                                         .ThenInclude(property => property.Property)
-                                    .OrderBy(product => product.View).Take(n).ToList();
+                                    .OrderByDescending(product => product.View).Take(n).ToList();
 
             return products;
         }
@@ -116,7 +116,7 @@ namespace ShopWebsite.DAL.Implementations
                                         .ThenInclude(manufacture => manufacture.ManufactureTypes)
                                     .Include(product => product.ProductProperties)
                                         .ThenInclude(property => property.Property)
-                                    .OrderBy(product => product.PurchaseCounter).Take(n).ToList();
+                                    .OrderByDescending(product => product.PurchaseCounter).Take(n).ToList();
 
             return products;
         }
