@@ -7,7 +7,6 @@ namespace ShopWebsite.DAL.Contracts
 {
     public interface IRatingRepository
     {
-        void Add(CustomerRating customerRating);
         void Update(CustomerRating customerRating);
         CustomerRating GetPastRating(string userId, string productId);
     }

@@ -15,26 +15,6 @@ namespace ShopWebsiteServerSide.Controllers
     [Route("api/rating")]
     public class RatingController : BaseController
     {
-        [HttpPost]
-        [Route("add")]
-        public async Task<IActionResult> AddRating([FromHeader] string Authorization, [FromBody] CustomerRatingViewModel customerRatingView)
-        {
-            var accountService = GetService<IAccountService>();
-            var users = await accountService.GetUserAsync();
-            var token = SplitAuthorizationHeader(Authorization);
-            var searchUser = users.Find(user => user.AuthToken == token);
-
-            var ratingService = GetService<IRatingService>();
-
-            var parser = new ModelParser();
-            customerRatingView.UserId = searchUser.Id;
-            var customerRating = parser.ParseCustomerRatingFrom(customerRatingView);
-
-            var serviceResult = ratingService.Add(customerRating);
-
-            return Ok(serviceResult);
-        }
-
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateRating([FromHeader] string Authorization, [FromBody] CustomerRatingViewModel customerRatingView)

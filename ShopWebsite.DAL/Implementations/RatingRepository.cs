@@ -19,20 +19,6 @@ namespace ShopWebsite.DAL.Implementations
             _errorLogRepository = errorLogRepository;
         }
 
-        public void Add(CustomerRating customerRating)
-        {
-            try
-            {
-                _context.Add(customerRating);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                _errorLogRepository.Add(ex);
-                throw;
-            }
-        }
-
         public CustomerRating GetPastRating(string userId, string productId)
         {
             try
@@ -71,8 +57,18 @@ namespace ShopWebsite.DAL.Implementations
                     pastRating.Rating = customerRating.Rating;
 
                     _context.Update(pastRating);
-                    _context.SaveChanges();
                 }
+                else
+                {
+                    _context.Add(new CustomerRating
+                    {
+                        ProductId = customerRating.ProductId,
+                        UserId = customerRating.UserId,
+                        Rating = customerRating.Rating
+                    });
+                }
+
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -17,18 +17,6 @@ namespace ShopWebsite.BLL.Implementations
             _ratingRepository = ratingRepository;
         }
 
-        public Result<bool> Add(CustomerRating customerRating)
-        {
-            var result = new Result<bool>();
-
-            _ratingRepository.Add(customerRating);
-
-            result.Succeed = true;
-            result.Content = true;
-
-            return result;
-        }
-
         public Result<CustomerRating> GetPastRating(string userId, string productId)
         {
             var result = new Result<CustomerRating>();
