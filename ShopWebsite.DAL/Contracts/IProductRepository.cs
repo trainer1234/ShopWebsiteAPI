@@ -18,6 +18,8 @@ namespace ShopWebsite.DAL.Contracts
         Task<List<Product>> GetProductBy(ProductType type, int num);
         Task<List<Product>> GetAllBy(ProductType type);
         Task<List<Product>> GetAll();
+        List<Product> GetTopNProductByView(int n);
+        List<Product> GetTopNProductByPurchaseCounter(int n);
         Task<List<Product>> Search(string key);
     }
 }

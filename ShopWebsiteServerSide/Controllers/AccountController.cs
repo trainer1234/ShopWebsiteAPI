@@ -91,14 +91,6 @@ namespace ShopWebsiteServerSide.Controllers
             var searchUser = users.Find(user => user.AuthToken == token);
 
             var result = new Result<bool>();
-            if (searchUser.Role != UserRole.Admin)
-            {
-                result.Succeed = false;
-                result.Errors = new Dictionary<int, string>();
-                result.Errors.Add(79, "You don't have permission to access this feature");
-
-                return BadRequest(result);
-            }
 
             var serviceResult = await accountService.EditUser(newUserView);
             if (serviceResult.Succeed)

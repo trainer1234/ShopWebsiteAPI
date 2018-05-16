@@ -47,6 +47,8 @@ namespace ShopWebsite.DAL.Implementations
                 searchProduct.Type = newProduct.Type;
                 searchProduct.Remain = newProduct.Remain;
                 searchProduct.Detail = newProduct.Detail;
+                searchProduct.View = newProduct.View;
+                searchProduct.PurchaseCounter = newProduct.PurchaseCounter;
 
                 _context.Update(searchProduct);
                 _context.SaveChanges();
@@ -91,6 +93,30 @@ namespace ShopWebsite.DAL.Implementations
                                     .Include(product => product.ProductProperties)
                                         .ThenInclude(property => property.Property).ToListAsync();
             }
+
+            return products;
+        }
+
+        public List<Product> GetTopNProductByView(int n)
+        {
+            var products = _context.Products.Include(product => product.ProductImages)
+                                    .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property)
+                                    .OrderBy(product => product.View).Take(n).ToList();
+
+            return products;
+        }
+
+        public List<Product> GetTopNProductByPurchaseCounter(int n)
+        {
+            var products = _context.Products.Include(product => product.ProductImages)
+                                    .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property)
+                                    .OrderBy(product => product.PurchaseCounter).Take(n).ToList();
 
             return products;
         }

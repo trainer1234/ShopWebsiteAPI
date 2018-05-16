@@ -8,7 +8,7 @@ namespace ShopWebsite.Common.Utils
     public class MatrixFactorization
     {
         public (List<List<double>> W, List<List<double>> H) MatrixFactorization_SGD(int latentFactorNumber, 
-            int learningRate, int regularization, double threshold, List<List<double>> trainingMatrix)
+            double learningRate, double regularization, double threshold, List<List<double>> trainingMatrix)
         {
             List<List<double>> W, H;
             W = new List<List<double>>();
@@ -43,18 +43,21 @@ namespace ShopWebsite.Common.Utils
                 {
                     for (int j = 0; j < numberOfItem; j++)
                     {
-                        double currentRating = trainingMatrix[i][j];
-                        double predictedRating = 0;
-                        for (int k = 0; k < latentFactorNumber; k++)
+                        if (trainingMatrix[i][j] > 0)
                         {
-                            predictedRating = predictedRating + W[i][k] * H[j][k];
-                        }
-                        double error = currentRating - predictedRating;
-                        rmse = rmse + error * error;
-                        for (int k = 0; k < latentFactorNumber; k++)
-                        {
-                            W[i][k] = W[i][k] + learningRate * (error * H[j][k] - regularization * W[i][k]);
-                            H[j][k] = H[j][k] + learningRate * (error * W[i][k] - regularization * H[j][k]);
+                            double currentRating = trainingMatrix[i][j];
+                            double predictedRating = 0;
+                            for (int k = 0; k < latentFactorNumber; k++)
+                            {
+                                predictedRating = predictedRating + W[i][k] * H[j][k];
+                            }
+                            double error = currentRating - predictedRating;
+                            rmse = rmse + error * error;
+                            for (int k = 0; k < latentFactorNumber; k++)
+                            {
+                                W[i][k] = W[i][k] + learningRate * (error * H[j][k] - regularization * W[i][k]);
+                                H[j][k] = H[j][k] + learningRate * (error * W[i][k] - regularization * H[j][k]);
+                            }
                         }
                     }
                 }

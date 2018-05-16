@@ -170,6 +170,58 @@ namespace ShopWebsite.BLL.Implementations
             return result;
         }
 
+        public Result<List<Product>> GetTopNProductByView(int n)
+        {
+            var result = new Result<List<Product>>();
+            try
+            {
+                var products = _productRepository.GetTopNProductByView(n);
+                if (products != null && products.Count > 0)
+                {
+                    result.Succeed = true;
+                    result.Content = products;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(6, "No Products");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
+        }
+
+        public Result<List<Product>> GetTopNProductByPurchaseCounter(int n)
+        {
+            var result = new Result<List<Product>>();
+            try
+            {
+                var products = _productRepository.GetTopNProductByPurchaseCounter(n);
+                if (products != null && products.Count > 0)
+                {
+                    result.Succeed = true;
+                    result.Content = products;
+                }
+                else
+                {
+                    result.Succeed = false;
+                    result.Errors = new Dictionary<int, string>();
+                    result.Errors.Add(6, "No Products");
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Add(ex);
+                throw;
+            }
+            return result;
+        }
+
         public async Task<Result<List<Product>>> SearchProduct(string key)
         {
             var result = new Result<List<Product>>();
@@ -205,6 +257,9 @@ namespace ShopWebsite.BLL.Implementations
                 var product = await _productRepository.GetBy(productId);
                 if (product != null)
                 {
+                    product.View++;
+                    await _productRepository.Edit(product);
+
                     result.Succeed = true;
                     result.Content = product;
                 }

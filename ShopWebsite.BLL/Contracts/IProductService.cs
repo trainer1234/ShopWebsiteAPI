@@ -17,6 +17,8 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<List<Product>>> GetAllProduct();
         Task<Result<List<Product>>> GetRecentProductBy(ProductType type, int num);
         Task<Result<List<Product>>> GetAllProductBy(ProductType type);
+        Result<List<Product>> GetTopNProductByView(int n);
+        Result<List<Product>> GetTopNProductByPurchaseCounter(int n);
         Task<Result<Product>> GetProductBy(string productId);
         Task<Result<List<Product>>> SearchProduct(string key);
     }

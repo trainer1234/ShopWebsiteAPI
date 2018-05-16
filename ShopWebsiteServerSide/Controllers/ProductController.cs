@@ -43,7 +43,65 @@ namespace ShopWebsiteServerSide.Controllers
                 return Ok(serviceResult);
             }
         }
-        
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("view/get/{n:int=10}")]
+        public IActionResult GetTopNProductByView(int n)
+        {
+            var productService = GetService<IProductService>();
+            var serviceResult = productService.GetTopNProductByView(n);
+
+            if (serviceResult.Succeed)
+            {
+                var parser = new ModelParser();
+                var result = new Result<List<ProductViewModel>>();
+                var productViews = new List<ProductViewModel>();
+                foreach (var product in serviceResult.Content)
+                {
+                    var productView = parser.ParseProductViewFrom(product);
+                    productViews.Add(productView);
+                }
+                result.Content = productViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(serviceResult);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("purchasecounter/get/{n}")]
+        public IActionResult GetTopNProductByPurchaseCounter(int n = 10)
+        {
+            var productService = GetService<IProductService>();
+            var serviceResult = productService.GetTopNProductByPurchaseCounter(n);
+
+            if (serviceResult.Succeed)
+            {
+                var parser = new ModelParser();
+                var result = new Result<List<ProductViewModel>>();
+                var productViews = new List<ProductViewModel>();
+                foreach (var product in serviceResult.Content)
+                {
+                    var productView = parser.ParseProductViewFrom(product);
+                    productViews.Add(productView);
+                }
+                result.Content = productViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(serviceResult);
+            }
+        }
+
         [AllowAnonymous]
         [Route("get/{id}")]
         public async Task<IActionResult> GetProductBy(string id)

@@ -16,7 +16,5 @@ namespace ShopWebsite.DAL.Models.CustomerModels
 
         public User User { get; set; }
         public Product Product { get; set; }
-        public List<UserLatentFactorMatrix> UserLatentFactorMatrix { get; set; }
-        public List<ItemLatentFactorMatrix> ItemLatentFactorMatrix { get; set; }
     }
 }

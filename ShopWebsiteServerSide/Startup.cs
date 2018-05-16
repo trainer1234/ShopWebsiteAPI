@@ -59,6 +59,7 @@ namespace ShopWebsiteServerSide
             services.AddTransient<IPropertyService, PropertyService>();
             services.AddTransient<IProductOrderService, ProductOrderService>();
             services.AddTransient<ISlideService, SlideService>();
+            services.AddTransient<IRatingService, RatingService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -72,6 +73,7 @@ namespace ShopWebsiteServerSide
             services.AddScoped<IProductMapOrderDetailRepository, ProductMapOrderDetailRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ISlideRepository, SlideRepository>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
 
             services.AddEntityFrameworkSqlServer().AddDbContext<ShopWebsiteSqlContext>(options =>
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));

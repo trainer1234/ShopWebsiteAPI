@@ -91,6 +91,30 @@ namespace ShopWebsiteServerSide.Utils
             return errorLogView;
         }
 
+        public CustomerRating ParseCustomerRatingFrom(CustomerRatingViewModel customerRatingView)
+        {
+            var customerRating = new CustomerRating
+            {
+                ProductId = customerRatingView.ProductId,
+                UserId = customerRatingView.UserId,
+                Rating = customerRatingView.Rating
+            };
+
+            return customerRating;
+        }
+
+        public CustomerRatingViewModel ParseCustomerRatingViewFrom(CustomerRating customerRating)
+        {
+            var customerRatingView = new CustomerRatingViewModel
+            {
+                ProductId = customerRating.ProductId,
+                UserId = customerRating.UserId,
+                Rating = customerRating.Rating
+            };
+
+            return customerRatingView;
+        }
+
         public Product ParseProductFrom(ProductViewModel productView)
         {
             var product = new Product
@@ -155,7 +179,9 @@ namespace ShopWebsiteServerSide.Utils
                 Id = product.Id,
                 SpecificType = product.ProductSpecificType,
                 Type = product.Type,
-                Detail = product.Detail
+                Detail = product.Detail,
+                View = product.View,
+                PurchaseCounter = product.PurchaseCounter
             };
             productView.Manufacture.Id = product.ManufactureId;
             productView.Manufacture.Name = product.Manufacture.Name;

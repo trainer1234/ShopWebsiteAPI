@@ -14,6 +14,8 @@ namespace ShopWebsite.DAL.Models.ProductModels
         public string Detail { get; set; }
         public int ManufactureYear { get; set; }
         public long Price { get; set; }
+        public long View { get; set; } = 0;
+        public long PurchaseCounter { get; set; } = 0;
         public ProductType Type { get; set; }
         public ProductSpecificType ProductSpecificType { get; set; }
         public double PromotionRate { get; set; }
