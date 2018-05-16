@@ -39,8 +39,10 @@ namespace ShopWebsite.BLL.Implementations
 
         public async Task<List<User>> GetUserAsync()
         {
-            var result = await _userManager.Users.ToListAsync();
-            return result.FindAll(user => user.IsDisabled == false);
+            var result = await _userManager.Users.Include(user => user.UserHobbies)
+                                                    .ThenInclude(hobby => hobby.Manufacture)
+                                                    .ThenInclude(m => m.ManufactureTypes).ToListAsync();
+            return result;
         }
 
         public async Task<bool> SetUserAsync(User user)

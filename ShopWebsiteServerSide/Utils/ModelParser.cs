@@ -33,7 +33,10 @@ namespace ShopWebsiteServerSide.Utils
                 Id = user.Id,
                 AvatarUrl = user.AvatarUrl,
                 Role = new RoleViewModel(),
-                UserName = user.UserName
+                UserName = user.UserName,
+                Birthday = user.Birthday,
+                FullName = user.FullName,
+                Income = user.Income
             };
             userView.Role.Id = user.Role;
             if (user.Role == UserRole.Admin)
@@ -47,6 +50,27 @@ namespace ShopWebsiteServerSide.Utils
             else if (user.Role == UserRole.Staff)
             {
                 userView.Role.Name = "Nhân viên";
+            }
+            else
+            {
+                if(user.UserHobbies != null && user.UserHobbies.Count > 0)
+                {
+                    userView.Hobbies = new List<ManufactureViewModel>();
+                    foreach (var userHobby in user.UserHobbies)
+                    {
+                        var userHobbyView = new ManufactureViewModel
+                        {
+                            Id = userHobby.ManufactureId,
+                            Name = userHobby.Manufacture.Name,
+                            Types = new List<ProductType>()
+                        };
+                        foreach (var type in userHobby.Manufacture.ManufactureTypes)
+                        {
+                            userHobbyView.Types.Add(type.Type);
+                        }
+                        userView.Hobbies.Add(userHobbyView);
+                    }
+                }
             }
 
             return userView;

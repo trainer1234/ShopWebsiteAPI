@@ -23,7 +23,7 @@ namespace ShopWebsite.Common.Utils
                 List<double> WK = new List<double>();
                 for (int j = 0; j < latentFactorNumber; j++)
                 {
-                    WK.Add(rnd.Next(0, 5));
+                    WK.Add(rnd.NextDouble() * 5);
                 }
                 W.Add(WK);
             }
@@ -32,7 +32,7 @@ namespace ShopWebsite.Common.Utils
                 List<double> HK = new List<double>();
                 for (int j = 0; j < latentFactorNumber; j++)
                 {
-                    HK.Add(rnd.Next(0, 5));
+                    HK.Add(rnd.NextDouble() * 5);
                 }
                 H.Add(HK);
             }

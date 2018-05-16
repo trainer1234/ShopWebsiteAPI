@@ -81,6 +81,36 @@ namespace ShopWebsiteServerSide.Controllers
             }
         }
 
+        [Route("get-current")]
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentUser([FromHeader] string Authorization)
+        {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+
+            var result = new Result<UserViewModel>();
+            if (searchUser != null)
+            {
+                var parser = new ModelParser();
+                var userView = parser.ParseUserViewFrom(searchUser);
+
+                result.Content = userView;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                result.Succeed = false;
+                result.Errors = new Dictionary<int, string>();
+                result.Errors.Add(0, "No user");
+
+                return BadRequest(result);
+            }
+        }
+
         [Route("edit")]
         [HttpPut]
         public async Task<IActionResult> EditUser([FromHeader] string Authorization, [FromBody] UserViewModel newUserView)
