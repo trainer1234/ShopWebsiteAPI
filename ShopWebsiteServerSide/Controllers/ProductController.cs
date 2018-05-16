@@ -75,7 +75,7 @@ namespace ShopWebsiteServerSide.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("purchasecounter/get/{n}")]
+        [Route("purchasecounter/get/{n:int=10}")]
         public IActionResult GetTopNProductByPurchaseCounter(int n = 10)
         {
             var productService = GetService<IProductService>();
