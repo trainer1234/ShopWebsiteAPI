@@ -56,7 +56,7 @@ namespace ShopWebsite.BLL.Implementations
                         totalCost += product.Price * productMapOrder.ProductAmount;
                         totalAmount += productMapOrder.ProductAmount;
 
-                        product.PurchaseCounter++;
+                        product.PurchaseCounter += productMapOrder.ProductAmount;
                         await _productRepository.Edit(product);
 
                         await _productMapOrderDetailRepository.Add(productMapOrder);

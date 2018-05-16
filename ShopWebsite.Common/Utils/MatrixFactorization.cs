@@ -39,6 +39,7 @@ namespace ShopWebsite.Common.Utils
             while (true)
             {
                 double rmse = 0; // root mean squared error
+                long count = 0;
                 for (int i = 0; i < numberOfUser; i++)
                 {
                     for (int j = 0; j < numberOfItem; j++)
@@ -53,6 +54,7 @@ namespace ShopWebsite.Common.Utils
                             }
                             double error = currentRating - predictedRating;
                             rmse = rmse + error * error;
+                            count++;
                             for (int k = 0; k < latentFactorNumber; k++)
                             {
                                 W[i][k] = W[i][k] + learningRate * (error * H[j][k] - regularization * W[i][k]);
@@ -61,6 +63,7 @@ namespace ShopWebsite.Common.Utils
                         }
                     }
                 }
+                rmse = Math.Sqrt(rmse/count);
                 if (rmse <= threshold)
                 {
                     break;
