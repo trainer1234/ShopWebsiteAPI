@@ -38,7 +38,7 @@ namespace ShopWebsiteServerSide.Controllers
         }
 
         [HttpGet]
-        [Route("recommend/{n}")]
+        [Route("recommend/{n:int=5}")]
         public async Task<IActionResult> RecommendNProduct([FromHeader] string Authorization, int n)
         {
             var accountService = GetService<IAccountService>();
