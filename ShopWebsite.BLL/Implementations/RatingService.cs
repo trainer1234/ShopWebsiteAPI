@@ -2,6 +2,7 @@
 using ShopWebsite.Common.Models.BaseModels;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.CustomerModels;
+using ShopWebsite.DAL.Models.ProductModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +16,18 @@ namespace ShopWebsite.BLL.Implementations
         public RatingService(IRatingRepository ratingRepository)
         {
             _ratingRepository = ratingRepository;
+        }
+
+        public Result<List<Product>> GetTopNRecommendedProduct(string userId, int n)
+        {
+            var result = new Result<List<Product>>();
+
+            var recommendedProducts = _ratingRepository.GetNRecommendedProduct(userId, n);
+
+            result.Content = recommendedProducts;
+            result.Succeed = true;
+
+            return result;
         }
 
         public Result<CustomerRating> GetPastRating(string userId, string productId)

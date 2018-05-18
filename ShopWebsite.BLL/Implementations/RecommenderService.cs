@@ -60,7 +60,8 @@ namespace ShopWebsite.BLL.Implementations
                 MatrixFactorization matrixFactorization = new MatrixFactorization();
                 var twoMatrices = matrixFactorization.MatrixFactorization_SGD(MatrixFactorizationConstant.LatentFactorNumber,
                                     MatrixFactorizationConstant.LearningRate, MatrixFactorizationConstant.Regularization,
-                                    MatrixFactorizationConstant.Threshold, userItemRatingMatrix);
+                                    MatrixFactorizationConstant.Iteration, MatrixFactorizationConstant.Threshold, 
+                                    userItemRatingMatrix);
                 var W = twoMatrices.W;
                 var H = twoMatrices.H;
 

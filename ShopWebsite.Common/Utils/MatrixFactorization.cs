@@ -8,7 +8,7 @@ namespace ShopWebsite.Common.Utils
     public class MatrixFactorization
     {
         public (List<List<double>> W, List<List<double>> H) MatrixFactorization_SGD(int latentFactorNumber, 
-            double learningRate, double regularization, double threshold, List<List<double>> trainingMatrix)
+            double learningRate, double regularization, int iteration, double threshold, List<List<double>> trainingMatrix)
         {
             List<List<double>> W, H;
             W = new List<List<double>>();
@@ -36,7 +36,7 @@ namespace ShopWebsite.Common.Utils
                 }
                 H.Add(HK);
             }
-            while (true)
+            for (int iter = 0; iter < iteration; iter++)
             {
                 double rmse = 0; // root mean squared error
                 long count = 0;
@@ -64,10 +64,10 @@ namespace ShopWebsite.Common.Utils
                     }
                 }
                 rmse = Math.Sqrt(rmse/count);
-                if (rmse <= threshold)
-                {
-                    break;
-                }
+                //if (rmse <= threshold)
+                //{
+                //    break;
+                //}
             }
 
             return (W, H);

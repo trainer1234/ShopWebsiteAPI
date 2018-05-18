@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsiteServerSide.Models.CustomerModels;
+using ShopWebsiteServerSide.Models.ProductModels;
 using ShopWebsiteServerSide.Utils;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,42 @@ namespace ShopWebsiteServerSide.Controllers
             var serviceResult = ratingService.Update(customerRating);
 
             return Ok(serviceResult);
+        }
+
+        [HttpGet]
+        [Route("recommend/{n}")]
+        public async Task<IActionResult> RecommendNProduct([FromHeader] string Authorization, int n)
+        {
+            var accountService = GetService<IAccountService>();
+            var users = await accountService.GetUserAsync();
+            var token = SplitAuthorizationHeader(Authorization);
+            var searchUser = users.Find(user => user.AuthToken == token);
+
+            var ratingService = GetService<IRatingService>();
+
+            var parser = new ModelParser();
+
+            var serviceResult = ratingService.GetTopNRecommendedProduct(searchUser.Id, n);
+            if (serviceResult.Succeed)
+            {
+                var result = new Result<List<ProductViewModel>>();
+                var productViews = new List<ProductViewModel>();
+
+                foreach (var product in serviceResult.Content)
+                {
+                    var productView = parser.ParseProductViewFrom(product);
+                    productViews.Add(productView);
+                }
+
+                result.Content = productViews;
+                result.Succeed = true;
+
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(serviceResult);
+            }
         }
 
         [HttpGet]
