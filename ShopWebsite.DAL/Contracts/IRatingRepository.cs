@@ -1,4 +1,5 @@
-﻿using ShopWebsite.DAL.Models.CustomerModels;
+﻿using ShopWebsite.DAL.Models.AccountModels;
+using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace ShopWebsite.DAL.Contracts
     {
         void Update(CustomerRating customerRating);
         CustomerRating GetPastRating(string userId, string productId);
-        List<Product> GetNRecommendedProduct(string userId, int n);
+        List<Product> GetNRecommendedProduct(User user, int n);
     }
 }

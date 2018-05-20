@@ -1,6 +1,7 @@
 ﻿using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
 using ShopWebsite.DAL.Contracts;
+using ShopWebsite.DAL.Models.AccountModels;
 using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using System;
@@ -18,11 +19,11 @@ namespace ShopWebsite.BLL.Implementations
             _ratingRepository = ratingRepository;
         }
 
-        public Result<List<Product>> GetTopNRecommendedProduct(string userId, int n)
+        public Result<List<Product>> GetTopNRecommendedProduct(User user, int n)
         {
             var result = new Result<List<Product>>();
 
-            var recommendedProducts = _ratingRepository.GetNRecommendedProduct(userId, n);
+            var recommendedProducts = _ratingRepository.GetNRecommendedProduct(user, n);
 
             result.Content = recommendedProducts;
             result.Succeed = true;

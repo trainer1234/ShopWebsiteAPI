@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Context;
 using ShopWebsite.DAL.Contracts;
+using ShopWebsite.DAL.Models.AccountModels;
 using ShopWebsite.DAL.Models.CustomerModels;
 using ShopWebsite.DAL.Models.ProductModels;
 using System;
@@ -82,13 +85,39 @@ namespace ShopWebsite.DAL.Implementations
             }
         }
 
-        public List<Product> GetNRecommendedProduct(string userId, int n)
+        public List<Product> GetNRecommendedProduct(User user, int n)
         {
-            var userItemPredicts = _context.UserItemPredicts.Include(p => p.Product)
-                .Where(p => p.UserId == userId).OrderByDescending(p => p.PredictedRating).Take(n)
-                .Select(p => p.Product).ToList();
+            var userItemPredicts = _context.UserItemPredicts
+                                        .Include(p => p.Product)
+                                            .ThenInclude(prod => prod.ProductImages)
+                                        .Include(p => p.Product)
+                                            .ThenInclude(product => product.Manufacture)
+                                                .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                        .Include(p => p.Product)
+                                            .ThenInclude(product => product.ProductProperties)
+                                                .ThenInclude(property => property.Property)
+                                    .Where(p => p.UserId == user.Id).ToList();
 
-            return userItemPredicts;
+            for (int i = 0; i < userItemPredicts.Count; i++)
+            {
+                foreach (var hobby in user.UserHobbies)
+                {
+                    if (hobby.ManufactureId == userItemPredicts[i].Product.ManufactureId)
+                    {
+                        userItemPredicts[i].PredictedRating += 0.5;
+                        break;
+                    }
+                }
+
+                var income = IncomeValue.GetIncomeLimitValue(user.Income);
+                var productPrice = userItemPredicts[i].Product.Price;
+                if (income >= productPrice)
+                {
+                    userItemPredicts[i].PredictedRating += 0.5;
+                }
+            }
+
+            return userItemPredicts.OrderByDescending(p => p.PredictedRating).Take(n).Select(p => p.Product).ToList();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace ShopWebsiteServerSide.Controllers
 
             var parser = new ModelParser();
 
-            var serviceResult = ratingService.GetTopNRecommendedProduct(searchUser.Id, n);
+            var serviceResult = ratingService.GetTopNRecommendedProduct(searchUser, n);
             if (serviceResult.Succeed)
             {
                 var result = new Result<List<ProductViewModel>>();
