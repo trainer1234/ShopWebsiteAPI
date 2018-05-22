@@ -1,6 +1,7 @@
 ﻿using ShopWebsite.Common.Models.TrainingModels;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace ShopWebsite.Common.Utils
@@ -36,9 +37,10 @@ namespace ShopWebsite.Common.Utils
                 }
                 H.Add(HK);
             }
+            double rmse = 0;
             for (int iter = 0; iter < iteration; iter++)
             {
-                double rmse = 0; // root mean squared error
+                rmse = 0; // root mean squared error
                 long count = 0;
                 for (int i = 0; i < numberOfUser; i++)
                 {
@@ -63,6 +65,7 @@ namespace ShopWebsite.Common.Utils
                         }
                     }
                 }
+
                 rmse = Math.Sqrt(rmse/count);
                 //if (rmse <= threshold)
                 //{
