@@ -13,7 +13,7 @@ namespace ShopWebsite.BLL.Contracts
     {
         Task<List<User>> GetUserAsync();
         Task<bool> SetUserAsync(User user);
-        Task<Result<bool>> EditUser(UserViewModel newUserView);
+        Task<Result<bool>> EditUser(UserPostViewModel newUserView);
         Task<Result<bool>> RemoveUser(string userName);
         Task<Result<bool>> SignIn(SignInModel signInModel);
         Result<bool> SignOut(User user);

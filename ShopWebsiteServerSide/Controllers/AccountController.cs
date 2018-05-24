@@ -113,7 +113,7 @@ namespace ShopWebsiteServerSide.Controllers
 
         [Route("edit")]
         [HttpPut]
-        public async Task<IActionResult> EditUser([FromHeader] string Authorization, [FromBody] UserViewModel newUserView)
+        public async Task<IActionResult> EditUser([FromHeader] string Authorization, [FromBody] UserPostViewModel newUserView)
         {
             var accountService = GetService<IAccountService>();
             var users = await accountService.GetUserAsync();

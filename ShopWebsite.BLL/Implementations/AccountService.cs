@@ -54,7 +54,7 @@ namespace ShopWebsite.BLL.Implementations
             return result.Succeeded;
         }
 
-        public async Task<Result<bool>> EditUser(UserViewModel newUserView)
+        public async Task<Result<bool>> EditUser(UserPostViewModel newUserView)
         {
             var userExist = await _userManager.FindByNameAsync(newUserView.UserName);
             var result = new Result<bool>();
@@ -62,7 +62,7 @@ namespace ShopWebsite.BLL.Implementations
             {
                 if (userExist != null)
                 {
-                    userExist.Role = newUserView.Role.Id;
+                    userExist.Role = newUserView.Role;
                     userExist.AvatarUrl = newUserView.AvatarUrl;
                     userExist.Income = newUserView.Income;
                     userExist.FullName = newUserView.FullName;
@@ -85,7 +85,12 @@ namespace ShopWebsite.BLL.Implementations
                         }
                         foreach (var hobby in newUserView.Hobbies)
                         {
-                            _context.Add(hobby);
+                            var userHobby = new UserHobby
+                            {
+                                ManufactureId = hobby.Id,
+                                UserId = userExist.Id
+                            };
+                            _context.Add(userHobby);
                         }
 
                         _context.SaveChanges();
