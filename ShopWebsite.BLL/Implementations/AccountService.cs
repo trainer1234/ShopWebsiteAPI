@@ -231,7 +231,7 @@ namespace ShopWebsite.BLL.Implementations
 
         public async Task<Result<bool>> AddAccount(SignUpModel signUpModel)
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = _context.Users.OrderBy(user => user.Index).ToList();
             var searchUser = users.Find(user => user.UserName == signUpModel.Username);
             var result = new Result<bool>();
             if (searchUser == null)
