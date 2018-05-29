@@ -23,7 +23,7 @@ namespace ShopWebsite.Common.Utils
             }
             else
             {
-                return 15000001;
+                return Int64.MaxValue;
             }
         }
     }
