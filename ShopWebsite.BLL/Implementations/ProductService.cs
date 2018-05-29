@@ -16,16 +16,19 @@ namespace ShopWebsite.BLL.Implementations
         private IProductImageRepository _productImageRepository;
         private IProductPropertyRepository _productPropertyRepository;
         private IProductMapOrderDetailRepository _productMapOrderDetailRepository;
+        private IRecommenderService _recommenderService;
 
         public ProductService(IProductRepository productRepository, IErrorLogRepository errorLogRepository,
             IProductImageRepository productImageRepository, IProductPropertyRepository productPropertyRepository,
-            IProductMapOrderDetailRepository productMapOrderDetailRepository)
+            IProductMapOrderDetailRepository productMapOrderDetailRepository, IRecommenderService recommenderService)
         {
             _productRepository = productRepository;
             _errorLogRepository = errorLogRepository;
             _productImageRepository = productImageRepository;
             _productPropertyRepository = productPropertyRepository;
             _productMapOrderDetailRepository = productMapOrderDetailRepository;
+
+            _recommenderService = recommenderService;
         }
 
         public async Task<Result<bool>> AddProduct(Product newProduct)
@@ -37,8 +40,8 @@ namespace ShopWebsite.BLL.Implementations
                 var productImageTmps = newProduct.ProductImages;
                 newProduct.ProductImages = null;
                 newProduct.ProductProperties = null;
-                var addResult = await _productRepository.Add(newProduct);
-                if (addResult)
+                var newProductId = await _productRepository.Add(newProduct);
+                if (newProductId != null)
                 {
                     if (productImageTmps != null && productImageTmps.Count > 0)
                     {
@@ -56,6 +59,10 @@ namespace ShopWebsite.BLL.Implementations
                             await _productPropertyRepository.Add(productProp);
                         }
                     }
+
+                    _recommenderService.UpdateItemLatentFactorMatrixWhenAddingNewItem(newProductId);
+                    _recommenderService.RecomendNewItem(newProductId);
+
                     result.Succeed = true;
                     result.Content = true;
                 }

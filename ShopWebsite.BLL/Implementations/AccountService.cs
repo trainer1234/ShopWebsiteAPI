@@ -20,6 +20,7 @@ namespace ShopWebsite.BLL.Implementations
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private IErrorLogRepository _errorLogRepository;
+        private IRecommenderService _recommenderService;
         //private IActivityLogRepository _activityLogRepository;
         //private IUserImageRepository _userImageRepository;
         private readonly ShopWebsiteSqlContext _context;
@@ -29,12 +30,13 @@ namespace ShopWebsite.BLL.Implementations
         }
 
         public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, ShopWebsiteSqlContext context,
-            IErrorLogRepository errorLogRepository)
+            IErrorLogRepository errorLogRepository, IRecommenderService recommenderService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _errorLogRepository = errorLogRepository;
+            _recommenderService = recommenderService;
         }
 
         public async Task<List<User>> GetUserAsync()
@@ -237,6 +239,7 @@ namespace ShopWebsite.BLL.Implementations
                 var user = new User()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Index = users[users.Count - 1].Index + 1,
                     IsDisabled = false,
                     AvatarUrl = signUpModel.AvatartUrl,
                     UserName = signUpModel.Username,
@@ -284,6 +287,9 @@ namespace ShopWebsite.BLL.Implementations
 
                             _context.SaveChanges();
                         }
+
+                        _recommenderService.UpdateUserLatentFactorMatrixWhenAddingNewUser(userId);
+                        _recommenderService.RecommendNewUser(userId);
 
                         result.Succeed = true;
                         result.Content = true;

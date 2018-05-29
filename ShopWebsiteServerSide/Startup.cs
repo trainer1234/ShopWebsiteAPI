@@ -60,6 +60,7 @@ namespace ShopWebsiteServerSide
             services.AddTransient<IProductOrderService, ProductOrderService>();
             services.AddTransient<ISlideService, SlideService>();
             services.AddTransient<IRatingService, RatingService>();
+            services.AddTransient<IRecommenderService, RecommenderService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();

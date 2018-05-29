@@ -12,9 +12,10 @@ using System;
 namespace ShopWebsite.DAL.Migrations
 {
     [DbContext(typeof(ShopWebsiteSqlContext))]
-    partial class ShopWebsiteSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20180529054546_UpdateUserIndex")]
+    partial class UpdateUserIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,8 +395,6 @@ namespace ShopWebsite.DAL.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Detail");
-
-                    b.Property<int>("Index");
 
                     b.Property<bool>("IsDisabled");
 

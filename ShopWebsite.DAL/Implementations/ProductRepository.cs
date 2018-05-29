@@ -18,12 +18,16 @@ namespace ShopWebsite.DAL.Implementations
             _context = context;
         }
 
-        public async Task<bool> Add(Product newProduct)
+        public async Task<string> Add(Product newProduct)
         {
+            var products = _context.Products.OrderBy(product => product.Index)
+                .Select(product => product.Index).ToList();
+            newProduct.Index = products[products.Count - 1];
+
             _context.Add(newProduct);
             _context.SaveChanges();
 
-            return true;
+            return newProduct.Id;
         }
 
         public async Task<bool> Edit(Product newProduct)

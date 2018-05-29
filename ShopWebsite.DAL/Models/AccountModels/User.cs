@@ -9,6 +9,7 @@ namespace ShopWebsite.DAL.Models.AccountModels
 {
     public class User : IdentityUser
     {
+        public int Index { get; set; }
         public string AuthToken { get; set; }
         public string AvatarUrl { get; set; }
         public string FullName { get; set; }

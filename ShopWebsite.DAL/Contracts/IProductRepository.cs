@@ -9,7 +9,7 @@ namespace ShopWebsite.DAL.Contracts
 {
     public interface IProductRepository
     {
-        Task<bool> Add(Product newProduct);
+        Task<string> Add(Product newProduct);
         Task<bool> Edit(Product newProduct);
         Task<bool> Remove(string productId);
         Task<bool> IncreaseRemain(string productId, long amount);
