@@ -200,7 +200,7 @@ namespace ShopWebsite.BLL.Implementations
                     {
                         Row = searchUserIndex,
                         Column = i,
-                        CellValue = 1
+                        CellValue = 0
                     });
                 }
                 _context.SaveChanges();
@@ -224,7 +224,7 @@ namespace ShopWebsite.BLL.Implementations
                     {
                         Row = searchItemIndex,
                         Column = i,
-                        CellValue = 1
+                        CellValue = 0
                     });
                 }
                 _context.SaveChanges();
