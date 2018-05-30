@@ -67,10 +67,10 @@ namespace ShopWebsite.Common.Utils
                 }
 
                 rmse = Math.Sqrt(rmse/count);
-                //if (rmse <= threshold)
-                //{
-                //    break;
-                //}
+                if (rmse <= threshold)
+                {
+                    //break;
+                }
             }
 
             return (W, H);

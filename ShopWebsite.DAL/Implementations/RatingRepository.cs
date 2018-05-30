@@ -117,7 +117,8 @@ namespace ShopWebsite.DAL.Implementations
                 }
             }
 
-            return userItemPredicts.OrderByDescending(p => p.PredictedRating).Take(n).Select(p => p.Product).ToList();
+            return userItemPredicts.OrderByDescending(p => p.PredictedRating).Take(n)
+                .OrderByDescending(p => p.Product.Price).Select(p => p.Product).ToList();
         }
     }
 }
