@@ -46,6 +46,7 @@ namespace ShopWebsite.DAL.Implementations
                 searchProduct.ManufactureId = newProduct.ManufactureId;
                 searchProduct.PromotionRate = newProduct.PromotionRate;
                 searchProduct.Name = newProduct.Name;
+                searchProduct.Alias = newProduct.Alias;
                 searchProduct.Price = newProduct.Price;
                 searchProduct.ProductSpecificType = newProduct.ProductSpecificType;
                 searchProduct.Type = newProduct.Type;

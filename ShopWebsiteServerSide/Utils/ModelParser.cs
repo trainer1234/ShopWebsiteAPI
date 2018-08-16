@@ -145,6 +145,7 @@ namespace ShopWebsiteServerSide.Utils
             {
                 ManufactureYear = productView.ManufactureYear,
                 Name = productView.Name,
+                Alias = productView.Alias,
                 Price = productView.Price,
                 Type = productView.Type,
                 ProductSpecificType = productView.SpecificType,
@@ -198,6 +199,8 @@ namespace ShopWebsiteServerSide.Utils
                 Manufacture = new ManufactureViewModel(),
                 ManufactureYear = product.ManufactureYear,
                 Name = product.Name,
+                Index = product.Index,
+                Alias = product.Alias,
                 Price = product.Price,
                 Remain = product.Remain,
                 Id = product.Id,

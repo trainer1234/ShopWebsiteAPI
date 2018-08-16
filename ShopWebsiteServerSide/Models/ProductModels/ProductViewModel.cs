@@ -11,7 +11,9 @@ namespace ShopWebsiteServerSide.Models.ProductModels
     public class ProductViewModel
     {
         public string Id { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
+        public string Alias { get; set; }
         public string Detail { get; set; }
         public int ManufactureYear { get; set; }
         public long Price { get; set; }

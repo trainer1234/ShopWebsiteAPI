@@ -12,6 +12,7 @@ namespace ShopWebsite.DAL.Models.ProductModels
         public int Index { get; set; }
         public string ManufactureId { get; set; }
         public string Name { get; set; }
+        public string Alias { get; set; }
         public string Detail { get; set; }
         public int ManufactureYear { get; set; }
         public long Price { get; set; }
