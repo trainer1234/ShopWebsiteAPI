@@ -48,6 +48,8 @@ namespace ShopWebsiteServerSide
             ConnectionStringOption.ConnectionString = _config.GetConnectionString("DefaultConnection");
             ImageDirectoryOption.Original = _config.GetSection("ImageDirectory").GetValue(typeof(string), "Original").ToString();
             ImageUrlOption.Original = _config.GetSection("ImageUrl").GetValue(typeof(string), "Original").ToString();
+            PaypalAuthOption.PayPalClientId = _config.GetValue<string>("PaypalClientId");
+            PaypalAuthOption.PayPalClientSecret = _config.GetValue<string>("PaypalClientSecret");
 
             services.AddSingleton(_config);
 
@@ -61,6 +63,7 @@ namespace ShopWebsiteServerSide
             services.AddTransient<ISlideService, SlideService>();
             services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IRecommenderService, RecommenderService>();
+            services.AddTransient<IPaypalService, PaypalService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();

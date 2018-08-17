@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopWebsite.DAL", "ShopWebs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopWebsite.Common", "ShopWebsite.Common\ShopWebsite.Common.csproj", "{A4790431-CDD2-4D86-9F70-1BEDF699B570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecommenderSystemTraining", "RecommenderSystemTraining\RecommenderSystemTraining.csproj", "{765EF67F-3311-446F-B679-C53C0A114D36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecommenderSystemTraining", "RecommenderSystemTraining\RecommenderSystemTraining.csproj", "{765EF67F-3311-446F-B679-C53C0A114D36}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPalCore", "PayPalCore\PayPalCore.csproj", "{10BF555A-E588-4D57-8632-68935E1ED97F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{765EF67F-3311-446F-B679-C53C0A114D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{765EF67F-3311-446F-B679-C53C0A114D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{765EF67F-3311-446F-B679-C53C0A114D36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10BF555A-E588-4D57-8632-68935E1ED97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10BF555A-E588-4D57-8632-68935E1ED97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10BF555A-E588-4D57-8632-68935E1ED97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10BF555A-E588-4D57-8632-68935E1ED97F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
