@@ -51,7 +51,7 @@ class BaoKimPayment
     /**
      * Hàm xây dựng url chuyển đến BaoKim.vn thực hiện thanh toán, trong đó có tham số mã hóa (còn gọi là public key)
      * @param $order_id				Mã đơn hàng
-     * @param $business 			Email tài khoản người bán
+     * @param $business 			Email tài khoản người bán = game020695@gmail.com
      * @param $total_amount			Giá trị đơn hàng
      * @param $shipping_fee			Phí vận chuyển
      * @param $tax_fee				Thuế
