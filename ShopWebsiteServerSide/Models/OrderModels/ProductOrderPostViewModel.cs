@@ -15,6 +15,7 @@ namespace ShopWebsiteServerSide.Models.OrderModels
         public double TotalCost { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         public CustomerViewModel Customer { get; set; }
         public List<ProductOfProductOrderPostViewModel> Products { get; set; }
     }

@@ -126,6 +126,21 @@ namespace ShopWebsite.DAL.Implementations
             return products;
         }
 
+        public async Task<Product> GetBy(int productIndex)
+        {
+            var products = await _context.Products.Where(product => product.Index == productIndex)
+                                    .Include(product => product.ProductImages)
+                                    .Include(product => product.Manufacture)
+                                        .ThenInclude(manufacture => manufacture.ManufactureTypes)
+                                    .Include(product => product.ProductProperties)
+                                        .ThenInclude(property => property.Property).ToListAsync();
+            if (products != null && products.Count > 0)
+            {
+                return products[0];
+            }
+            return null;
+        }
+
         public async Task<Product> GetBy(string productId)
         {
             var products = await _context.Products.Where(product => product.Id == productId)

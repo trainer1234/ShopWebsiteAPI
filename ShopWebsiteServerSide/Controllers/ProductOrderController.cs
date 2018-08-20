@@ -37,7 +37,25 @@ namespace ShopWebsiteServerSide.Controllers
             var parser = new ModelParser();
             var productOrder = parser.ParseProductOrderFrom(productOrderView);
 
-            var serviceResult = await productOrderService.AddProductOrder(productOrder);
+            var serviceResult = await productOrderService.AddProductOrder(productOrder, productOrderView.PaymentMethod);
+            if (serviceResult.Succeed)
+            {
+                return Ok(serviceResult);
+            }
+            else
+            {
+                return BadRequest(serviceResult);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("execute-paypal")]
+        public async Task<IActionResult> ExecutePaymentFromPaypal(string paymentId, string payerId)
+        {
+            var productOrderService = GetService<IProductOrderService>();
+            var serviceResult = await productOrderService.AddProductOrderPaypal(paymentId, payerId);
+
             if (serviceResult.Succeed)
             {
                 return Ok(serviceResult);

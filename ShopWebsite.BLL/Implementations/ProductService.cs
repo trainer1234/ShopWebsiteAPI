@@ -256,12 +256,12 @@ namespace ShopWebsite.BLL.Implementations
             return result;
         }
 
-        public async Task<Result<Product>> GetProductBy(string productId)
+        public async Task<Result<Product>> GetProductBy(int productIndex)
         {
             var result = new Result<Product>();
             try
             {
-                var product = await _productRepository.GetBy(productId);
+                var product = await _productRepository.GetBy(productIndex);
                 if (product != null)
                 {
                     product.View++;

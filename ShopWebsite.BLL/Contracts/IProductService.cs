@@ -19,7 +19,7 @@ namespace ShopWebsite.BLL.Contracts
         Task<Result<List<Product>>> GetAllProductBy(ProductType type);
         Result<List<Product>> GetTopNProductByView(int n);
         Result<List<Product>> GetTopNProductByPurchaseCounter(int n);
-        Task<Result<Product>> GetProductBy(string productId);
+        Task<Result<Product>> GetProductBy(int productIndex);
         Task<Result<List<Product>>> SearchProduct(string key);
     }
 }

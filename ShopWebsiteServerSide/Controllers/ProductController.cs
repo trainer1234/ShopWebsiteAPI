@@ -103,11 +103,11 @@ namespace ShopWebsiteServerSide.Controllers
         }
 
         [AllowAnonymous]
-        [Route("get/{id}")]
-        public async Task<IActionResult> GetProductBy(string id)
+        [Route("get/{index}")]
+        public async Task<IActionResult> GetProductBy(int index)
         {
             var productService = GetService<IProductService>();
-            var serviceResult = await productService.GetProductBy(id);
+            var serviceResult = await productService.GetProductBy(index);
 
             if (serviceResult.Succeed)
             {
