@@ -21,10 +21,10 @@ class BaoKimPayment
     private string baokim_url = "https://www.baokim.vn/payment/customize_payment/order";
 
     //Mã merchant site
-    private string merchant_id = "100001";	//Thay bằng mã merchant site bạn đã đăng ký trên BaoKim.vn
+    private string merchant_id = "34095";	//Thay bằng mã merchant site bạn đã đăng ký trên BaoKim.vn
 
     //Mật khẩu bảo mật
-    private string secure_pass = "DED01D1CFF3BE2767196FF0080F6DB6D5C";	//Thay bằng mật khẩu giao tiếp giữa website của bạn với BaoKim.vn
+    private string secure_pass = "47ac8dfc642a5b85";	//Thay bằng mật khẩu giao tiếp giữa website của bạn với BaoKim.vn
 
     /**
      * Hàm thực hiện việc mã hóa, tạo khóa trên đường dẫn
