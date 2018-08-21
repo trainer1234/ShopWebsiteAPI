@@ -1,13 +1,17 @@
-﻿using PayPal.Api;
+﻿using Newtonsoft.Json;
+using PayPal.Api;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
+using ShopWebsite.Common.Models.CurrencyConverterApi;
 using ShopWebsite.Common.Models.Enums;
 using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.CustomerModels;
+using ShopWebsite.DAL.Models.ProductModels;
 using ShopWebsite.DAL.Models.ProductOrderModels;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,6 +87,20 @@ namespace ShopWebsite.BLL.Implementations
                 }
                 else if (paymentMethod == PaymentMethod.Paypal)
                 {
+                    double exchangeRate = 0;
+                    using (var client = new HttpClient())
+                    {
+                        var uri = "http://free.currencyconverterapi.com/api/v5/convert?q=VND_USD&compact=y";
+                        var response = await client.GetAsync(uri);
+                        response.EnsureSuccessStatusCode();
+                        var jsonStringResult = await response.Content.ReadAsStringAsync();
+                        var converter = JsonConvert.DeserializeObject<CurrencyConverter>(jsonStringResult);
+                        if (converter.VND_USD != null)
+                        {
+                            exchangeRate = converter.VND_USD.val;
+                        }
+                    }
+
                     var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;
                     if (productMapOrderDetailTmp != null && productMapOrderDetailTmp.Count > 0)
                     {
@@ -90,7 +108,14 @@ namespace ShopWebsite.BLL.Implementations
                         foreach (var productMapOrder in newProductOrder.ProductMapOrderDetails)
                         {
                             var product = await _productRepository.GetBy(productMapOrder.ProductId);
-                            totalCost += (long)(product.Price - product.Price * product.PromotionRate) * productMapOrder.ProductAmount;
+                            productMapOrder.Product = new Product
+                            {
+                                Price = (long)(product.Price * exchangeRate),
+                                PromotionRate = product.PromotionRate,
+                                Id = product.Id,
+                                Name = product.Name
+                            };
+                            totalCost += (long)(product.Price * exchangeRate - product.Price * product.PromotionRate * exchangeRate) * productMapOrder.ProductAmount;
                             totalAmount += productMapOrder.ProductAmount;
                         }
                         newProductOrder.ProductTotalAmount = totalAmount;
@@ -154,21 +179,26 @@ namespace ShopWebsite.BLL.Implementations
 
                 var orderId = _productOrderRepository.Add(newProductOrder);
 
-                long totalCost = long.Parse(executedPayment.transactions[0].amount.total);
+                long totalCost = 0;
+                //long totalCost = (long)(long.Parse(executedPayment.transactions[0].amount.total) / exchangeRate);
                 long totalAmount = 0;
                 var products = executedPayment.transactions[0].item_list.items;
+                newProductOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
                 foreach (var item in products)
                 {
                     var product = await _productRepository.GetBy(item.sku); // item.sku => product.id
                     var quantity = long.Parse(item.quantity);
+                    totalCost += (long)(product.Price - product.Price * product.PromotionRate) * quantity;
                     totalAmount += quantity;
                     product.PurchaseCounter += quantity;
 
                     var productMapOrder = new ProductMapOrderDetail
                     {
                         ProductId = product.Id,
-                        ProductOrderId = orderId
+                        ProductOrderId = orderId,
+                        ProductAmount = quantity
                     };
+                    newProductOrder.ProductMapOrderDetails.Add(productMapOrder);
                     await _productRepository.Edit(product);
 
                     await _productMapOrderDetailRepository.Add(productMapOrder);

@@ -19,6 +19,11 @@ namespace ShopWebsite.BLL.Implementations
                 intent = intent,
                 payer = new Payer() { payment_method = "paypal" },
                 transactions = GetTransactionsList(productOrder),
+                redirect_urls = new RedirectUrls
+                {
+                    return_url = "https://www.ee.ncnu.edu.tw:9999/product-order-search",
+                    cancel_url = "https://www.ee.ncnu.edu.tw:9999/product-order-search",
+                }
             };
 
             var createdPayment = payment.Create(apiContext);

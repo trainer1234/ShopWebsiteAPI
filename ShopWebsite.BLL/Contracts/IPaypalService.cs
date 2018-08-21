@@ -11,5 +11,6 @@ namespace ShopWebsite.BLL.Contracts
         Payment CreatePayment(ProductOrder productOrder, string intent);
 
         Payment ExecutePayment(string paymentId, string payerId);
+        //List<Transaction> GetTransactionsList(ProductOrder productOrder);
     }
 }
