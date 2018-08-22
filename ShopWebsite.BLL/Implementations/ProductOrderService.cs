@@ -26,10 +26,11 @@ namespace ShopWebsite.BLL.Implementations
         private ICustomerRepository _customerRepository;
 
         private IPaypalService _paypalService;
+        private IEmailService _emailService;
 
         public ProductOrderService(IProductOrderRepository productOrderRepository, IErrorLogRepository errorLogRepository,
             IProductMapOrderDetailRepository productMapOrderDetailRepository, IProductRepository productRepository,
-            ICustomerRepository customerRepository, IPaypalService paypalService)
+            ICustomerRepository customerRepository, IPaypalService paypalService, IEmailService emailService)
         {
             _productOrderRepository = productOrderRepository;
             _errorLogRepository = errorLogRepository;
@@ -37,6 +38,7 @@ namespace ShopWebsite.BLL.Implementations
             _customerRepository = customerRepository;
             _productMapOrderDetailRepository = productMapOrderDetailRepository;
             _paypalService = paypalService;
+            _emailService = emailService;
         }
 
         public async Task<Result<ProductOrderPaypalResult>> AddProductOrder(ProductOrder newProductOrder, PaymentMethod paymentMethod)

@@ -71,6 +71,7 @@ namespace ShopWebsiteServerSide
             services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IRecommenderService, RecommenderService>();
             services.AddTransient<IPaypalService, PaypalService>();
+            services.AddTransient<IEmailService, EmailService>();
 
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
