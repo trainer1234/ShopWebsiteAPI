@@ -341,7 +341,8 @@ namespace ShopWebsiteServerSide.Utils
             var productOrder = new ProductOrder
             {
                 OrderStatus = productOrderView.OrderStatus,
-                Customer = customer
+                Customer = customer,
+                PaymentMethod = productOrderView.PaymentMethod
             };
             if (productOrderView.OrderId != null)
             {
@@ -410,7 +411,8 @@ namespace ShopWebsiteServerSide.Utils
                 OrderId = productOrder.OrderId,
                 OrderStatus = productOrder.OrderStatus,
                 ProductAmount = productOrder.ProductTotalAmount,
-                TotalCost = productOrder.TotalCost
+                TotalCost = productOrder.TotalCost,
+                PaymentMethod = productOrder.PaymentMethod
             };
             if (productOrder.ProductMapOrderDetails != null && productOrder.ProductMapOrderDetails.Count > 0)
             {

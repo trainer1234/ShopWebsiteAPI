@@ -12,7 +12,7 @@ namespace ShopWebsite.BLL.Implementations
     {
         public Payment CreatePayment(ProductOrder productOrder, string intent)
         {
-            var apiContext = new APIContext(new OAuthTokenCredential(PaypalAuthOption.PayPalClientId, PaypalAuthOption.PayPalClientSecret).GetAccessToken());
+            var apiContext = new APIContext(new OAuthTokenCredential(PaypalOption.ClientId, PaypalOption.ClientSecret).GetAccessToken());
 
             var payment = new Payment
             {
@@ -21,8 +21,8 @@ namespace ShopWebsite.BLL.Implementations
                 transactions = GetTransactionsList(productOrder),
                 redirect_urls = new RedirectUrls
                 {
-                    return_url = "https://www.ee.ncnu.edu.tw:9999/product-order-search",
-                    cancel_url = "https://www.ee.ncnu.edu.tw:9999/product-order-search",
+                    return_url = PaypalOption.ReturnUrl,
+                    cancel_url = PaypalOption.CancelUrl
                 }
             };
 
@@ -53,7 +53,7 @@ namespace ShopWebsite.BLL.Implementations
             }
             transactionList.Add(new Transaction()
             {
-                description = "Transaction description.",
+                description = PaypalOption.TransactionDescription,
                 invoice_number = productOrder.OrderId,
                 amount = new Amount()
                 {
@@ -73,10 +73,10 @@ namespace ShopWebsite.BLL.Implementations
                 payee = new Payee
                 {
                     // TODO.. Enter the payee email address here
-                    email = "karma.doityourself-facilitator@gmail.com",
+                    email = PaypalOption.PayeeEmail,
 
                     // TODO.. Enter the merchant id here
-                    merchant_id = "HK2P53P3SDQCY"
+                    merchant_id = PaypalOption.PayeeMerchantId
                 }
             });
 
@@ -85,7 +85,7 @@ namespace ShopWebsite.BLL.Implementations
 
         public Payment ExecutePayment(string paymentId, string payerId)
         {
-            var apiContext = new APIContext(new OAuthTokenCredential(PaypalAuthOption.PayPalClientId, PaypalAuthOption.PayPalClientSecret).GetAccessToken());
+            var apiContext = new APIContext(new OAuthTokenCredential(PaypalOption.ClientId, PaypalOption.ClientSecret).GetAccessToken());
 
             var paymentExecution = new PaymentExecution() { payer_id = payerId };
 

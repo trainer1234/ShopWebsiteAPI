@@ -16,6 +16,7 @@ namespace ShopWebsite.DAL.Models.ProductOrderModels
         public long TotalCost { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         public Customer Customer { get; set; }
         public List<ProductMapOrderDetail> ProductMapOrderDetails { get; set; }
         public bool IsDisabled { get; set; } = false;

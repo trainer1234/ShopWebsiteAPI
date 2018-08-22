@@ -48,8 +48,15 @@ namespace ShopWebsiteServerSide
             ConnectionStringOption.ConnectionString = _config.GetConnectionString("DefaultConnection");
             ImageDirectoryOption.Original = _config.GetSection("ImageDirectory").GetValue(typeof(string), "Original").ToString();
             ImageUrlOption.Original = _config.GetSection("ImageUrl").GetValue(typeof(string), "Original").ToString();
-            PaypalAuthOption.PayPalClientId = _config.GetValue<string>("PaypalClientId");
-            PaypalAuthOption.PayPalClientSecret = _config.GetValue<string>("PaypalClientSecret");
+            //PaypalAuthOption.PayPalClientId = _config.GetValue<string>("PaypalClientId");
+            //PaypalAuthOption.PayPalClientSecret = _config.GetValue<string>("PaypalClientSecret");
+            PaypalOption.ClientId = _config.GetSection("Paypal").GetValue<string>("PaypalClientId");
+            PaypalOption.ClientSecret = _config.GetSection("Paypal").GetValue<string>("PaypalClientSecret");
+            PaypalOption.PayeeEmail = _config.GetSection("Paypal").GetSection("Payee").GetValue<string>("email");
+            PaypalOption.PayeeMerchantId = _config.GetSection("Paypal").GetSection("Payee").GetValue<string>("merchant_id");
+            PaypalOption.ReturnUrl = _config.GetSection("Paypal").GetSection("RedirectUrls").GetValue<string>("ReturnUrl");
+            PaypalOption.CancelUrl = _config.GetSection("Paypal").GetSection("RedirectUrls").GetValue<string>("CancelUrl");
+            PaypalOption.TransactionDescription = _config.GetSection("Paypal").GetSection("DefaultTransaction").GetValue<string>("Description");
 
             services.AddSingleton(_config);
 
