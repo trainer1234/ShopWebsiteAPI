@@ -57,7 +57,7 @@ namespace ShopWebsite.BLL.Implementations
                     $"<span class=\"m_-1741533549007004024name\" style=\"font-size: 12px;\">{name}</span></td>" +
                     $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{price}&nbsp;₫</td>" +
                     $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{amount}</td>" +
-                    $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{promotionRate}&nbsp;₫</td>" +
+                    $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{price * promotionRate}&nbsp;₫</td>" +
                     $" <td align=\"right\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{cost}&nbsp;₫</td> </tr>";
             }
             var client = new SendGridClient(apiKey);
