@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Sendgrid" Version="9.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PayPalCore\PayPalCore.csproj" />
     <ProjectReference Include="..\ShopWebsite.Common\ShopWebsite.Common.csproj" />
     <ProjectReference Include="..\ShopWebsite.DAL\ShopWebsite.DAL.csproj" />

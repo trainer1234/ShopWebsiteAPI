@@ -3,7 +3,9 @@ using PayPal.Api;
 using ShopWebsite.BLL.Contracts;
 using ShopWebsite.Common.Models.BaseModels;
 using ShopWebsite.Common.Models.CurrencyConverterApi;
+using ShopWebsite.Common.Models.EmailModels.SendGrid;
 using ShopWebsite.Common.Models.Enums;
+using ShopWebsite.Common.Models.ServerOptions;
 using ShopWebsite.Common.Utils;
 using ShopWebsite.DAL.Contracts;
 using ShopWebsite.DAL.Models.CustomerModels;
@@ -84,6 +86,13 @@ namespace ShopWebsite.BLL.Implementations
                     }
 
                     productOrderPaypalResult.OrderId = orderId;
+
+                    EmailSender sender = new EmailSender
+                    {
+                        ReceiverEmail = newProductOrder.Customer.Email
+                    };
+                    var emailResponse = await _emailService.SendOrderSuccessEmail(newProductOrder, sender, EmailOption.SendGridApiKey, EmailOption.OrderSuccessTemplateId);
+
                     result.Content = productOrderPaypalResult;
                     result.Succeed = true;
                 }
@@ -207,6 +216,12 @@ namespace ShopWebsite.BLL.Implementations
                 }
                 newProductOrder.ProductTotalAmount = totalAmount;
                 newProductOrder.TotalCost = totalCost;
+
+                EmailSender sender = new EmailSender
+                {
+                    ReceiverEmail = newProductOrder.Customer.Email
+                };
+                var emailResponse = await _emailService.SendOrderSuccessEmail(newProductOrder, sender, EmailOption.SendGridApiKey, EmailOption.OrderSuccessTemplateId);
 
                 await _productOrderRepository.Edit(newProductOrder);
 

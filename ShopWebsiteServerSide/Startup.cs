@@ -57,6 +57,10 @@ namespace ShopWebsiteServerSide
             PaypalOption.ReturnUrl = _config.GetSection("Paypal").GetSection("RedirectUrls").GetValue<string>("ReturnUrl");
             PaypalOption.CancelUrl = _config.GetSection("Paypal").GetSection("RedirectUrls").GetValue<string>("CancelUrl");
             PaypalOption.TransactionDescription = _config.GetSection("Paypal").GetSection("DefaultTransaction").GetValue<string>("Description");
+            EmailOption.EmailFrom = _config.GetSection("SendGrid").GetValue<string>("EmailFrom");
+            EmailOption.EmailFromName = _config.GetSection("SendGrid").GetValue<string>("EmailFromName");
+            EmailOption.SendGridApiKey = _config.GetSection("SendGrid").GetValue<string>("ApiKey");
+            EmailOption.OrderSuccessTemplateId = _config.GetSection("SendGrid").GetSection("Template").GetValue<string>("OrderSuccess");
 
             services.AddSingleton(_config);
 
