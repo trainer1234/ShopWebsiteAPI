@@ -10,7 +10,7 @@ namespace ShopWebsite.BLL.Implementations
 {
     public class PaypalService : IPaypalService
     {
-        public Payment CreatePayment(ProductOrder productOrder, string intent)
+        public Payment CreatePayment(ProductOrder productOrder, string intent, double exchangeRate)
         {
             var apiContext = new APIContext(new OAuthTokenCredential(PaypalOption.ClientId, PaypalOption.ClientSecret).GetAccessToken());
 
@@ -18,7 +18,7 @@ namespace ShopWebsite.BLL.Implementations
             {
                 intent = intent,
                 payer = new Payer() { payment_method = "paypal" },
-                transactions = GetTransactionsList(productOrder),
+                transactions = GetTransactionsList(productOrder, exchangeRate),
                 redirect_urls = new RedirectUrls
                 {
                     return_url = PaypalOption.ReturnUrl,
@@ -31,16 +31,16 @@ namespace ShopWebsite.BLL.Implementations
             return createdPayment;
         }
 
-        private List<Transaction> GetTransactionsList(ProductOrder productOrder)
+        private List<Transaction> GetTransactionsList(ProductOrder productOrder, double exchangeRate)
         {
             var transactionList = new List<Transaction>();
             var itemList = new List<Item>();
             foreach (var product in productOrder.ProductMapOrderDetails)
             {
-                double productRealPrice = product.Product.Price;
+                double productRealPrice = Math.Round(product.Product.Price * exchangeRate, 2);
                 if (product.Product.PromotionRate > 0)
                 {
-                    productRealPrice = Math.Round(product.Product.Price - (product.Product.Price * product.Product.PromotionRate) / 100, 2);
+                    productRealPrice = Math.Round(product.Product.Price * exchangeRate - (product.Product.Price * product.Product.PromotionRate * exchangeRate) / 100, 2);
                 }
                 itemList.Add(new Item
                 {

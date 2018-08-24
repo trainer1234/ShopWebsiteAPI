@@ -8,7 +8,7 @@ namespace ShopWebsite.BLL.Contracts
 {
     public interface IPaypalService
     {
-        Payment CreatePayment(ProductOrder productOrder, string intent);
+        Payment CreatePayment(ProductOrder productOrder, string intent, double exchangeRate);
 
         Payment ExecutePayment(string paymentId, string payerId);
         //List<Transaction> GetTransactionsList(ProductOrder productOrder);

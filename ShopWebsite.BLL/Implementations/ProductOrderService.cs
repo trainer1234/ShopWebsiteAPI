@@ -50,19 +50,19 @@ namespace ShopWebsite.BLL.Implementations
 
             try
             {
+                var customerId = await _customerRepository.Add(newProductOrder.Customer);
+
+                newProductOrder.CustomerId = customerId;
+                newProductOrder.Customer = null;
+                newProductOrder.OrderStatus = OrderStatus.NotConfirmed;
+                newProductOrder.OrderDate = DateTime.UtcNow;
+                var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;
+                newProductOrder.ProductMapOrderDetails = null;
+
+                var orderId = _productOrderRepository.Add(newProductOrder);
+
                 if (paymentMethod == PaymentMethod.Direct)
                 {
-                    var customerId = await _customerRepository.Add(newProductOrder.Customer);
-
-                    newProductOrder.CustomerId = customerId;
-                    newProductOrder.Customer = null;
-                    newProductOrder.OrderStatus = OrderStatus.NotConfirmed;
-                    newProductOrder.OrderDate = DateTime.UtcNow;
-                    var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;
-                    newProductOrder.ProductMapOrderDetails = null;
-
-                    var orderId = _productOrderRepository.Add(newProductOrder);
-
                     if (productMapOrderDetailTmp != null && productMapOrderDetailTmp.Count > 0)
                     {
                         newProductOrder.ProductMapOrderDetails = productMapOrderDetailTmp;
@@ -113,30 +113,41 @@ namespace ShopWebsite.BLL.Implementations
                         }
                     }
 
-                    var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;
                     if (productMapOrderDetailTmp != null && productMapOrderDetailTmp.Count > 0)
                     {
-                        double totalCost = 0;
+                        newProductOrder.ProductMapOrderDetails = productMapOrderDetailTmp;
+                        double totalCostInUSD = 0;
+                        double totalCostInVND = 0;
                         long totalAmount = 0;
                         foreach (var productMapOrder in newProductOrder.ProductMapOrderDetails)
                         {
                             var product = await _productRepository.GetBy(productMapOrder.ProductId);
-                            productMapOrder.Product = new Product
-                            {
-                                Price = Math.Round(product.Price * exchangeRate, 2),
-                                PromotionRate = product.PromotionRate,
-                                Id = product.Id,
-                                Name = product.Name
-                            };
-                            totalCost += Math.Round((product.Price * exchangeRate - (product.Price * product.PromotionRate * exchangeRate) / 100) * productMapOrder.ProductAmount, 2);
+                            totalCostInVND += (product.Price - (product.Price * product.PromotionRate) / 100) * productMapOrder.ProductAmount;
+                            totalCostInUSD += Math.Round((product.Price * exchangeRate - (product.Price * product.PromotionRate * exchangeRate) / 100) * productMapOrder.ProductAmount, 2);
                             totalAmount += productMapOrder.ProductAmount;
+
+                            product.PurchaseCounter += productMapOrder.ProductAmount;
+                            await _productRepository.Edit(product);
+
+                            await _productMapOrderDetailRepository.Add(productMapOrder);
+
+                            //productMapOrder.Product = new Product
+                            //{
+                            //    Price = Math.Round(product.Price * exchangeRate, 2),
+                            //    PromotionRate = product.PromotionRate,
+                            //    Id = product.Id,
+                            //    Name = product.Name
+                            //};
                         }
                         newProductOrder.ProductTotalAmount = totalAmount;
-                        newProductOrder.TotalCost = totalCost;
-                    }
-                    newProductOrder.OrderId = Generator.GenerateOrderId(6);
+                        newProductOrder.TotalCost = totalCostInVND;
 
-                    var createdPayment = _paypalService.CreatePayment(newProductOrder, "sale");
+                        await _productOrderRepository.Edit(newProductOrder);
+
+                        newProductOrder.TotalCost = totalCostInUSD;
+                    }
+
+                    var createdPayment = _paypalService.CreatePayment(newProductOrder, "sale", exchangeRate);
 
                     var links = createdPayment.links.GetEnumerator();
                     string paypalRedirectUrl = null;
@@ -153,6 +164,12 @@ namespace ShopWebsite.BLL.Implementations
 
                     productOrderPaypalResult.OrderId = newProductOrder.OrderId;
                     productOrderPaypalResult.paypal_redirect = paypalRedirectUrl;
+
+                    EmailSender sender = new EmailSender
+                    {
+                        ReceiverEmail = newProductOrder.Customer.Email
+                    };
+                    var emailResponse = await _emailService.SendOrderSuccessEmail(newProductOrder, sender, EmailOption.SendGridApiKey, EmailOption.OrderSuccessTemplateId);
 
                     result.Content = productOrderPaypalResult;
                     result.Succeed = true;
@@ -174,58 +191,63 @@ namespace ShopWebsite.BLL.Implementations
 
             try
             {
-                ProductOrder newProductOrder = new ProductOrder();
-                Customer cust = new Customer
-                {
-                    FullName = $"{executedPayment.payer.payer_info.first_name} {executedPayment.payer.payer_info.last_name}",
-                    Email = executedPayment.payer.payer_info.email,
-                    Address = $"{executedPayment.payer.payer_info.shipping_address.line1}",
-                    Phone = executedPayment.payer.payer_info.phone
-                };
-                var customerId = await _customerRepository.Add(cust);
+                var orderId = executedPayment.transactions[0].invoice_number;
+                var productOrder = await _productOrderRepository.Get(orderId);
+                productOrder.OrderStatus = OrderStatus.Pending;
 
-                newProductOrder.CustomerId = customerId;
-                newProductOrder.Customer = null;
-                newProductOrder.OrderStatus = OrderStatus.Pending;
-                newProductOrder.OrderDate = DateTime.UtcNow;
-                newProductOrder.OrderId = executedPayment.transactions[0].invoice_number;
+                //ProductOrder newProductOrder = new ProductOrder();
+                //Customer cust = new Customer
+                //{
+                //    FullName = $"{executedPayment.payer.payer_info.first_name} {executedPayment.payer.payer_info.last_name}",
+                //    Email = executedPayment.payer.payer_info.email,
+                //    Address = $"{executedPayment.payer.payer_info.shipping_address.line1}",
+                //    Phone = executedPayment.payer.payer_info.phone
+                //};
+                //var customerId = await _customerRepository.Add(cust);
 
-                var orderId = _productOrderRepository.Add(newProductOrder);
+                //newProductOrder.CustomerId = customerId;
+                //newProductOrder.Customer = null;
+                //newProductOrder.OrderStatus = OrderStatus.Pending;
+                //newProductOrder.OrderDate = DateTime.UtcNow;
+                //newProductOrder.OrderId = executedPayment.transactions[0].invoice_number;
+                //newProductOrder.PaymentMethod = PaymentMethod.Paypal;
 
-                double totalCost = 0;
-                //long totalCost = (long)(long.Parse(executedPayment.transactions[0].amount.total) / exchangeRate);
-                long totalAmount = 0;
-                var products = executedPayment.transactions[0].item_list.items;
-                newProductOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
-                foreach (var item in products)
-                {
-                    var product = await _productRepository.GetBy(item.sku); // item.sku => product.id
-                    var quantity = long.Parse(item.quantity);
-                    totalCost += Math.Round((product.Price - (product.Price * product.PromotionRate) / 100) * quantity, 2);
-                    totalAmount += quantity;
-                    product.PurchaseCounter += quantity;
+                //var orderId = _productOrderRepository.Add(newProductOrder);
 
-                    var productMapOrder = new ProductMapOrderDetail
-                    {
-                        ProductId = product.Id,
-                        ProductOrderId = orderId,
-                        ProductAmount = quantity
-                    };
-                    newProductOrder.ProductMapOrderDetails.Add(productMapOrder);
-                    await _productRepository.Edit(product);
+                //double totalCost = 0;
+                ////long totalCost = (long)(long.Parse(executedPayment.transactions[0].amount.total) / exchangeRate);
+                //long totalAmount = 0;
+                //var products = executedPayment.transactions[0].item_list.items;
+                //newProductOrder.ProductMapOrderDetails = new List<ProductMapOrderDetail>();
+                //foreach (var item in products)
+                //{
+                //    var product = await _productRepository.GetBy(item.sku); // item.sku => product.id
+                //    var quantity = long.Parse(item.quantity);
+                //    totalCost += Math.Round((product.Price - (product.Price * product.PromotionRate) / 100) * quantity, 2);
+                //    totalAmount += quantity;
+                //    product.PurchaseCounter += quantity;
 
-                    await _productMapOrderDetailRepository.Add(productMapOrder);
-                }
-                newProductOrder.ProductTotalAmount = totalAmount;
-                newProductOrder.TotalCost = totalCost;
+                //    var productMapOrder = new ProductMapOrderDetail
+                //    {
+                //        ProductId = product.Id,
+                //        ProductOrderId = orderId,
+                //        ProductAmount = quantity
+                //    };
+                //    newProductOrder.ProductMapOrderDetails.Add(productMapOrder);
+                //    await _productRepository.Edit(product);
 
-                EmailSender sender = new EmailSender
-                {
-                    ReceiverEmail = newProductOrder.Customer.Email
-                };
-                var emailResponse = await _emailService.SendOrderSuccessEmail(newProductOrder, sender, EmailOption.SendGridApiKey, EmailOption.OrderSuccessTemplateId);
+                //    await _productMapOrderDetailRepository.Add(productMapOrder);
+                //}
+                //newProductOrder.ProductTotalAmount = totalAmount;
+                //newProductOrder.TotalCost = totalCost;
 
-                await _productOrderRepository.Edit(newProductOrder);
+                //EmailSender sender = new EmailSender
+                //{
+                //    ReceiverEmail = newProductOrder.Customer.Email
+                //};
+                //var emailResponse = await _emailService.SendOrderSuccessEmail(newProductOrder, sender, EmailOption.SendGridApiKey, EmailOption.OrderSuccessTemplateId);
+
+                await _productOrderRepository.Edit(productOrder);
 
                 result.Content = orderId;
                 result.Succeed = true;
