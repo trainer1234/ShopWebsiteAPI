@@ -16,7 +16,7 @@ namespace ShopWebsiteServerSide.Models.ProductModels
         public string Alias { get; set; }
         public string Detail { get; set; }
         public int ManufactureYear { get; set; }
-        public long Price { get; set; }
+        public double Price { get; set; }
         public long Remain { get; set; }
         public long View { get; set; }
         public long PurchaseCounter { get; set; }

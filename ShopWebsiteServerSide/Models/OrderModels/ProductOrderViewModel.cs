@@ -15,7 +15,7 @@ namespace ShopWebsiteServerSide.Models.OrderModels
         public string Id { get; set; }
         public string OrderId { get; set; }
         public long ProductAmount { get; set; }
-        public long TotalCost { get; set; }
+        public double TotalCost { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public PaymentMethod PaymentMethod { get; set; }

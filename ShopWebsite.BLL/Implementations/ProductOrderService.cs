@@ -66,11 +66,12 @@ namespace ShopWebsite.BLL.Implementations
                     if (productMapOrderDetailTmp != null && productMapOrderDetailTmp.Count > 0)
                     {
                         newProductOrder.ProductMapOrderDetails = productMapOrderDetailTmp;
-                        long totalCost = 0, totalAmount = 0;
+                        double totalCost = 0;
+                        long totalAmount = 0;
                         foreach (var productMapOrder in newProductOrder.ProductMapOrderDetails)
                         {
                             var product = await _productRepository.GetBy(productMapOrder.ProductId);
-                            totalCost += (long)(product.Price - product.Price * product.PromotionRate) * productMapOrder.ProductAmount;
+                            totalCost += (product.Price - (product.Price * product.PromotionRate) / 100) * productMapOrder.ProductAmount;
                             totalAmount += productMapOrder.ProductAmount;
 
                             product.PurchaseCounter += productMapOrder.ProductAmount;
@@ -115,18 +116,19 @@ namespace ShopWebsite.BLL.Implementations
                     var productMapOrderDetailTmp = newProductOrder.ProductMapOrderDetails;
                     if (productMapOrderDetailTmp != null && productMapOrderDetailTmp.Count > 0)
                     {
-                        long totalCost = 0, totalAmount = 0;
+                        double totalCost = 0;
+                        long totalAmount = 0;
                         foreach (var productMapOrder in newProductOrder.ProductMapOrderDetails)
                         {
                             var product = await _productRepository.GetBy(productMapOrder.ProductId);
                             productMapOrder.Product = new Product
                             {
-                                Price = (long)(product.Price * exchangeRate),
+                                Price = Math.Round(product.Price * exchangeRate, 2),
                                 PromotionRate = product.PromotionRate,
                                 Id = product.Id,
                                 Name = product.Name
                             };
-                            totalCost += (long)(product.Price * exchangeRate - product.Price * product.PromotionRate * exchangeRate) * productMapOrder.ProductAmount;
+                            totalCost += Math.Round((product.Price * exchangeRate - (product.Price * product.PromotionRate * exchangeRate) / 100) * productMapOrder.ProductAmount, 2);
                             totalAmount += productMapOrder.ProductAmount;
                         }
                         newProductOrder.ProductTotalAmount = totalAmount;
@@ -156,7 +158,7 @@ namespace ShopWebsite.BLL.Implementations
                     result.Succeed = true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _errorLogRepository.Add(ex);
                 throw;
@@ -190,7 +192,7 @@ namespace ShopWebsite.BLL.Implementations
 
                 var orderId = _productOrderRepository.Add(newProductOrder);
 
-                long totalCost = 0;
+                double totalCost = 0;
                 //long totalCost = (long)(long.Parse(executedPayment.transactions[0].amount.total) / exchangeRate);
                 long totalAmount = 0;
                 var products = executedPayment.transactions[0].item_list.items;
@@ -199,7 +201,7 @@ namespace ShopWebsite.BLL.Implementations
                 {
                     var product = await _productRepository.GetBy(item.sku); // item.sku => product.id
                     var quantity = long.Parse(item.quantity);
-                    totalCost += (long)(product.Price - product.Price * product.PromotionRate) * quantity;
+                    totalCost += Math.Round((product.Price - (product.Price * product.PromotionRate) / 100) * quantity, 2);
                     totalAmount += quantity;
                     product.PurchaseCounter += quantity;
 
@@ -243,7 +245,7 @@ namespace ShopWebsite.BLL.Implementations
 
             try
             {
-                if(newProductOrder.OrderStatus == OrderStatus.Delivering)
+                if (newProductOrder.OrderStatus == OrderStatus.Delivering)
                 {
                     if (newProductOrder.ProductMapOrderDetails != null && newProductOrder.ProductMapOrderDetails.Count > 0)
                     {
@@ -287,7 +289,7 @@ namespace ShopWebsite.BLL.Implementations
             try
             {
                 var productOrder = await _productOrderRepository.Get(orderId);
-                if(productOrder != null)
+                if (productOrder != null)
                 {
                     result.Content = productOrder;
                     result.Succeed = true;

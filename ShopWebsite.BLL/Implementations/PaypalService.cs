@@ -37,10 +37,10 @@ namespace ShopWebsite.BLL.Implementations
             var itemList = new List<Item>();
             foreach (var product in productOrder.ProductMapOrderDetails)
             {
-                long productRealPrice = product.Product.Price;
+                double productRealPrice = product.Product.Price;
                 if (product.Product.PromotionRate > 0)
                 {
-                    productRealPrice = product.Product.Price - (long)(product.Product.Price * product.Product.PromotionRate);
+                    productRealPrice = Math.Round(product.Product.Price - (product.Product.Price * product.Product.PromotionRate) / 100, 2);
                 }
                 itemList.Add(new Item
                 {

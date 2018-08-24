@@ -49,15 +49,15 @@ namespace ShopWebsite.BLL.Implementations
                 var price = productMapOrder.Product.Price;
                 var amount = productMapOrder.ProductAmount;
                 var promotionRate = productMapOrder.Product.PromotionRate;
-                var cost = price - price * promotionRate;
+                var cost = price - (price * promotionRate) / 100;
 
-                productOrderMailContent += 
+                productOrderMailContent +=
                     $" <tr style=\"font-size: 12px;\">" +
                     $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">" +
                     $"<span class=\"m_-1741533549007004024name\" style=\"font-size: 12px;\">{name}</span></td>" +
                     $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{price}&nbsp;₫</td>" +
                     $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{amount}</td>" +
-                    $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{price * promotionRate}&nbsp;₫</td>" +
+                    $" <td align=\"left\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{(price * promotionRate) / 100}&nbsp;₫</td>" +
                     $" <td align=\"right\" style=\"padding: 3px 9px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;\" valign=\"top\">{cost}&nbsp;₫</td> </tr>";
             }
             var client = new SendGridClient(apiKey);
